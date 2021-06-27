@@ -140,7 +140,7 @@ export async function getStaticProps() {
 	  }`;
 
   const result = await graphQLFetch(query, {}, true);
-  console.log("result", result);
+  // console.log("result", result);
 
   return {
     props: {

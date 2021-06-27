@@ -135,14 +135,14 @@ const RegisterForm = () => {
   };
 
   const validateProperty = ({ name, value }) => {
-    console.log(name, value);
+    // console.log(name, value);
     const object = { [name]: value };
-    console.log(schema);
+    // console.log(schema);
     const _schema = Joi.object({ [name]: schema[name] });
     const result = _schema.validate(object);
-    console.log(result);
+    // console.log(result);
     const error = result.error;
-    console.log("returning", error);
+    // console.log("returning", error);
     return error ? error.details[0].message : null;
   };
 
@@ -158,14 +158,14 @@ const RegisterForm = () => {
       strict: true, // strip special characters except replacement, defaults to `false`
     });
 
-    console.log({ input: input });
+    // console.log({ input: input });
 
     const registered = await auth.register({ input: input });
 
     if (registered === true) {
       window.location = "/";
     } else {
-      console.log(registered);
+      // console.log(registered);
     }
   };
 
@@ -173,7 +173,7 @@ const RegisterForm = () => {
     const options = { abortEarly: false, allowUnknown: true };
     const _schema = Joi.object({ ...schema });
     const { error } = _schema.validate(data, options);
-    console.log(error);
+    // console.log(error);
     if (!error) return null;
 
     const errors = {};

@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }) {
   const getCurUser = async () => {
     const _user = await auth.getCurrentUser();
     setUser(_user);
-    console.log("user from app component", _user);
+    // console.log("user from app component", _user);
   };
 
   useEffect(() => {

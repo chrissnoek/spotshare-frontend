@@ -175,7 +175,7 @@ export async function getStaticPaths() {
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
 export async function getStaticProps({ params }) {
-  // console.log(params);
+  console.log(params);
   const query = `query profile($username: String!) {
     users( where: { username: $username } ) {
       username

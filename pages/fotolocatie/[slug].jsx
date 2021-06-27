@@ -473,7 +473,7 @@ export async function getStaticProps({ params }) {
             }
             photo {
                 id
-                name
+                
                 url
             }
         }
