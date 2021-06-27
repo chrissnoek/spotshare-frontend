@@ -17,7 +17,7 @@ export default function Home(props) {
   return (
     <userContext.Consumer>
       {(value) => {
-        console.log(value);
+        // console.log(value);
         return value.user ? redirect("/dashboard") : <HomeScreen {...props} />;
       }}
     </userContext.Consumer>
@@ -276,7 +276,7 @@ export async function getStaticProps() {
   const fourthID = getRandomInt(15);
   const fifthID = getRandomInt(15);
   const sixtID = getRandomInt(15);
-  console.log(firstID, secondID, thirdID, fourthID, fifthID, sixtID);
+  // console.log(firstID, secondID, thirdID, fourthID, fifthID, sixtID);
 
   // build the graphql query
   const query = `query {
@@ -308,7 +308,7 @@ export async function getStaticProps() {
   }`;
 
   const result = await graphQLFetch(query, {}, true);
-  console.log("result", result);
+  // console.log("result", result);
 
   return {
     props: {

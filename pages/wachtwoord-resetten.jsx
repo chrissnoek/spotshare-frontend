@@ -69,7 +69,7 @@ const PasswordReset = () => {
     const result = _schema.validate(object);
     const error = result.error;
 
-    console.log("returning", error);
+    // console.log("returning", error);
     return error ? error.details[0].message : null;
   };
 
@@ -77,7 +77,7 @@ const PasswordReset = () => {
     const options = { abortEarly: false, allowUnknown: true };
     const _schema = Joi.object({ ...schema });
     const { error } = _schema.validate(data, options);
-    console.log(error);
+    // console.log(error);
     if (!error) return null;
 
     const errors = {};
@@ -90,7 +90,7 @@ const PasswordReset = () => {
   const doSubmit = async () => {
     // call server
     // redirect user to homepage
-    console.log("submitted");
+    // console.log("submitted");
 
     // const query = `mutation resetPassword($password: String!, $passwordConfirmation: String!, $code: String!){
     //     resetPassword(password:$password, passwordConfirmation:$passwordConfirmation, code:$code) {
@@ -104,11 +104,11 @@ const PasswordReset = () => {
     //   code: code,
     // };
 
-    // console.log(vars);
+    // // console.log(vars);
 
     //const result = await graphQLFetch(query, vars, true, true);
 
-    // console.log(result);
+    // // console.log(result);
 
     axios
       .post("http://localhost:1337/auth/reset-password", {
@@ -117,15 +117,15 @@ const PasswordReset = () => {
         passwordConfirmation: data.passwordConfirmation,
       })
       .then((response) => {
-        console.log(response);
-        console.log("Your user's password has been reset.");
+        // console.log(response);
+        // console.log("Your user's password has been reset.");
         auth.setToken(response.data.jwt);
         setSuccess(true);
       })
       .catch((error) => {
-        console.log("An error occurred:", error.response);
+        // console.log("An error occurred:", error.response);
         // error message
-        console.log("ERROR!");
+        // console.log("ERROR!");
         toast.error("Je code is verlopen, probeer het opnieuw.");
       });
   };

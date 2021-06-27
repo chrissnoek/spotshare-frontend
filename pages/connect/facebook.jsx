@@ -7,11 +7,11 @@ const MyClassWithRouter = (props) => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(router);
+    // console.log(router);
     if (Object.keys(router.query).length > 0) {
       const name = Object.keys(router.query)[0];
       const value = router.query.code;
-      console.log(name, value);
+      // console.log(name, value);
 
       const search = `?${name}=${value}`;
 
@@ -19,10 +19,10 @@ const MyClassWithRouter = (props) => {
         .get(`http://localhost:1337/auth/facebook/callback${search}`)
         .then((response) => {
           // Handle success.
-          console.log(response);
-          console.log("Well done!");
-          console.log("User profile", response.data.user);
-          console.log("User token", response.data.jwt);
+          // console.log(response);
+          // console.log("Well done!");
+          // console.log("User profile", response.data.user);
+          // console.log("User token", response.data.jwt);
           authService.setToken(response.data.jwt);
           window.location = "/";
         });
@@ -35,20 +35,20 @@ export default MyClassWithRouter;
 
 // class FBConnect extends Component {
 //   componentDidUpdate() {
-//     console.log("update", this.props.router);
-//     console.log(Object.keys(this.props.router.query).length);
+//     // console.log("update", this.props.router);
+//     // console.log(Object.keys(this.props.router.query).length);
 
 //     if (Object.keys(this.props.router.query).length > 0) {
 //       const name = Object.keys(this.props.router.query)[0];
 //       const value = this.props.router.query.code;
-//       console.log(name, value);
+//       // console.log(name, value);
 //     }
 //   }
 //   componentDidMount() {
-//     console.log("mount", this.props.router);
+//     // console.log("mount", this.props.router);
 
 // try {
-//   console.log(action, action.search);
+//   // console.log(action, action.search);
 //   const requestURL = `http://localhost:1337/auth/${action.provider}/callback${action.search}`;
 //   const response = yield call(request, requestURL, { method: "GET" });
 
@@ -67,9 +67,9 @@ export default MyClassWithRouter;
 // const search = this.props.location.search; // could be '?foo=bar'
 // const params = new URLSearchParams(search);
 // const accessToken = params.get("access_token"); // bar
-// console.log(accessToken);
+// // console.log(accessToken);
 
-// console.log(
+// // console.log(
 // 	`http://localhost:1337/auth/facebook/callback${location.search}`
 // );
 
@@ -77,10 +77,10 @@ export default MyClassWithRouter;
 //   .get(`http://localhost:1337/auth/facebook/callback${location.search}`)
 //   .then((response) => {
 //     // Handle success.
-//     console.log(response);
-//     console.log("Well done!");
-//     console.log("User profile", response.data.user);
-//     console.log("User token", response.data.jwt);
+//     // console.log(response);
+//     // console.log("Well done!");
+//     // console.log("User profile", response.data.user);
+//     // console.log("User token", response.data.jwt);
 //     authService.setToken(response.data.jwt);
 //     window.location = "/";
 //   });

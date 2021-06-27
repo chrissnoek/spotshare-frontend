@@ -33,7 +33,7 @@ class PhotoAddToLocation extends React.Component {
     const id = this.props.router.query.id;
 
     const data = await graphQLFetch(query, { id }, true);
-    console.log(data);
+    // console.log(data);
     return data;
   };
 
@@ -45,7 +45,7 @@ class PhotoAddToLocation extends React.Component {
     return (
       <userContext.Consumer>
         {(value) => {
-          console.log(value);
+          // console.log(value);
           return (
             <MapElement
               value={value}
@@ -75,20 +75,20 @@ class MapElement extends React.Component {
     };
     this.fileInput = React.createRef();
     this.handleSubmit = this.handleSubmit.bind(this);
-    console.log(props);
+    // console.log(props);
   }
 
   componentDidUpdate(prevProps) {
-    console.log("update");
+    // console.log("update");
     const {
       value: { user: prevUser },
     } = prevProps;
     const {
       value: { user },
     } = this.props;
-    console.log(prevUser, user);
+    // console.log(prevUser, user);
     if (prevUser !== user) {
-      console.log("updating context");
+      // console.log("updating context");
       this.updateContext();
     }
   }
@@ -101,11 +101,11 @@ class MapElement extends React.Component {
   }
 
   async componentDidMount() {
-    console.log(this.props.value);
+    // console.log(this.props.value);
 
     const data = await this.props.fetchLocation();
     if (data) {
-      console.log("props from mount", this.props);
+      // console.log("props from mount", this.props);
       this.setState({
         location: data.location,
         photo: { location: data.location.id, user: this.props.value.id },
@@ -116,7 +116,7 @@ class MapElement extends React.Component {
   }
 
   async handleSubmit(e) {
-    console.log("submitted");
+    // console.log("submitted");
     e.preventDefault();
     e.persist();
     updateContext();
@@ -130,7 +130,7 @@ class MapElement extends React.Component {
     // check if an image is given, and title, if not show error and return null;
     if (!blob || !title) {
       if (!blob) {
-        console.log("no blob in state");
+        // console.log("no blob in state");
         this.setState((prevState) => ({
           ...prevState,
           invalidFields: {
@@ -140,7 +140,7 @@ class MapElement extends React.Component {
         }));
       }
       if (!title) {
-        console.log("no title in state.photo");
+        // console.log("no title in state.photo");
         this.setState((prevState) => ({
           ...prevState,
           invalidFields: {
@@ -149,7 +149,7 @@ class MapElement extends React.Component {
           },
         }));
       }
-      console.log("returning");
+      // console.log("returning");
       return;
     }
 
@@ -214,12 +214,12 @@ class MapElement extends React.Component {
     delete input.data.longitude;
     delete input.data.latitude;
 
-    console.log("input", input);
+    // console.log("input", input);
 
     const data = await graphQLFetch(query, { input }, true);
 
     if (data) {
-      console.log("photo page created, uploading foto..");
+      // console.log("photo page created, uploading foto..");
       //after pages is created, use refId to upload files with xhr request
 
       const redirect = () => {
@@ -242,7 +242,7 @@ class MapElement extends React.Component {
       request.send(formData);
       request.addEventListener("load", redirect);
     } else {
-      console.log("failed");
+      // console.log("failed");
     }
   }
 
@@ -377,7 +377,7 @@ class MapElement extends React.Component {
   };
 
   handleInputChange = (event, property) => {
-    console.log("handling on input chagne");
+    // console.log("handling on input chagne");
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
@@ -385,7 +385,7 @@ class MapElement extends React.Component {
     this.setState((prevState) => {
       let stateFields;
       if (property === "location") {
-        console.log("setting location state");
+        // console.log("setting location state");
         stateFields = {
           ...prevState,
           location: { ...prevState.location, [name]: value },
@@ -406,7 +406,7 @@ class MapElement extends React.Component {
   };
 
   removeImage = () => {
-    console.log("remove");
+    // console.log("remove");
     this.setState({
       tempFile: null,
       photo: {},
@@ -416,7 +416,7 @@ class MapElement extends React.Component {
   };
 
   handleOnDrop = (e) => {
-    console.log("handleOnDrop fired", e);
+    // console.log("handleOnDrop fired", e);
   };
   handleOnDragOver = (e) => {
     this.setState({ onDragOver: true });

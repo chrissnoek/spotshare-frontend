@@ -37,14 +37,14 @@ const ForgotPassword = () => {
   };
 
   const validateProperty = ({ name, value }) => {
-    console.log(name, value);
+    //  console.log(name, value);
     const object = { [name]: value };
-    console.log(schema);
+    //  console.log(schema);
     const _schema = Joi.object({ [name]: schema[name] });
     const result = _schema.validate(object);
-    console.log(result);
+    //  console.log(result);
     const error = result.error;
-    console.log("returning", error);
+    //  console.log("returning", error);
     return error ? error.details[0].message : null;
   };
 
@@ -52,7 +52,7 @@ const ForgotPassword = () => {
     const options = { abortEarly: false, allowUnknown: true };
     const _schema = Joi.object({ ...schema });
     const { error } = _schema.validate(data, options);
-    console.log(error);
+    //  console.log(error);
     if (!error) return null;
 
     const errors = {};
@@ -65,7 +65,7 @@ const ForgotPassword = () => {
   const doSubmit = async () => {
     // call server
     // redirect user to homepage
-    console.log("submitted");
+    //  console.log("submitted");
 
     const query = `mutation ForgotPassword($email:String!){
 		forgotPassword(email:$email) {
@@ -75,7 +75,7 @@ const ForgotPassword = () => {
 
     const vars = { email: data.email };
 
-    console.log(vars);
+    //  console.log(vars);
 
     // Request API.
     axios
@@ -83,16 +83,16 @@ const ForgotPassword = () => {
         email: data.email, // user's email
       })
       .then((response) => {
-        console.log(response);
-        console.log("Your user received an email");
+        //  console.log(response);
+        //  console.log("Your user received an email");
       })
       .catch((error) => {
-        console.log("An error occurred:", error.response);
+        //  console.log("An error occurred:", error.response);
       });
 
     // const result = await graphQLFetch(query, vars, true);
 
-    // console.log(result);
+    // //  console.log(result);
   };
 
   const handleSubmit = (e) => {

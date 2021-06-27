@@ -31,7 +31,7 @@ class DataEdit extends Form {
 
     const { data: username } = this.props;
     const result = await graphQLFetch(query, { username }, true);
-    console.log(result);
+    // console.log(result);
     return result;
   }
 
@@ -155,10 +155,10 @@ class DataEdit extends Form {
 
     if (data.updateUser) {
       if (uploadedFile !== null && uploadedFile !== undefined) {
-        console.log("in upload file");
+        // console.log("in upload file");
         this.uploadFile(uploadedFile, redirect, data.updateUser.user.slug);
       } else {
-        console.log("straight to redirect");
+        // console.log("straight to redirect");
         redirect(data.updateUser.user.slug);
       }
     }
@@ -204,7 +204,7 @@ class DataEdit extends Form {
   };
 
   removeImage = () => {
-    console.log("remove");
+    // console.log("remove");
     this.setState({
       tempFile: null,
       photo: {},
@@ -215,7 +215,7 @@ class DataEdit extends Form {
   render() {
     const { data, photoLoading, tempFile } = this.state;
     if (data === null) {
-      console.log("return null from render");
+      // console.log("return null from render");
       return null;
     }
 
@@ -337,7 +337,7 @@ export async function getStaticProps({ params }) {
   const { username } = params;
 
   const result = await graphQLFetch(query, { username }, true);
-  console.log("result", result);
+  // console.log("result", result);
 
   return {
     props: {

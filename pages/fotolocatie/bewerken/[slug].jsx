@@ -76,7 +76,7 @@ const EditLocation = () => {
   }, [router.query]);
 
   useEffect(() => {
-    console.log("locatin updated", location);
+    // console.log("locatin updated", location);
     if (location) {
       setValues({
         title: location.title,
@@ -196,7 +196,7 @@ const EditLocation = () => {
     oldLocation.directions = values.directions;
     oldLocation.whattoshoot = values.whattoshoot;
 
-    console.log(oldLocation);
+    // console.log(oldLocation);
 
     const query = `mutation updateLocation($input: updateLocationInput) {
               updateLocation(input: $input){
@@ -213,11 +213,11 @@ const EditLocation = () => {
 
     delete input.data.id;
 
-    console.log(input);
+    // console.log(input);
     const data = await graphQLFetch(query, { input }, true);
 
     if (data) {
-      console.log(data);
+      // console.log(data);
       const { slug } = data.updateLocation.location;
       router.push(`/fotolocatie/${slug}`);
     }

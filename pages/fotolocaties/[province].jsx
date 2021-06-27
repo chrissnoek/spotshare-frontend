@@ -29,7 +29,7 @@ const Results = ({ locations }) => {
   }, [router]);
 
   useEffect(() => {
-    console.log({ activeFilter });
+    // console.log({ activeFilter });
     if (activeFilter === "") {
       setFilteredLocations(allLocations);
     } else {
@@ -38,19 +38,19 @@ const Results = ({ locations }) => {
   }, [activeFilter]);
 
   const filterAndSetLocations = () => {
-    console.log(allLocations);
+    // console.log(allLocations);
     const _filteredLocations = allLocations.filter((location) => {
       let includeInFilter = false;
       for (let i = 0; i < location.location_categories.length; i++) {
-        console.log(location.location_categories[i].value, activeFilter);
+        // console.log(location.location_categories[i].value, activeFilter);
         if (location.location_categories[i].value === activeFilter)
           includeInFilter = true;
       }
-      console.log(includeInFilter);
+      // console.log(includeInFilter);
       return includeInFilter;
     });
 
-    console.log(_filteredLocations);
+    // console.log(_filteredLocations);
 
     setFilteredLocations(_filteredLocations);
   };
@@ -227,7 +227,7 @@ export async function getStaticProps({ params }) {
   // build the graphql query
 
   const locations = await findNearbyLocations(lat, lng, "", distance);
-  console.log(locations);
+  // console.log(locations);
 
   return {
     props: {

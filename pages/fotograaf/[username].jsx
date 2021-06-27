@@ -76,7 +76,7 @@ const UserProfile = ({ profile: _profile }) => {
 
     if (data) {
       if (data.errors) {
-        console.log("an error happened");
+        // console.log("an error happened");
         setProfile(prevProfile);
       } else {
         if (action === "add") {
@@ -120,7 +120,7 @@ const UserProfile = ({ profile: _profile }) => {
 
     if (data) {
       if (data.errors) {
-        console.log("an error happened");
+        // console.log("an error happened");
         setProfile(prevProfile);
       }
     }
@@ -175,7 +175,7 @@ export async function getStaticPaths() {
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
 export async function getStaticProps({ params }) {
-  console.log(params);
+  // console.log(params);
   const query = `query profile($username: String!) {
     users( where: { username: $username } ) {
       username
@@ -246,7 +246,7 @@ export async function getStaticProps({ params }) {
 const UserProfileComponent = (props) => {
   const { curUser, profile, updateFollow, deletePhoto } = props;
   if (profile === null) {
-    console.log("return null from render");
+    // console.log("return null from render");
     return null;
   }
 
@@ -259,11 +259,11 @@ const UserProfileComponent = (props) => {
   //console.log("curUser", props);
 
   const followCount = profile.followers.length;
-  console.log(
-    "userProfileComponent rendered again, followCount: ",
-    followCount,
-    profile
-  );
+  // console.log(
+  //   "userProfileComponent rendered again, followCount: ",
+  //   followCount,
+  //   profile
+  // );
   const filterResult =
     curUser &&
     profile.followers.filter((followers) => followers.id === curUser.id);
@@ -279,7 +279,7 @@ const UserProfileComponent = (props) => {
       numberOfLikes = numberOfLikes + profile.photos[i].likes;
     }
   }
-  console.log(profile);
+  // console.log(profile);
 
   return (
     <div className="p-6">

@@ -87,7 +87,7 @@ class AddPhotoForm extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log("component updated", prevProps, this.props);
+    // console.log("component updated", prevProps, this.props);
     const {
       value: { user: prevUser },
     } = prevProps;
@@ -288,14 +288,14 @@ class AddPhotoForm extends React.Component {
   };
 
   createLocation = async () => {
-    console.log("creating location");
+    // console.log("creating location");
 
     const {
       location,
       location: { title },
     } = this.state;
 
-    console.log(location, title);
+    // console.log(location, title);
 
     const slug = slugify(title, {
       replacement: "-", // replace spaces with replacement character, defaults to `-`
@@ -317,7 +317,7 @@ class AddPhotoForm extends React.Component {
     location["slug"] = slug;
     input["data"] = location;
 
-    console.log(input);
+    // console.log(input);
     const data = await graphQLFetch(query, { input }, true);
 
     if (data) {
@@ -326,7 +326,7 @@ class AddPhotoForm extends React.Component {
   };
 
   handleInputChange = (event, property) => {
-    console.log("handling on input chagne");
+    // console.log("handling on input chagne");
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
@@ -334,7 +334,7 @@ class AddPhotoForm extends React.Component {
     this.setState((prevState) => {
       let stateFields;
       if (property === "location") {
-        console.log("setting location state");
+        // console.log("setting location state");
         stateFields = {
           ...prevState,
           location: { ...prevState.location, [name]: value },
@@ -355,7 +355,7 @@ class AddPhotoForm extends React.Component {
   };
 
   removeImage = () => {
-    console.log("remove");
+    // console.log("remove");
     this.setState({
       tempFile: null,
       photo: {},
@@ -496,7 +496,7 @@ class AddPhotoForm extends React.Component {
   };
 
   handleOnDrop = (e) => {
-    console.log("handleOnDrop fired", e);
+    // console.log("handleOnDrop fired", e);
   };
   handleOnDragOver = (e) => {
     this.setState({ onDragOver: true });
@@ -561,7 +561,7 @@ class AddPhotoForm extends React.Component {
   };
 
   async handleSubmit(e) {
-    console.log("submitted");
+    // console.log("submitted");
     e.preventDefault();
     e.persist();
 
@@ -574,7 +574,7 @@ class AddPhotoForm extends React.Component {
     // check if an image is given, and title, if not show error and return null;
     if (!blob || !title) {
       if (!blob) {
-        console.log("no blob in state");
+        // console.log("no blob in state");
         this.setState((prevState) => ({
           ...prevState,
           invalidFields: {
@@ -584,7 +584,7 @@ class AddPhotoForm extends React.Component {
         }));
       }
       if (!title) {
-        console.log("no title in state.photo");
+        // console.log("no title in state.photo");
         this.setState((prevState) => ({
           ...prevState,
           invalidFields: {
@@ -593,16 +593,16 @@ class AddPhotoForm extends React.Component {
           },
         }));
       }
-      console.log("returning");
+      // console.log("returning");
       return;
     }
 
     let createdLocation = null;
     if (newLocation) {
       createdLocation = await this.createLocation();
-      console.log(createdLocation);
+      // console.log(createdLocation);
     } else {
-      console.log("no new location found");
+      // console.log("no new location found");
     }
 
     // check if slug is available, if not, add number
@@ -670,12 +670,12 @@ class AddPhotoForm extends React.Component {
     delete input.data.longitude;
     delete input.data.latitude;
 
-    console.log("input", input);
+    // console.log("input", input);
 
     const data = await graphQLFetch(query, { input }, true);
 
     if (data) {
-      console.log("photo page created, uploading foto..");
+      // console.log("photo page created, uploading foto..");
       //after pages is created, use refId to upload files with xhr request
 
       const redirect = () => {
@@ -698,7 +698,7 @@ class AddPhotoForm extends React.Component {
       request.send(formData);
       request.addEventListener("load", redirect);
     } else {
-      console.log("failed");
+      // console.log("failed");
     }
   }
 
@@ -720,7 +720,7 @@ class AddPhotoForm extends React.Component {
   };
 
   updateNewLocationCoords = (lat, lng) => {
-    console.log(lat, lng);
+    // console.log(lat, lng);
     this.setState((prevState) => ({
       ...prevState,
       newLocation: false,
@@ -796,7 +796,7 @@ class AddPhotoForm extends React.Component {
 
 class Step2 extends React.Component {
   constructor(props) {
-    console.log(props);
+    // console.log(props);
     super(props);
 
     const { locationKnown } = props.state;
@@ -824,12 +824,12 @@ class Step2 extends React.Component {
 
   async componentDidMount() {
     if (this.props.currentStep == 2) {
-      console.log("mounting");
+      // console.log("mounting");
       const { locationKnown } = this.props.state;
       if (locationKnown) {
-        console.log("location known");
+        // console.log("location known");
         const { latitude, longitude } = this.props.state.photo;
-        console.log("getting long lat", latitude, longitude);
+        // console.log("getting long lat", latitude, longitude);
         this.props.updateNewLocationCoords(latitude, longitude);
         this.displayLocations(latitude, longitude);
         this.setState({
@@ -847,7 +847,7 @@ class Step2 extends React.Component {
     const marker = this.refmarker.current;
     const map = this.map.current;
     if (marker != null) {
-      console.log("updating position", marker.leafletElement.getLatLng());
+      // console.log("updating position", marker.leafletElement.getLatLng());
       this.setState({
         marker: marker.leafletElement.getLatLng(),
         zoom: map.leafletElement.getZoom(),
@@ -855,10 +855,10 @@ class Step2 extends React.Component {
       });
     }
     this.displayLocations(this.state.marker.lat, this.state.marker.lng);
-    console.log(
-      marker.leafletElement.getLatLng().lat,
-      marker.leafletElement.getLatLng().lng
-    );
+    // console.log(
+    //   marker.leafletElement.getLatLng().lat,
+    //   marker.leafletElement.getLatLng().lng
+    // );
     this.props.updateNewLocationCoords(
       marker.leafletElement.getLatLng().lat,
       marker.leafletElement.getLatLng().lng

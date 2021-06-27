@@ -83,10 +83,10 @@ class PhotoDetail extends React.Component {
     const success = (pos) => {
       var crd = pos.coords;
 
-      console.log("Your current position is:");
-      console.log(`Latitude : ${crd.latitude}`);
-      console.log(`Longitude: ${crd.longitude}`);
-      console.log(`More or less ${crd.accuracy} meters.`);
+      // console.log("Your current position is:");
+      // console.log(`Latitude : ${crd.latitude}`);
+      // console.log(`Longitude: ${crd.longitude}`);
+      // console.log(`More or less ${crd.accuracy} meters.`);
 
       this.setState((prevState) => ({
         ...prevState,
@@ -170,7 +170,7 @@ class PhotoDetail extends React.Component {
   };
 
   addComment = async (data, receiver) => {
-    console.log(data, receiver);
+    // console.log(data, receiver);
 
     const query = `mutation createPhotoComment($input: createPhotoCommentInput){
       createPhotoComment(
@@ -197,10 +197,10 @@ class PhotoDetail extends React.Component {
     }`;
 
     let input = { input: data };
-    console.log(input);
+    // console.log(input);
 
     const response = await graphQLFetch(query, input, true, true);
-    console.log(response);
+    // console.log(response);
 
     if (response) {
       if (!response.errors) {
@@ -221,7 +221,7 @@ class PhotoDetail extends React.Component {
           photoBySlug: { ...prevState.photoBySlug, comments: _comments },
         }));
       } else {
-        console.log("an error happened");
+        // console.log("an error happened");
       }
     }
   };
@@ -234,7 +234,7 @@ class PhotoDetail extends React.Component {
     if (photoBySlug === null) {
       return null;
     } else {
-      console.log(photoBySlug);
+      // console.log(photoBySlug);
     }
 
     const { userLocation, userLocationKnown, userMarker } = this.state;
@@ -473,7 +473,7 @@ export async function getStaticProps({ params }) {
   const { slug } = params;
 
   const result = await graphQLFetch(query, { slug }, true);
-  console.log("result", result);
+  // console.log("result", result);
 
   return {
     props: {

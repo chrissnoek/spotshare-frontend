@@ -36,13 +36,11 @@ const LocationsPerCategorie = ({ locations: _locations }) => {
   };
 
   const getActiveFilter = () => {
-    console.log(router.query);
+    // console.log(router.query);
     // const params = new URLSearchParams(location.search);
-
     // const _activeFilter = params.get("categorie")
     //   ? params.get("categorie")
     //   : "";
-
     // if (_activeFilter) {
     //   return _activeFilter;
     // } else {
@@ -194,7 +192,7 @@ export async function getStaticProps({ params }) {
   const { value } = params;
 
   const result = await graphQLFetch(query, { value }, true);
-  console.log("result", result);
+  // console.log("result", result);
 
   return {
     props: {

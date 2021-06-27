@@ -14,7 +14,7 @@ const Results = ({ locations }) => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(locations);
+    // console.log(locations);
     if (allLocations !== locations) {
       setAllLocations(locations);
     }
@@ -38,19 +38,19 @@ const Results = ({ locations }) => {
   }, [activeFilter]);
 
   const filterAndSetLocations = () => {
-    console.log(allLocations);
+    // console.log(allLocations);
     const _filteredLocations = allLocations.filter((location) => {
       let includeInFilter = false;
       for (let i = 0; i < location.location_categories.length; i++) {
-        console.log(location.location_categories[i].value, activeFilter);
+        // console.log(location.location_categories[i].value, activeFilter);
         if (location.location_categories[i].value === activeFilter)
           includeInFilter = true;
       }
-      console.log(includeInFilter);
+      // console.log(includeInFilter);
       return includeInFilter;
     });
 
-    console.log(_filteredLocations);
+    // console.log(_filteredLocations);
 
     setFilteredLocations(_filteredLocations);
   };
@@ -127,14 +127,14 @@ const Results = ({ locations }) => {
 export default Results;
 
 export async function getServerSideProps(context) {
-  console.log(context.query.lat, context.query.lng);
+  // console.log(context.query.lat, context.query.lng);
   // build the graphql query
 
   const locations = await findNearbyLocations(
     context.query.lat,
     context.query.lng
   );
-  console.log(locations);
+  // console.log(locations);
 
   return {
     props: {
