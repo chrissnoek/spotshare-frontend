@@ -10,6 +10,7 @@ const ForgotPassword = () => {
   const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
   const [loginError, setLoginError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = ({ currentTarget: input }) => {
     const _errors = { ...errors };
@@ -85,6 +86,8 @@ const ForgotPassword = () => {
       .then((response) => {
         //  console.log(response);
         //  console.log("Your user received an email");
+        setSuccess(true);
+        setData({});
       })
       .catch((error) => {
         //  console.log("An error occurred:", error.response);
@@ -151,6 +154,12 @@ const ForgotPassword = () => {
           onSubmit={handleSubmit}
           className="bg-white w-full  px-8 md:px-16 pt-6 md:py-12 flex flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col border"
         >
+          {success && (
+            <div className="p-4 rounded border border-green-500 bg-green-200 text-green-500 font-bold my-4">
+              Er is een email gestuurd om je wachtwoord opnieuw in te stellen!
+              (Kijk ook even in je spam folder.)
+            </div>
+          )}
           <h1 className="font-bold text-xl text-green-500 text-center">
             Wachtwoord resetten
           </h1>

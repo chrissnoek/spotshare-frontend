@@ -216,18 +216,18 @@ const RegisterForm = () => {
           <h1 className="font-bold mb-6 text-2xl text-green-500 text-center">
             Welkom bij Spotshare
           </h1>
-          <a
+          {/* <a
             className="py-3 bg-blue-500 rounded text-white flex justify-center items-center hover:pointer hover:bg-blue-600"
             href="https://d3bdf895b473.ngrok.io/connect/facebook"
           >
             <FaFacebook className="mr-2" /> Registreer met Facebook
-          </a>
+          </a> */}
 
-          <div className="flex my-4 justify-center items-center">
+          {/* <div className="flex my-4 justify-center items-center">
             <hr className="w-full border-gray-400 mt-0" />
             <div className="mx-4 text-center text-gray-500">Of</div>
             <hr className="w-full border-gray-400 mt-0" />
-          </div>
+          </div> */}
 
           <div className="flex">
             {renderInput(

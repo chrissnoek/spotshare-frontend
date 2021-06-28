@@ -168,6 +168,17 @@ const Login = () => {
             Inloggen bij Spotshare
           </h1>
 
+          <div className="p-4 rounded border border-yellow-500 bg-yellow-200 text-yellow-500 font-bold my-4">
+            We hebben ervoor gekozen inloggen met facebook niet meer aan te
+            bieden vanwege de veiligheid van jouw privacy.
+            <Link href="/wachtwoord-vergeten">
+              <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-600">
+                Je kunt hier een wachtwoord instellen voor je account gekoppeld
+                aan je email adres dat je met facebook gebruikt.
+              </a>
+            </Link>
+          </div>
+
           {loginError && <ErrorBox />}
           {renderInput("email", "Email", "Emailadres")}
           {renderInput(
