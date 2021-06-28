@@ -14,11 +14,16 @@ export default function Home(props) {
   const redirect = (slug) => {
     router.push(slug);
   };
+
   return (
     <userContext.Consumer>
       {(value) => {
         // console.log(value);
-        return value.user ? redirect("/dashboard") : <HomeScreen {...props} />;
+        return value.user ? (
+          () => redirect("/dashboard")
+        ) : (
+          <HomeScreen {...props} />
+        );
       }}
     </userContext.Consumer>
   );
@@ -27,10 +32,6 @@ export default function Home(props) {
 function HomeScreen({ featuredPhoto, randomPhotos }) {
   return (
     <div>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <section className="py-12 sm:py-24 bg-gray-900">
         <div className="container mx-auto block sm:flex px-6 items-center">
           <div className="mr-16 w-full mb-4 sm:mb-8">
@@ -58,11 +59,17 @@ function HomeScreen({ featuredPhoto, randomPhotos }) {
               }}
             ></div>
             <div className="rounded-full shadow-lg px-1 py-1 sm:px-2 sm:py-2  -mt-6 ml-1 sm:ml-2 lg:ml-6 bg-white text-black inline-block justify-center">
-              <div className="flex justify-center items-center">
-                <UserProfilePicture profile={featuredPhoto.user} size={8} />
+              <div className="flex justify-center items-center ">
+                <div className="mr-2">
+                  <UserProfilePicture profile={featuredPhoto.user} size={8} />
+                </div>
                 <span className="text-black mr-2 text-xs">
-                  📸 {featuredPhoto.title} door {featuredPhoto.user.firstname}{" "}
-                  {featuredPhoto.user.lastname}
+                  <span className="text-xl">📸</span>{" "}
+                  <span className="text-italic">{featuredPhoto.title}</span>
+                  door{" "}
+                  <span className="text-italic">
+                    {featuredPhoto.user.firstname} {featuredPhoto.user.lastname}
+                  </span>
                 </span>
               </div>
             </div>

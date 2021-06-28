@@ -3,10 +3,26 @@ module.exports = withImages({
   webpack(config, { dev }) {
     config.module.rules.push({
       test: /\.svg$/,
-      issuer: {
-        test: /\.(js|ts)x?$/,
-      },
-      use: ["@svgr/webpack"],
+      oneOf: [
+        {
+          use: [
+            {
+              loader: "@svgr/webpack",
+              options: {
+                prettier: false,
+                svgo: true,
+                svgoConfig: {
+                  plugins: [{ removeViewBox: false }],
+                },
+                titleProp: true,
+              },
+            },
+          ],
+          issuer: {
+            and: [/\.(ts|tsx|js|jsx|md|mdx)$/],
+          },
+        },
+      ],
     });
 
     return config;
