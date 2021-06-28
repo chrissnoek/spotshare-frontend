@@ -1,5 +1,5 @@
 /* globals React */
-import React from "react";
+import React, { useEffect } from "react";
 import graphQLFetch from "../../graphQLFetch";
 import EXIF from "exif-js";
 import { FaSpinner } from "react-icons/fa";
@@ -16,11 +16,24 @@ import AddPhoto from "../../components/shared/AddPhoto";
 import { userContext } from "../../services/userContext.js";
 import { findNearbyLocations } from "../../components/shared/FindNearbyLocations";
 import { useRouter } from "next/router";
+import auth from "../../services/authService";
 
 const animatedComponents = makeAnimated();
 
 const MyClassWithRouter = (props) => {
   const router = useRouter();
+
+  const checkRedirect = async () => {
+    const user = await auth.getCurrentUser();
+    if (user === null) {
+      router.push("/inloggen");
+    }
+  };
+
+  useEffect(() => {
+    checkRedirect();
+  }, []);
+
   return <PhotoAddStrapi {...props} router={router} />;
 };
 export default MyClassWithRouter;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Joi from "@hapi/joi";
 import Link from "next/link";
 import auth from "../services/authService";
@@ -6,10 +6,23 @@ import { FaFacebook } from "react-icons/fa";
 import slugify from "slugify";
 import Input from "../components/shared/Input";
 import { FaSpinner } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 const RegisterForm = () => {
   const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
+  const router = useRouter();
+
+  const checkRedirect = async () => {
+    const user = await auth.getCurrentUser();
+    if (user) {
+      router.push("/");
+    }
+  };
+
+  useEffect(() => {
+    checkRedirect();
+  }, []);
 
   const schema = {
     email: Joi.string()
