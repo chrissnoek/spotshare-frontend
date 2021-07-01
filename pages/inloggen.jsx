@@ -5,6 +5,7 @@ import auth from "../services/authService";
 import Input from "../components/shared/Input";
 import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const Login = () => {
   const [data, setData] = useState({});
@@ -159,6 +160,36 @@ const Login = () => {
 
   return (
     <div>
+      <Head>
+        {/* <!-- Primary Meta Tags --> */}
+        <title>Inloggen bij Spotshare</title>
+        <meta name="title" content="Inloggen bij Spotshare" />
+        <meta
+          name="description"
+          content="Login bij Spotshare, vind de mooiste fotolocaties en deel je beste foto's!"
+        />
+
+        {/* <!-- Open Graph / Facebook --> */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.spotshare.nl/inloggen" />
+        <meta property="og:title" content="Inloggen bij Spotshare" />
+        <meta
+          property="og:description"
+          content="Login bij Spotshare, vind de mooiste fotolocaties en deel je beste foto's!"
+        />
+
+        {/* <!-- Twitter --> */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta
+          property="twitter:url"
+          content="https://www.spotshare.nl/inloggen"
+        />
+        <meta property="twitter:title" content="Inloggen bij Spotshare" />
+        <meta
+          property="twitter:description"
+          content="Login bij Spotshare, vind de mooiste fotolocaties en deel je beste foto's!"
+        />
+      </Head>
       <div className="block sm:flex">
         <form
           onSubmit={handleSubmit}

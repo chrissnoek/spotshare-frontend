@@ -12,6 +12,7 @@ import { IoNotifications } from "react-icons/io5";
 import { FiLogOut } from "react-icons/fi";
 import NotificationBoard from "../components/Dashboard/NotificationBoard.jsx";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const Dashboard = ({ categories: _categories }) => {
   const [categories, setCategories] = useState(_categories);
@@ -33,6 +34,39 @@ const Dashboard = ({ categories: _categories }) => {
           redirect("/")
         ) : (
           <React.Fragment>
+            <Head>
+              {/* <!-- Primary Meta Tags --> */}
+              <title>Dashboard | Spotshare</title>
+              <meta name="title" content="Dashboard | Spotshare" />
+              <meta
+                name="description"
+                content="Meest recente updates in de Spotshare community en locaties bij je in de buurt."
+              />
+
+              {/* <!-- Open Graph / Facebook --> */}
+              <meta property="og:type" content="website" />
+              <meta
+                property="og:url"
+                content="https://www.spotshare.nl/dashboard"
+              />
+              <meta property="og:title" content="Dashboard | Spotshare" />
+              <meta
+                property="og:description"
+                content="Meest recente updates in de Spotshare community en locaties bij je in de buurt."
+              />
+
+              {/* <!-- Twitter --> */}
+              <meta property="twitter:card" content="summary_large_image" />
+              <meta
+                property="twitter:url"
+                content="https://www.spotshare.nl/dashboard"
+              />
+              <meta property="twitter:title" content="Dashboard | Spotshare" />
+              <meta
+                property="twitter:description"
+                content="Meest recente updates in de Spotshare community en locaties bij je in de buurt."
+              />
+            </Head>
             <div className="block md:flex mt-8">
               <div className="w-full md:w-1/4 px-8">
                 <div className="flex items-center">

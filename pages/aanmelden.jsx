@@ -7,6 +7,7 @@ import slugify from "slugify";
 import Input from "../components/shared/Input";
 import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const RegisterForm = () => {
   const [data, setData] = useState({});
@@ -208,6 +209,36 @@ const RegisterForm = () => {
 
   return (
     <div>
+      <Head>
+        {/* <!-- Primary Meta Tags --> */}
+        <title>Aanmelden bij Spotshare</title>
+        <meta name="title" content="Aanmelden bij Spotshare" />
+        <meta
+          name="description"
+          content="Meld je aan bij Spotshare, vind de mooiste fotolocaties en deel je beste foto's!"
+        />
+
+        {/* <!-- Open Graph / Facebook --> */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.spotshare.nl/aanmelden" />
+        <meta property="og:title" content="Aanmelden bij Spotshare" />
+        <meta
+          property="og:description"
+          content="Meld je aan bij Spotshare, vind de mooiste fotolocaties en deel je beste foto's!"
+        />
+
+        {/* <!-- Twitter --> */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta
+          property="twitter:url"
+          content="https://www.spotshare.nl/aanmelden"
+        />
+        <meta property="twitter:title" content="Aanmelden bij Spotshare" />
+        <meta
+          property="twitter:description"
+          content="Meld je aan bij Spotshare, vind de mooiste fotolocaties en deel je beste foto's!"
+        />
+      </Head>
       <div className="block sm:flex">
         <form
           onSubmit={handleSubmit}
