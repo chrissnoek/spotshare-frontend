@@ -10,6 +10,7 @@ import { IoCameraOutline } from "react-icons/io5";
 import { GoSettings } from "react-icons/go";
 import CreateNotification from "../../components/shared/CreateNotification.jsx";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const MyClassWithRouter = (props) => {
   const router = useRouter();
@@ -249,6 +250,62 @@ class PhotoDetail extends React.Component {
 
     return (
       <div id="page">
+        <Head>
+          <meta charSet="utf-8" />
+          <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta
+            name="ahrefs-site-verification"
+            content="e36c5bff17d0ae554867c3c60fcbe8786838958570a063a46a75f8ce183949f3"
+          />
+
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-M27C98');`,
+            }}
+          ></script>
+          <meta name="robots" content="index,follow,archive" />
+          <link rel="icon" href="/favicon.png" />
+
+          {/* <!-- Primary Meta Tags --> */}
+          <title>{photoBySlug.title} door {photoBySlug.user.firstname ? photoBySlug.user.firstname + " " + photoBySlug.user.lastname : photoBySlug.user.username}  | Spotshare</title>
+          <meta
+            name="title"
+            content="{photoBySlug.title} door {photoBySlug.user.username}  | Spotshare"
+          />
+          <meta
+            name="description"
+            content="De mooiste fotolocaties van Nederland, gewoon bij jouw in de buurt! Zowel de bekende als onbekende fotolocaties in Nederland ontdek je bij SpotShare."
+          />
+          <meta name="author" content="Spotshare" />
+
+          {/* <!-- Open Graph / Facebook --> */}
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://www.spotshare.nl/" />
+          <meta
+            property="og:title"
+            content="{photoBySlug.title} door {photoBySlug.user.username}  | Spotshare"
+          />
+          <meta property="og:site_name" content="SpotShare" />
+          <meta
+            property="og:description"
+            content="De mooiste fotolocaties van Nederland, gewoon bij jouw in de buurt! Zowel de bekende als onbekende fotolocaties in Nederland ontdek je bij SpotShare."
+          />
+          <meta property="og:image" content={photoBySlug.photo[0].url} />
+
+          {/* <!-- Twitter --> */}
+          <meta property="twitter:card" content="summary_large_image" />
+          <meta property="twitter:url" content="https://www.spotshare.nl/" />
+          <meta
+            property="twitter:title"
+            content="{photoBySlug.title} door {photoBySlug.user.username}  | Spotshare"
+          />
+          <meta
+            property="twitter:description"
+            content="De mooiste fotolocaties van Nederland, gewoon bij jouw in de buurt! Zowel de bekende als onbekende fotolocaties in Nederland ontdek je bij SpotShare."
+          />
+          <meta property="twitter:image" content={photoBySlug.photo[0].url} />
+        </Head>
         <div
           className="w-full flex flex-col justify-center items-center relative bg-black"
           style={{
@@ -343,24 +400,24 @@ class PhotoDetail extends React.Component {
                     photoBySlug.aperture ||
                     photoBySlug.iso ||
                     photoBySlug.shutterspeed) && (
-                    <div className="flex items-center">
-                      <div className="mr-2">
-                        <GoSettings className="text-2xl" />
+                      <div className="flex items-center">
+                        <div className="mr-2">
+                          <GoSettings className="text-2xl" />
+                        </div>
+                        {photoBySlug.focalLength && (
+                          <div className="mr-2">{photoBySlug.focalLength}</div>
+                        )}
+                        {photoBySlug.aperture && (
+                          <div className="mr-2">{photoBySlug.aperture}</div>
+                        )}
+                        {photoBySlug.iso && (
+                          <div className="mr-2">{photoBySlug.iso}</div>
+                        )}
+                        {photoBySlug.shutterspeed && (
+                          <div className="mr-2">{photoBySlug.shutterspeed}</div>
+                        )}
                       </div>
-                      {photoBySlug.focalLength && (
-                        <div className="mr-2">{photoBySlug.focalLength}</div>
-                      )}
-                      {photoBySlug.aperture && (
-                        <div className="mr-2">{photoBySlug.aperture}</div>
-                      )}
-                      {photoBySlug.iso && (
-                        <div className="mr-2">{photoBySlug.iso}</div>
-                      )}
-                      {photoBySlug.shutterspeed && (
-                        <div className="mr-2">{photoBySlug.shutterspeed}</div>
-                      )}
-                    </div>
-                  )}
+                    )}
                 </div>
 
                 <Link href={`/fotolocatie/${photoBySlug.location.slug}`}>

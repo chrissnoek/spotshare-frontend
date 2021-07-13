@@ -227,7 +227,7 @@ class DataEdit extends Form {
         onSubmit={this.handleSubmit}
       >
         <Head>
-          <meta name="robots" content="noindex,nofollow,noarchive" />
+          <meta name="robots" content="noindex,nofollow,noarchive" key="robots" />
         </Head>
         {photoLoading && (
           <AiOutlineLoading3Quarters className="fill-current text-green-500" />

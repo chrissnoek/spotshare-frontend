@@ -8,6 +8,7 @@ import URLSearchParams from "url-search-params";
 import auth from "../services/authService";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Head from "next/head";
 
 const PasswordReset = () => {
   const [data, setData] = useState({});
@@ -162,7 +163,7 @@ const PasswordReset = () => {
     placeholder,
     type = "text",
     classes = "w-full",
-    onBlur = () => {}
+    onBlur = () => { }
   ) => {
     return (
       <Input
@@ -181,6 +182,9 @@ const PasswordReset = () => {
 
   return (
     <div>
+      <Head>
+        <meta name="robots" content="noindex,nofollow,noarchive" key="robots" />
+      </Head>
       <div className="block sm:flex">
         {success ? (
           <div className="bg-white w-full   px-8 md:px-16 pt-6 md:py-12">
