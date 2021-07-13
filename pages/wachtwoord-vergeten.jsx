@@ -5,6 +5,7 @@ import { FaSpinner } from "react-icons/fa";
 import Link from "next/link";
 import graphQLFetch from "../graphQLFetch.js";
 import axios from "axios";
+import Head from "next/head";
 
 const ForgotPassword = () => {
   const [data, setData] = useState({});
@@ -130,7 +131,7 @@ const ForgotPassword = () => {
     placeholder,
     type = "text",
     classes = "w-full",
-    onBlur = () => {}
+    onBlur = () => { }
   ) => {
     return (
       <Input
@@ -149,6 +150,41 @@ const ForgotPassword = () => {
 
   return (
     <div>
+      <Head>
+        {/* <!-- Primary Meta Tags --> */}
+        <title>Wachtwoord vergeten | Spotshare</title>
+        <meta
+          name="title"
+          content="Wachtwoord vergeten | Spotshare"
+        />
+        <meta
+          name="description"
+          content="Wachtwoord vergeten? Vraag hier een reset code aan zodat je een nieuw wachtwoord kunt instellen."
+        />
+
+        {/* <!-- Open Graph / Facebook --> */}
+        <meta property="og:url" content="https://www.spotshare.nl/wachtwoord-vergeten" />
+        <meta
+          property="og:title"
+          content="Wachtwoord vergeten | Spotshare"
+        />
+        <meta
+          property="og:description"
+          content="Wachtwoord vergeten? Vraag hier een reset code aan zodat je een nieuw wachtwoord kunt instellen."
+        />
+
+        {/* <!-- Twitter --> */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.spotshare.nl/wachtwoord-vergeten" />
+        <meta
+          property="twitter:title"
+          content="Wachtwoord vergeten | Spotshare"
+        />
+        <meta
+          property="twitter:description"
+          content="Wachtwoord vergeten? Vraag hier een reset code aan zodat je een nieuw wachtwoord kunt instellen."
+        />
+      </Head>
       <div className="block sm:flex">
         <form
           onSubmit={handleSubmit}

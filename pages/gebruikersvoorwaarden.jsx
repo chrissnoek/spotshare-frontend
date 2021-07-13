@@ -1,6 +1,43 @@
+import Head from "next/head";
+
 const Page = () => {
   return (
     <div>
+      <Head>
+        {/* <!-- Primary Meta Tags --> */}
+        <title>Gebruikersvoorwaarden website | Spotshare</title>
+        <meta
+          name="title"
+          content="Gebruikersvoorwaarden website | Spotshare"
+        />
+        <meta
+          name="description"
+          content="Gebruikersvoorwaarden website. Welke regels gelden voor het gebruik van websites van Spotshare?"
+        />
+
+        {/* <!-- Open Graph / Facebook --> */}
+        <meta property="og:url" content="https://www.spotshare.nl/gebruikersvoorwaarden" />
+        <meta
+          property="og:title"
+          content="Gebruikersvoorwaarden website | Spotshare"
+        />
+        <meta
+          property="og:description"
+          content="Gebruikersvoorwaarden website. Welke regels gelden voor het gebruik van websites van Spotshare?"
+        />
+
+        {/* <!-- Twitter --> */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.spotshare.nl/gebruikersvoorwaarden" />
+        <meta
+          property="twitter:title"
+          content="Gebruikersvoorwaarden website | Spotshare"
+        />
+        <meta
+          property="twitter:description"
+          content="Gebruikersvoorwaarden website. Welke regels gelden voor het gebruik van websites van Spotshare?"
+        />
+      </Head>
       <div className="container mx-auto py-12">
         <h1>Gebruikersvoorwaarden</h1>
         <p className="py-2">
