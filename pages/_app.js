@@ -41,43 +41,53 @@ function MyApp({ Component, pageProps }) {
           <link rel="icon" href="/favicon.png" />
 
           {/* <!-- Primary Meta Tags --> */}
-          <title>De mooiste fotolocaties in Nederland | Spotshare</title>
+          <title key="title">De mooiste fotolocaties in Nederland | Spotshare</title>
           <meta
             name="title"
             content="De mooiste fotolocaties in Nederland | Spotshare"
+            key="meta_title"
           />
           <meta
             name="description"
+            key="meta_desc"
             content="De mooiste fotolocaties van Nederland, gewoon bij jouw in de buurt! Zowel de bekende als onbekende fotolocaties in Nederland ontdek je bij SpotShare."
           />
           <meta name="author" content="Spotshare" />
 
           {/* <!-- Open Graph / Facebook --> */}
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://www.spotshare.nl/" />
+          <meta property="og:url"
+            key="og_url" content="https://www.spotshare.nl/" />
           <meta
             property="og:title"
+            key="og_title"
             content="De mooiste fotolocaties in Nederland | Spotshare"
           />
           <meta property="og:site_name" content="SpotShare" />
           <meta
             property="og:description"
+            key="og_desc"
             content="De mooiste fotolocaties van Nederland, gewoon bij jouw in de buurt! Zowel de bekende als onbekende fotolocaties in Nederland ontdek je bij SpotShare."
           />
-          <meta property="og:image" content="/images/ogimage.jpg" />
+          <meta property="og:image"
+            key="og_img" content="/images/ogimage.jpg" />
 
           {/* <!-- Twitter --> */}
           <meta property="twitter:card" content="summary_large_image" />
-          <meta property="twitter:url" content="https://www.spotshare.nl/" />
+          <meta property="twitter:url"
+            key="twitter_url" content="https://www.spotshare.nl/" />
           <meta
             property="twitter:title"
+            key="twitter_title"
             content="De mooiste fotolocaties in Nederland | Spotshare"
           />
           <meta
             property="twitter:description"
+            key="twitter_desc"
             content="De mooiste fotolocaties van Nederland, gewoon bij jouw in de buurt! Zowel de bekende als onbekende fotolocaties in Nederland ontdek je bij SpotShare."
           />
-          <meta property="twitter:image" content="/images/ogimage.jpg" />
+          <meta property="twitter:image" 
+            key="twitter_img" content="/images/ogimage.jpg" />
         </Head>
         <Component {...pageProps} />
       </Layout>
