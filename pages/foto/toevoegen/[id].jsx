@@ -7,6 +7,7 @@ import slugify from "slugify";
 import AddPhoto from "../../../components/shared/AddPhoto";
 import { userContext } from "../../../services/userContext";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const MyClassWithRouter = (props) => {
   const router = useRouter();
@@ -468,8 +469,8 @@ class MapElement extends React.Component {
     let btnClass = "block px-3 py- my-2 text-white rounded text-l";
     let disabled =
       this.state.photo.title === undefined ||
-      this.state.photo.title === "" ||
-      this.state.blob === null
+        this.state.photo.title === "" ||
+        this.state.blob === null
         ? true
         : false;
     btnClass += disabled ? " bg-gray-400" : " bg-blue-600";
@@ -482,6 +483,9 @@ class MapElement extends React.Component {
           onSubmit={this.handleSubmit}
           className="photoAdd block py-3 px-4 border border-gray-300 rounded md:mx-auto md:my-6 md:w-9/12 lg:w-1/2 rounded md:shadow-lg md:p-6"
         >
+          <Head>
+            <meta name="robots" content="noindex,nofollow,noarchive" />
+          </Head>
           <div className="block mb-2">
             <div className="w-full rounded p-2 border">
               <p className="font-bold">

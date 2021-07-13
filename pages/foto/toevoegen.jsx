@@ -17,6 +17,7 @@ import { userContext } from "../../services/userContext.js";
 import { findNearbyLocations } from "../../components/shared/FindNearbyLocations";
 import { useRouter } from "next/router";
 import auth from "../../services/authService";
+import Head from "next/head"
 
 const animatedComponents = makeAnimated();
 
@@ -60,7 +61,12 @@ class PhotoAddStrapi extends React.Component {
               fetchLocation={this.fetchLocation}
             />
           ) : (
-            <div>Niet ingelogd</div>
+            <div>
+              <Head>
+                <meta name="robots" content="noindex,nofollow,noarchive" />
+              </Head>
+              <p>Niet ingelogd</p>
+            </div>
           )
         }
       </userContext.Consumer>
@@ -746,8 +752,8 @@ class AddPhotoForm extends React.Component {
     let disabled =
       this.state.currentStep == 1
         ? this.state.photo.title === undefined ||
-          this.state.photo.title === "" ||
-          this.state.blob === null
+        this.state.photo.title === "" ||
+        this.state.blob === null
         : false;
     btnClass += disabled ? " bg-gray-400" : " bg-blue-600";
 
@@ -759,6 +765,9 @@ class AddPhotoForm extends React.Component {
           onSubmit={this.handleSubmit}
           className="photoAdd block py-3 px-4 border border-gray-300 rounded md:mx-auto md:my-6 md:w-9/12 lg:w-1/2 rounded md:shadow-lg md:p-6"
         >
+          <Head>
+            <meta name="robots" content="noindex,nofollow,noarchive" />
+          </Head>
           <h1 className="my-2 font-bold">Starpi Foto toevoegen</h1>
 
           <AddPhoto

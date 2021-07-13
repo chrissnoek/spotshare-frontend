@@ -6,6 +6,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Joi from "@hapi/joi";
 import slugify from "slugify";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const MyClassWithRouter = (props) => {
   const router = useRouter();
@@ -225,6 +226,9 @@ class DataEdit extends Form {
         encType="multipart/form-data"
         onSubmit={this.handleSubmit}
       >
+        <Head>
+          <meta name="robots" content="noindex,nofollow,noarchive" />
+        </Head>
         {photoLoading && (
           <AiOutlineLoading3Quarters className="fill-current text-green-500" />
         )}

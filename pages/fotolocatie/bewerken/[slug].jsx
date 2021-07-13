@@ -5,6 +5,7 @@ import CreatableSelect from "react-select/creatable";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import slugify from "slugify";
+import Head from "next/head";
 
 const animatedComponents = makeAnimated();
 
@@ -238,6 +239,9 @@ const EditLocation = () => {
         onSubmit={handleSubmit}
         className="photoAdd block py-3 px-4 border border-gray-300 rounded md:mx-auto md:my-6 md:w-9/12 lg:w-1/2 rounded md:shadow-lg md:p-6 z-1"
       >
+        <Head>
+          <meta name="robots" content="noindex,nofollow,noarchive" />
+        </Head>
         <h1 className="my-2 font-bold">
           Fotolocatie {location.title} aanvullen
         </h1>
