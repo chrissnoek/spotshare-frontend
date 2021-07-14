@@ -3,8 +3,9 @@ import ResultMap from "../../../components/shared/ResultMap.jsx";
 import graphQLFetch from "../../../graphQLFetch.js";
 import LocationList from "../../../components/shared/LocationList.jsx";
 import { useRouter } from "next/router";
+import Head from "next/head"
 
-const LocationsPerCategorie = ({ locations: _locations }) => {
+const LocationsPerCategorie = ({ locations: _locations, value }) => {
   const [locations, setLocations] = useState(_locations);
   const [filteredLocations, setFilteredLocations] = useState({});
   const [selectedLocation, setSelectedLocation] = useState();
@@ -63,6 +64,48 @@ const LocationsPerCategorie = ({ locations: _locations }) => {
 
   return (
     <div className="relative h-screen">
+      <Head>
+
+        {/* <!-- Primary Meta Tags --> */}
+        <title key="title">Fotolocaties met categorie {value} | Spotshare</title>
+        <meta
+          name="title"
+          key="meta_title"
+          content={`Fotolocaties met categorie ${value} | Spotshare`}
+        />
+        <meta
+          name="description"
+          key="meta_desc"
+          content={`Bekijk fotolocaties met categorie ${value} bij Spotshare!`}
+        />
+        {/* <!-- Open Graph / Facebook --> */}
+        <meta
+          property="og:title"
+          key="og_title"
+          content={`Fotolocaties met categorie ${value}| Spotshare`}
+        />
+        <meta
+          property="og:description"
+          key="og_desc"
+          content={`Bekijk fotolocaties met categorie ${value} bij Spotshare!`}
+        />
+        <meta property="og:image"
+          key="og_img" content={locations[0].photos[0].photo[0].url} />
+
+        {/* <!-- Twitter --> */}
+        <meta
+          property="twitter:title"
+          key="twitter_title"
+          content={`Fotolocaties met categorie ${value}| Spotshare`}
+        />
+        <meta
+          property="twitter:description"
+          key="twitter_desc"
+          content={`Bekijk fotolocaties met categorie ${value} bij Spotshare!`}
+        />
+        <meta property="twitter:image"
+          key="twitter_img" content={locations[0].photos[0].photo[0].url} />
+      </Head>
       <div className="flex h-full">
         <div className="w-full p-4 h-screen overflow-scroll">
           <h1>Resultaten</h1>
@@ -90,27 +133,27 @@ const LocationsPerCategorie = ({ locations: _locations }) => {
           {locations &&
             (filteredLocations.length > 0
               ? filteredLocations.map((location) => (
-                  <div key={location.id} className="w-full">
-                    <LocationList
-                      size="large"
-                      location={location}
-                      key={location.id}
-                      active={selectedLocation === location.id ? true : false}
-                      selectLocation={selectLocation}
-                    />
-                  </div>
-                ))
+                <div key={location.id} className="w-full">
+                  <LocationList
+                    size="large"
+                    location={location}
+                    key={location.id}
+                    active={selectedLocation === location.id ? true : false}
+                    selectLocation={selectLocation}
+                  />
+                </div>
+              ))
               : locations.map((location) => (
-                  <div key={location.id} className="w-full">
-                    <LocationList
-                      size="large"
-                      location={location}
-                      key={location.id}
-                      active={selectedLocation === location.id ? true : false}
-                      selectLocation={selectLocation}
-                    />
-                  </div>
-                )))}
+                <div key={location.id} className="w-full">
+                  <LocationList
+                    size="large"
+                    location={location}
+                    key={location.id}
+                    active={selectedLocation === location.id ? true : false}
+                    selectLocation={selectLocation}
+                  />
+                </div>
+              )))}
         </div>
 
         <div className="mb-10 w-full h-full">
@@ -199,6 +242,7 @@ export async function getStaticProps({ params }) {
       locations: result.locationCategories[0].locations.filter(
         (location) => location.photos.length > 0
       ),
+      value
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in

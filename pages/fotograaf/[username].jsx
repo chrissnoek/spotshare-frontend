@@ -9,6 +9,7 @@ import FollowButton from "../../components/shared/FollowButton.jsx";
 import UserProfilePicture from "../../components/shared/UserProfilePicture.jsx";
 import CreateNotification from "../../components/shared/CreateNotification.jsx";
 import LocationCard from "../../components/shared/LocationCard.jsx";
+import Head from "next/head";
 
 const UserProfile = ({ profile: _profile }) => {
   const [profile, setProfile] = useState(_profile);
@@ -270,7 +271,7 @@ const UserProfileComponent = (props) => {
   //console.log(filterResult);
   const followsUser = curUser
     ? profile.followers.filter((followers) => followers.id === curUser.id)
-        .length > 0
+      .length > 0
     : 0;
 
   let numberOfLikes = 0;
@@ -283,6 +284,48 @@ const UserProfileComponent = (props) => {
 
   return (
     <div className="p-6">
+      <Head>
+
+        {/* <!-- Primary Meta Tags --> */}
+        <title key="title">Profiel van fotograaf {profile.firstname ? profile.firstname + " " + profile.lastname : profile.username} | Spotshare</title>
+        <meta
+          name="title"
+          key="meta_title"
+          content={`Profiel van fotograaf ${profile.firstname ? profile.firstname + " " + profile.lastname : profile.username} | Spotshare`}
+        />
+        <meta
+          name="description"
+          key="meta_desc"
+          content={`Bekijk de foto's van ${profile.firstname ? profile.firstname + " " + profile.lastname : profile.username} op Spotshare!`}
+        />
+        {/* <!-- Open Graph / Facebook --> */}
+        <meta
+          property="og:title"
+          key="og_title"
+          content={`Profiel van fotograaf ${profile.firstname ? profile.firstname + " " + profile.lastname : profile.username} | Spotshare`}
+        />
+        <meta
+          property="og:description"
+          key="og_desc"
+          content={`Bekijk de foto's van ${profile.firstname ? profile.firstname + " " + profile.lastname : profile.username} op Spotshare!`}
+        />
+        <meta property="og:image"
+          key="og_img" content={profile.photos[0].photo[0].url} />
+
+        {/* <!-- Twitter --> */}
+        <meta
+          property="twitter:title"
+          key="twitter_title"
+          content={`Profiel van fotograaf ${profile.firstname ? profile.firstname + " " + profile.lastname : profile.username} | Spotshare`}
+        />
+        <meta
+          property="twitter:description"
+          key="twitter_desc"
+          content={`Bekijk de foto's van ${profile.firstname ? profile.firstname + " " + profile.lastname : profile.username} op Spotshare!`}
+        />
+        <meta property="twitter:image"
+          key="twitter_img" content={profile.photos[0].photo[0].url} />
+      </Head>
       <div className="container">
         <div className="sm:flex sm:items-center">
           <div className="block sm:flex sm:items-center sm:w-full">

@@ -152,36 +152,43 @@ const ForgotPassword = () => {
     <div>
       <Head>
         {/* <!-- Primary Meta Tags --> */}
-        <title>Wachtwoord vergeten | Spotshare</title>
+        <title key="title">Wachtwoord vergeten | Spotshare</title>
         <meta
           name="title"
+          key="meta_title"
           content="Wachtwoord vergeten | Spotshare"
         />
         <meta
           name="description"
+          key="meta_desc"
           content="Wachtwoord vergeten? Vraag hier een reset code aan zodat je een nieuw wachtwoord kunt instellen."
         />
 
         {/* <!-- Open Graph / Facebook --> */}
-        <meta property="og:url" content="https://www.spotshare.nl/wachtwoord-vergeten" />
+        <meta property="og:url"
+          key="og_url" content="https://www.spotshare.nl/wachtwoord-vergeten" />
         <meta
           property="og:title"
+          key="og_title"
           content="Wachtwoord vergeten | Spotshare"
         />
         <meta
           property="og:description"
+          key="og_desc"
           content="Wachtwoord vergeten? Vraag hier een reset code aan zodat je een nieuw wachtwoord kunt instellen."
         />
 
         {/* <!-- Twitter --> */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://www.spotshare.nl/wachtwoord-vergeten" />
+        <meta property="twitter:url"
+          key="twitter_url" content="https://www.spotshare.nl/wachtwoord-vergeten" />
         <meta
           property="twitter:title"
+          key="twitter_title"
           content="Wachtwoord vergeten | Spotshare"
         />
         <meta
           property="twitter:description"
+          key="twitter_desc"
           content="Wachtwoord vergeten? Vraag hier een reset code aan zodat je een nieuw wachtwoord kunt instellen."
         />
       </Head>

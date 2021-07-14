@@ -4,8 +4,9 @@ import ResultMap from "../../components/shared/ResultMap.jsx";
 import CategorieFilter from "../../components/shared/CategorieFilter.jsx";
 import LocationList from "../../components/shared/LocationList.jsx";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
-const Results = ({ locations }) => {
+const Results = ({ locations, province }) => {
   const [allLocations, setAllLocations] = useState(locations);
   const [filteredLocations, setFilteredLocations] = useState({});
   const [activeFilter, setActiveFilter] = useState("");
@@ -83,8 +84,54 @@ const Results = ({ locations }) => {
     setSelectedLocation(locationId);
   };
 
+  const ucProvince = () => {
+    return province.charAt(0).toUpperCase() + province.substring(1);
+  }
+
   return (
     <div className="relative h-screen">
+      <Head>
+
+        {/* <!-- Primary Meta Tags --> */}
+        <title key="title">Beste fotolocaties in {ucProvince()} | Spotshare</title>
+        <meta
+          name="title"
+          key="meta_title"
+          content={`Beste fotolocaties in ${ucProvince()} | Spotshare`}
+        />
+        <meta
+          name="description"
+          key="meta_desc"
+          content={`De mooiste fotolocaties in ${ucProvince()} vind je bij SpotShare. Onze leden hebben ${ucProvince()} zo compleet mogelijk in beeld gebracht. Voeg ook jouw foto toe!`}
+        />
+        {/* <!-- Open Graph / Facebook --> */}
+        <meta
+          property="og:title"
+          key="og_title"
+          content={`Beste fotolocaties in ${ucProvince()} | Spotshare`}
+        />
+        <meta
+          property="og:description"
+          key="og_desc"
+          content={`De mooiste fotolocaties in ${ucProvince()} vind je bij SpotShare. Onze leden hebben ${ucProvince()} zo compleet mogelijk in beeld gebracht. Voeg ook jouw foto toe!`}
+        />
+        <meta property="og:image"
+          key="og_img" content={locations[0].photos[0].photo[0].url} />
+
+        {/* <!-- Twitter --> */}
+        <meta
+          property="twitter:title"
+          key="twitter_title"
+          content={`Beste fotolocaties in ${ucProvince()} | Spotshare`}
+        />
+        <meta
+          property="twitter:description"
+          key="twitter_desc"
+          content={`De mooiste fotolocaties in ${province} vind je bij SpotShare. Onze leden hebben ${province} zo compleet mogelijk in beeld gebracht. Voeg ook jouw foto toe!`}
+        />
+        <meta property="twitter:image"
+          key="twitter_img" content={locations[0].photos[0].photo[0].url} />
+      </Head>
       <div className="flex h-full">
         <div className="w-full p-4 h-screen overflow-scroll">
           <h1>Resultaten</h1>
@@ -232,6 +279,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       locations,
+      province
     },
   };
 }

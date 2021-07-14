@@ -10,6 +10,7 @@ import FavButton from "../../components/shared/favButton.jsx";
 import { userContext } from "../../services/userContext.js";
 import PhotoView from "../../components/shared/PhotoView.jsx";
 import { useRouter } from "next/router";
+import Head from "next/head"
 
 const LocationDetailStrapi = (props) => {
   // console.log(props);
@@ -243,13 +244,53 @@ class LocationDetailComponent extends React.Component {
 
     return (
       <div id="page">
+        <Head>
+
+          {/* <!-- Primary Meta Tags --> */}
+          <title key="title">Fotolocatie {locationBySlug.title} | Spotshare</title>
+          <meta
+            name="title"
+            key="meta_title"
+            content={`Fotolocatie ${locationBySlug.title} | Spotshare`}
+          />
+          <meta
+            name="description"
+            key="meta_desc"
+            content={`Leer hoe, wanneer en waar je de beste foto's van ${locationBySlug.title} maakt bij Spotshare.`}
+          />
+          {/* <!-- Open Graph / Facebook --> */}
+          <meta
+            property="og:title"
+            key="og_title"
+            content={`Fotolocatie ${locationBySlug.title} | Spotshare`}
+          />
+          <meta
+            property="og:description"
+            key="og_desc"
+            content={`Leer hoe, wanneer en waar je de beste foto's van ${locationBySlug.title} maakt bij Spotshare.`}
+          />
+          <meta property="og:image"
+            key="og_img" content={photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url} />
+
+          {/* <!-- Twitter --> */}
+          <meta
+            property="twitter:title"
+            key="twitter_title"
+            content={`Fotolocatie ${locationBySlug.title} | Spotshare`}
+          />
+          <meta
+            property="twitter:description"
+            key="twitter_desc"
+            content={`Leer hoe, wanneer en waar je de beste foto's van ${locationBySlug.title} maakt bij Spotshare.`}
+          />
+          <meta property="twitter:image"
+            key="twitter_img" content={photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url} />
+        </Head>
         <div id="photoInfo">
           <div
             className="w-full flex flex-col justify-center items-center relative"
             style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${
-                photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url
-              })`,
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url})`,
               backgroundSize: `cover`,
               backgroundPosition: `center center`,
               height: "80vh",
