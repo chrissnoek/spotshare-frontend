@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps }) {
             }}
           ></script>
           <meta name="robots" content="index,follow,archive" key="robots" />
-          <link rel="icon" href="/favicon.png" />
+          <link rel="icon" href="/images/favicon.png" />
 
           {/* <!-- Primary Meta Tags --> */}
           <title key="title">De mooiste fotolocaties in Nederland | Spotshare</title>
