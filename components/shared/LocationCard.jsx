@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { FaCheck } from "react-icons/fa";
+import Image from "next/image";
+import LocationHashtag from "./LocationHashtag.jsx";
 
 class LocationCard extends Component {
   constructor(props) {
@@ -24,12 +26,12 @@ class LocationCard extends Component {
   render() {
     const { active } = this.state;
     let className =
-      "locationCard relative shadow-xs border-4 overflow-hidden hover:border-green-500";
-    className += active ? " border-green-500" : "";
+      " flex items-center p-1";
+    className += active ? " border-green-500 border" : "";
     return (
       <React.Fragment>
         <div
-          className="w-full inline-block md:w-1/2 lg:w-1/3 m-2 rounded relative"
+          className="w-full mb-2 relative shadow hover:shadow-lg transition ease-in-out rounded"
           onClick={this.onClickHandler}
         >
           {active && (
@@ -38,20 +40,24 @@ class LocationCard extends Component {
             </div>
           )}
           <div className={className}>
-            <div className="relative overflow-hidden">
-              <img
-                src={this.props.location.photos[0].photo[0].url}
-                className="object-cover  w-full h-48  block"
-                alt="Foto"
-              />
+            <Image
+              className={`rounded block max-w-none w-20 h-16 object-cover`}
+              width={76}
+              height={76}
+              style={{
+                backgroundColor: "grey",
+              }}
+              src={this.props.location.photos
+                .sort((a, b) => b.likes - a.likes)[0]
+                .photo[0].url.replace(/-original|-watermark/gi, "-small")}
+              alt={`Bekijk locatie ${location.title}`}
+            />
 
-              <div className="photoContent p-4 absolute bottom-0 left-0">
-                <div className="photoInfo">
-                  <h3 className="text-white">{this.props.location.title}</h3>
-                  {/* <p className="text-white">{photo.category}</p> */}
-                </div>
-                <div className="clear"></div>
-              </div>
+            <div className="px-5 py-2">
+              <h3 className="text-black text-lg">{this.props.location.title}</h3>
+              {this.props.location.location_categories.map((category) => (
+                <LocationHashtag key={category.id} category={category} />
+              ))}
             </div>
           </div>
         </div>

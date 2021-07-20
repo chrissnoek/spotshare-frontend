@@ -188,12 +188,12 @@ class AddPhotoForm extends React.Component {
     const L = require("leaflet");
 
     const userMarker = new L.Icon({
-      iconUrl: userIcon,
-      iconRetinaUrl: userIcon,
+      iconUrl: "/userMarker.svg",
+      iconRetinaUrl: "/userMarker.svg",
 
       iconAnchor: [16, 40],
       popupAnchor: [0, -40],
-      shadowUrl: require("leaflet/dist/images/marker-shadow.png").default,
+      shadowUrl: "/marker-shadow.png",
       shadowAnchor: [13, 40],
       iconSize: new L.Point(32, 40),
     });
@@ -201,11 +201,11 @@ class AddPhotoForm extends React.Component {
     delete L.Icon.Default.prototype._getIconUrl;
 
     L.Icon.Default.mergeOptions({
-      iconUrl: locationIcon,
-      iconRetinaUrl: locationIcon,
+      iconUrl: "/locationMarker.svg",
+      iconRetinaUrl: "/locationMarker.svg",
       iconAnchor: [16, 40],
       popupAnchor: [0, -40],
-      shadowUrl: require("leaflet/dist/images/marker-shadow.png").default,
+      shadowUrl: "/marker-shadow.png",
       shadowAnchor: [13, 40],
       iconSize: new L.Point(32, 40),
     });
@@ -766,9 +766,10 @@ class AddPhotoForm extends React.Component {
           className="photoAdd block py-3 px-4 border border-gray-300 rounded md:mx-auto md:my-6 md:w-9/12 lg:w-1/2 rounded md:shadow-lg md:p-6"
         >
           <Head>
+            <title key="title">Foto toevoegen | Spotshare</title>
             <meta name="robots" content="noindex,nofollow,noarchive" key="robots" />
           </Head>
-          <h1 className="my-2 font-bold">Starpi Foto toevoegen</h1>
+          <h1 className="my-2 font-bold">Foto toevegen</h1>
 
           <AddPhoto
             currentStep={this.state.currentStep}
@@ -837,7 +838,7 @@ class Step2 extends React.Component {
   }
 
   displayLocations = async (lat, lng) => {
-    const nearbyLocations = await this.props.findNearbyLocations(lat, lng);
+    const nearbyLocations = await this.props.findNearbyLocations(lat, lng, "", 1);
     if (nearbyLocations === null) {
       this.props.setNewLocation();
     }
@@ -909,6 +910,7 @@ class Step2 extends React.Component {
 
     return (
       <div className="form-group">
+        <h2>Waar is heb je de foto gemaakt?</h2>
         <Map
           className="map"
           id="photoLocation"
@@ -933,7 +935,7 @@ class Step2 extends React.Component {
         {loadingNearbyLocations && <FaSpinner />}
         {nearbyLocations && !newLocation && (
           <div>
-            <div className="">Bedoel je misschien deze locatie?</div>
+            <div className="my-2 font-bold">Bedoel je misschien deze locatie?</div>
             <div className="flex flex-wrap -mx-2">
               {nearbyLocations.map(
                 (location) =>

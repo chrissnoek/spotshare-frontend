@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { FaRegHeart, FaRegComment } from "react-icons/fa";
@@ -9,27 +9,23 @@ import { userContext } from "../services/userContext";
 import { useRouter } from "next/router";
 
 export default function Home(props) {
-  const router = useRouter();
-
-  const redirect = (slug) => {
-    router.push(slug);
-  };
-
   return (
     <userContext.Consumer>
-      {(value) => {
-        // console.log(value);
-        return value.user ? (
-          () => redirect("/dashboard")
-        ) : (
-          <HomeScreen {...props} />
-        );
-      }}
+      {(value) => <HomeScreen {...props} context={value} /> }
     </userContext.Consumer>
   );
 }
 
-function HomeScreen({ featuredPhoto, randomPhotos }) {
+function HomeScreen({ featuredPhoto, randomPhotos, context }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    console.log(context);
+    if(context.user) {
+      router.push("/dashboard");
+    }
+  }, [context]);
+
   return (
     <div>
       <section className="py-12 sm:py-24 bg-gray-900">

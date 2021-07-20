@@ -2,6 +2,10 @@ const withImages = require("next-images");
 module.exports = withImages({
   webpack(config, { dev }) {
     config.module.rules.push({
+      test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+      loader: require.resolve("url-loader")
+    },
+    {
       test: /\.svg$/,
       oneOf: [
         {
