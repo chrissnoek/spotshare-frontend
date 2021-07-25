@@ -9,8 +9,9 @@ import PhotoComment from "../../components/Comments/Comments.jsx";
 import { IoCameraOutline } from "react-icons/io5";
 import { GoSettings } from "react-icons/go";
 import CreateNotification from "../../components/shared/CreateNotification.jsx";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Head from "next/head";
+import { GrLocation } from 'react-icons/gr';
 
 const MyClassWithRouter = (props) => {
   const router = useRouter();
@@ -21,7 +22,9 @@ export default MyClassWithRouter;
 class PhotoDetail extends React.Component {
   constructor(props) {
     super(props);
+
     const photoBySlug = props.photoBySlug;
+    console.log(photoBySlug);
     this.state = {
       isServer: true,
       photoBySlug,
@@ -369,7 +372,9 @@ class PhotoDetail extends React.Component {
                     <UserProfilePicture profile={photoBySlug.user} />
                   </div>
                   <h1 className="font-bold text-xl leading-tight">
-                    {photoBySlug.user.username}
+                    {photoBySlug.user.firstname
+                      ? photoBySlug.user.firstname + " " + photoBySlug.user.lastname
+                      : photoBySlug.user.username}
                   </h1>
                 </div>
 
@@ -394,20 +399,26 @@ class PhotoDetail extends React.Component {
                           <div className="mr-2">{photoBySlug.focalLength}</div>
                         )}
                         {photoBySlug.aperture && (
-                          <div className="mr-2">{photoBySlug.aperture}</div>
+                          <div className="mr-2">{photoBySlug.aperture.includes('f') ? photoBySlug.aperture : 'f/' + photoBySlug.aperture}</div>
                         )}
                         {photoBySlug.iso && (
-                          <div className="mr-2">{photoBySlug.iso}</div>
+                          <div className="mr-2">{photoBySlug.iso.toLowerCase().includes('iso') ? photoBySlug.iso : 'ISO ' + photoBySlug.iso}</div>
                         )}
                         {photoBySlug.shutterspeed && (
-                          <div className="mr-2">{photoBySlug.shutterspeed}</div>
+                          <div className="mr-2">{photoBySlug.shutterspeed.includes('s') ? photoBySlug.shutterspeed : photoBySlug.shutterspeed + 's'}</div>
                         )}
                       </div>
                     )}
                 </div>
 
                 <Link href={`/fotolocatie/${photoBySlug.location.slug}`}>
-                  <h2>{photoBySlug.location.title}</h2>
+
+                  <div className="flex items-center mb-3">
+                    <div className="mr-2">
+                      <GrLocation className="text-2xl" />
+                    </div>
+                    <h2>{photoBySlug.location.title}</h2>
+                  </div>
                 </Link>
                 <Map
                   className="map"
@@ -421,6 +432,12 @@ class PhotoDetail extends React.Component {
                   />
                   <Marker position={position}>
                     <Popup>Foto locatie</Popup>
+
+                    <Link href={`/fotolocatie/${photoBySlug.location.slug}`}>
+                      <a className="text-blue-400 font-bold text-large mt-2 hover:text-blue-500 hover:underline cursor-pointer">
+                        Bekijk fotolocatie »
+                      </a>
+                    </Link>
                   </Marker>
                   {userLocationKnown && (
                     <Marker position={calculatedUserLocation} icon={userMarker}>
@@ -506,6 +523,8 @@ export async function getStaticProps({ params }) {
                     id
                     slug
                     username
+                    firstname
+                    lastname
                     profilePicture {
                         url
                     }

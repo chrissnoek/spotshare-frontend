@@ -6,6 +6,7 @@ import graphQLFetch from "../../graphQLFetch";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet-universal";
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa";
+import { BsPencil } from "react-icons/bs";
 import FavButton from "../../components/shared/favButton.jsx";
 import { userContext } from "../../services/userContext.js";
 import PhotoView from "../../components/shared/PhotoView.jsx";
@@ -286,6 +287,18 @@ class LocationDetailComponent extends React.Component {
           <meta property="twitter:image"
             key="twitter_img" content={photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url} />
         </Head>
+
+        <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
+          <a className="revealTooltip pencil fixed bottom-4 right-4 p-4 rounded-full bg-green-500 hover:bg-green-600 text-white flex justify-center items-center">
+            <div className="hidden mr-2">
+              Informatie verbeteren
+            </div>
+            <div className="inline-block text-3xl">
+              <BsPencil />
+            </div>
+          </a>
+        </Link>
+
         <div id="photoInfo">
           <div
             className="w-full flex flex-col justify-center items-center relative"
@@ -300,7 +313,7 @@ class LocationDetailComponent extends React.Component {
               {locationBySlug.title}
             </h1>
             <span className="flex items-center">
-              <span className="text-gray-500 mr-2 text-sm">Categorieen:</span>
+              {locationBySlug.location_categories.length > 0 && <span className="text-white mr-2 text-sm">Categorieen:</span>}
               {locationBySlug.location_categories.map((location) => (
                 <Link href={`/fotolocaties/categorie/${location.value}`}>
                   <a className="bg-green-500 py-1 px-3 text-sm rounded-full mr-2 text-white hover:bg-green-600">
@@ -366,23 +379,59 @@ class LocationDetailComponent extends React.Component {
                     <h2 className="h1">
                       Over fotolocatie {locationBySlug.title}
                     </h2>
-                    <p className="">{locationBySlug.desc}</p>
+                    <p className="">{locationBySlug.desc ? <div> {locationBySlug.desc} <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link></div> : <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
+                      <a className=" flex  items-center">
+                        <div className=" mr-2">
+                          Informatie aanvullen
+                        </div>
+                        <div className="">
+                          <BsPencil />
+                        </div>
+                      </a>
+                    </Link>}</p>
                   </div>
                   <div className="pb-4 w-full">
                     <h3>Hoe kom ik bij {locationBySlug.title}</h3>
-                    <p className="">{locationBySlug.directions}</p>
+                    <p className="">{locationBySlug.directions ? <div> {locationBySlug.directions} <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link></div> : <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
+                      <a className=" flex  items-center">
+                        <div className=" mr-2">
+                          Informatie aanvullen
+                        </div>
+                        <div className="">
+                          <BsPencil />
+                        </div>
+                      </a>
+                    </Link>}</p>
                   </div>
                 </div>
                 <div className="block sm:flex">
                   <div className="pb-4 mr-4 w-full">
                     <h3>Wat kan ik fotograferen?</h3>
-                    <p className="">{locationBySlug.whattoshoot}</p>
+                    <p className="">{locationBySlug.whattoshoot ? <div> {locationBySlug.whattoshoot} <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link></div> : <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
+                      <a className=" flex  items-center">
+                        <div className=" mr-2">
+                          Informatie aanvullen
+                        </div>
+                        <div className="">
+                          <BsPencil />
+                        </div>
+                      </a>
+                    </Link>}</p>
                   </div>
                   <div className="pb-4 w-full">
                     <h3>Beste tijd om te fotograferen?</h3>
-                    {locationBySlug.months.map((month) => (
+                    {locationBySlug.months.length > 0 ? <div> {locationBySlug.months.map((month) => (
                       <p className="mr-1 inline-block">{month.label}</p>
-                    ))}
+                    ))} <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link></div> : <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
+                      <a className=" flex  items-center">
+                        <div className=" mr-2">
+                          Informatie aanvullen
+                        </div>
+                        <div className="">
+                          <BsPencil />
+                        </div>
+                      </a>
+                    </Link>}
                   </div>
                 </div>
               </div>
@@ -429,7 +478,7 @@ class LocationDetailComponent extends React.Component {
             </section>
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }

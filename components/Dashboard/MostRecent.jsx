@@ -20,7 +20,7 @@ const MostRecent = () => {
   //   });
 
   return (
-    <div className="">
+    <div className="mb-10">
       <h2>Meest Recent</h2>
       <div className="">
         {recentPhotos &&
