@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import NavigateToMapPage from "../shared/navigateToMap";
 
 const CategorieList = ({ categories }) => {
   return (
@@ -21,10 +22,8 @@ export default CategorieList;
 
 const CategorieLabel = ({ categorie: { label, value } }) => {
   return (
-    <Link href={`/fotolocaties/categorie/${value}`}>
-      <a className="block py-2 px-4 rounded-full mr-2 mb-2 bg-green-100 text-green-400 font-bold hover:bg-green-200 hover:text-green-500">
-        {label}
-      </a>
-    </Link>
+    <NavigateToMapPage href={`/fotolocaties/categorie/${value}`} classnames="block py-2 px-4 rounded-full mr-2 mb-2 bg-green-100 text-green-400 font-bold hover:bg-green-200 hover:text-green-500">
+      {label}
+    </NavigateToMapPage>
   );
 };
