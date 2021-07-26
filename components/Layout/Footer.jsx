@@ -1,7 +1,11 @@
 import React from "react";
 import Link from "next/link";
+import NavigateToMapPage from "../shared/navigateToMap";
 
 const Footer = () => {
+
+
+
   return (
     <>
       <footer>
@@ -11,74 +15,47 @@ const Footer = () => {
               <div className="text-xs uppercase text-gray-500 font-medium">
                 Fotolocaties op provincie
               </div>
-              <Link href="/fotolocaties/noord-holland">
-                <a className="my-3 block text-white">
-                  Noord-Holland{" "}
-                  <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
-              <Link href="/fotolocaties/zuid-holland">
-                <a className="my-3 block text-white">
-                  Zuid-Holland{" "}
-                  <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
-              <Link href="/fotolocaties/utrecht">
-                <a className="my-3 block text-white">
-                  Utrecht <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
-              <Link href="/fotolocaties/zeeland">
-                <a className="my-3 block text-white">
-                  Zeeland <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
-              <Link href="/fotolocaties/flevoland">
-                <a className="my-3 block text-white">
-                  Flevoland <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
-              <Link href="/fotolocaties/noord-brabant">
-                <a className="my-3 block text-white">
-                  Noord-Brabant{" "}
-                  <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
+              <NavigateToMapPage href="/fotolocaties/noord-holland" classnames="my-3 block text-white">
+                Noord-Holland
+              </NavigateToMapPage>
+              <NavigateToMapPage href="/fotolocaties/zuid-holland" classnames="my-3 block text-white">
+                Zuid-Holland
+              </NavigateToMapPage>
+              <NavigateToMapPage href="/fotolocaties/utrecht" classnames="my-3 block text-white">
+                Utrecht
+              </NavigateToMapPage>
+              <NavigateToMapPage href="/fotolocaties/zeeland" classnames="my-3 block text-white">
+                Zeeland
+              </NavigateToMapPage>
+              <NavigateToMapPage href="/fotolocaties/flevoland" classnames="my-3 block text-white">
+                Flevoland
+              </NavigateToMapPage>
+              <NavigateToMapPage href="/fotolocaties/noord-brabant" classnames="my-3 block text-white">
+                Noord-Brabant
+              </NavigateToMapPage>
             </div>
             <div className="w-full ">
               <div className="text-xs uppercase text-gray-500 font-medium">
                 Fotolocaties op provincie
               </div>
-              <Link href="/fotolocaties/limburg">
-                <a className="my-3 block text-white">
-                  Limburg <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
-              <Link href="/fotolocaties/overijssel">
-                <a className="my-3 block text-white">
-                  Overijssel <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
-              <Link href="/fotolocaties/gelderland">
-                <a className="my-3 block text-white">
-                  Gelderland <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
-              <Link href="/fotolocaties/drenthe">
-                <a className="my-3 block text-white">
-                  Drenthe <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
-              <Link href="/fotolocaties/groningen">
-                <a className="my-3 block text-white">
-                  Groningen <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
-              <Link href="/fotolocaties/friesland">
-                <a className="my-3 block text-white">
-                  Friesland <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
+              <NavigateToMapPage href="/fotolocaties/limburg" classnames="my-3 block text-white">
+                Limburg
+              </NavigateToMapPage>
+              <NavigateToMapPage href="/fotolocaties/overijssel" classnames="my-3 block text-white">
+                Overijssel
+              </NavigateToMapPage>
+              <NavigateToMapPage href="/fotolocaties/gelderland" classnames="my-3 block text-white">
+                Gelderland
+              </NavigateToMapPage>
+              <NavigateToMapPage href="/fotolocaties/drenthe" classnames="my-3 block text-white">
+                Drenthe
+              </NavigateToMapPage>
+              <NavigateToMapPage href="/fotolocaties/groningen" classnames="my-3 block text-white">
+                Groningen
+              </NavigateToMapPage>
+              <NavigateToMapPage href="/fotolocaties/friesland" classnames="my-3 block text-white">
+                Friesland
+              </NavigateToMapPage>
             </div>
             <div className="w-full ">
               <div className="text-xs uppercase text-gray-500 font-medium">

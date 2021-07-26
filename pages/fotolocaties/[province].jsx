@@ -14,16 +14,24 @@ const Results = ({ locations, province }) => {
   const [showMap, setShowMap] = useState(false);
   const router = useRouter();
 
+  useEffect(() => { setShowMap(false); console.log(province); setShowMap(true); }, [province]);
+
   useEffect(() => {
+    console.log(router);
+    setShowMap(false);
     if (allLocations !== locations) {
+      console.log('allLocations !== locations');
+      console.log(locations);
       setAllLocations(locations);
     }
+
+    console.log(allLocations);
 
     const _activeFilter = getFilterFromUrl();
     if (_activeFilter) {
       setActiveFilter(_activeFilter);
     } else {
-      setFilteredLocations(allLocations);
+      setFilteredLocations(locations);
     }
 
     setShowMap(true);

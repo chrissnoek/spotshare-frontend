@@ -96,7 +96,7 @@ const ResultMap = ({ locations, selectLocation, active }) => {
 
   useEffect(() => {
     loadMap();
-  }, []);
+  }, [locations]);
 
   const goToLocation = (slug, id) => {
     let data = [];
@@ -152,8 +152,8 @@ const ResultMap = ({ locations, selectLocation, active }) => {
                   active === location.id
                     ? hoverIcon
                     : visitedLocations.indexOf(location.id) !== -1
-                    ? visitedIcon
-                    : locIcon
+                      ? visitedIcon
+                      : locIcon
                 }
               >
                 <Popup autoPan={false}>
