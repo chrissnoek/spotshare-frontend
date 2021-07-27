@@ -379,7 +379,7 @@ class PhotoDetail extends React.Component {
                 </div>
 
                 <div className="my-4">
-                  {photoBySlug.camera && (
+                  {photoBySlug.camera && photoBySlug.camera != 'Onbekend' && photoBySlug.camera != 'Unavailable' && (
                     <div className="flex items-center mb-3">
                       <div className="mr-2">
                         <IoCameraOutline className="text-2xl" />
@@ -390,21 +390,21 @@ class PhotoDetail extends React.Component {
                   {(photoBySlug.focalLength ||
                     photoBySlug.aperture ||
                     photoBySlug.iso ||
-                    photoBySlug.shutterspeed) && (
+                    photoBySlug.shutterspeed) && (photoBySlug.focalLength != 'Onbekend' && photoBySlug.focalLength != 'Unavailable' && photoBySlug.aperture != 'Onbekend' && photoBySlug.aperture != 'Unavailable' && photoBySlug.iso != 'Onbekend' && photoBySlug.iso != 'Unavailable' && photoBySlug.shutterspeed != 'Onbekend' && photoBySlug.shutterspeed != 'Unavailable') && (
                       <div className="flex items-center">
                         <div className="mr-2">
                           <GoSettings className="text-2xl" />
                         </div>
-                        {photoBySlug.focalLength && (
+                        {photoBySlug.focalLength && photoBySlug.focalLength != 'Onbekend' && (
                           <div className="mr-2">{photoBySlug.focalLength}</div>
                         )}
-                        {photoBySlug.aperture && (
+                        {photoBySlug.aperture && photoBySlug.aperture != 'Onbekend' && (
                           <div className="mr-2">{photoBySlug.aperture.includes('f') ? photoBySlug.aperture : 'f/' + photoBySlug.aperture}</div>
                         )}
-                        {photoBySlug.iso && (
+                        {photoBySlug.iso && photoBySlug.iso != 'Onbekend' && (
                           <div className="mr-2">{photoBySlug.iso.toLowerCase().includes('iso') ? photoBySlug.iso : 'ISO ' + photoBySlug.iso}</div>
                         )}
-                        {photoBySlug.shutterspeed && (
+                        {photoBySlug.shutterspeed && photoBySlug.shutterspeed != 'Onbekend' && (
                           <div className="mr-2">{photoBySlug.shutterspeed.includes('s') ? photoBySlug.shutterspeed : photoBySlug.shutterspeed + 's'}</div>
                         )}
                       </div>

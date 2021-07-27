@@ -106,7 +106,7 @@ const Footer = () => {
 
                 <a
                   className="my-3 block text-white"
-                  href="https://www.spotshare.nl/blog/"
+                  href="https://www.facebook.com/groups/spotsharenl/"
                 >
                   <svg
                     className="fill-current cursor-pointer text-gray-500 hover:text-gray-400"
