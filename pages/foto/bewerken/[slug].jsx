@@ -5,6 +5,7 @@ import Head from "next/head";
 import { userContext } from "../../../services/userContext.js";
 import Link from "next/link";
 import { RiLoader4Line } from "react-icons/ri"
+import moment from "moment";
 
 const EditPhotoWrapper = () => {
 
@@ -145,7 +146,11 @@ const EditPhoto = () => {
 
     const onInputChange = (e) => {
         const _values = { ...values };
-        _values[e.target.name] = e.target.value;
+        if (e.target.name === 'date') {
+            _values[e.target.name] = moment(e.target.value).format();
+        } else {
+            _values[e.target.name] = e.target.value;
+        }
         setValues(_values);
     };
 
@@ -153,14 +158,14 @@ const EditPhoto = () => {
         e.preventDefault();
         const oldPhoto = { ...photo };
 
-        oldPhoto.title = values.title;
-        oldPhoto.desc = values.desc;
-        oldPhoto.date = values.date;
-        oldPhoto.shutterspeed = values.shutterspeed;
-        oldPhoto.iso = values.iso;
-        oldPhoto.aperture = values.aperture;
-        oldPhoto.camera = values.camera;
-        oldPhoto.focalLength = values.focalLength;
+        // oldPhoto.title = values.title;
+        // oldPhoto.desc = values.desc;
+        // oldPhoto.date = values.date;
+        // oldPhoto.shutterspeed = values.shutterspeed;
+        // oldPhoto.iso = values.iso;
+        // oldPhoto.aperture = values.aperture;
+        // oldPhoto.camera = values.camera;
+        // oldPhoto.focalLength = values.focalLength;
 
         // console.log(oldPhoto);
 
@@ -175,11 +180,11 @@ const EditPhoto = () => {
 
         let input = {};
         input["where"] = { id: oldPhoto.id };
-        input["data"] = oldPhoto;
+        input["data"] = values;
 
         delete input.data.id;
 
-        // console.log(input);
+        console.log(input);
         const data = await graphQLFetch(query, { input }, true);
 
         if (data) {
@@ -193,6 +198,12 @@ const EditPhoto = () => {
         // do grahqplfetch
         // if data, redirect to updated location
     };
+
+
+    const inputDateValue = (date) => {
+        // "2021-07-30"
+        return moment(date).format("YYYY-MM-DD");
+    }
 
     return !photo ? (
         <div className="w-screen h-screen flex items-center justify-center">
@@ -223,7 +234,7 @@ const EditPhoto = () => {
                     type="date"
                     name="date"
                     placeholder="Datum"
-                    value={values.date || ""}
+                    value={inputDateValue(values.date) || ""}
                     onChange={onInputChange}
                 />
 
@@ -302,7 +313,7 @@ const EditPhoto = () => {
                     type="submit"
                     className="block px-3 py- my-2 text-white rounded text-l bg-blue-500"
                 >
-                    Uploaden
+                    Opslaan
                 </button>
             </form>
         </div>

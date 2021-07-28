@@ -12,6 +12,10 @@ import CreateNotification from "../../components/shared/CreateNotification.jsx";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { GrLocation } from 'react-icons/gr';
+import { FiCalendar } from 'react-icons/fi';
+import moment from "moment";
+import 'moment/locale/nl';
+
 
 const MyClassWithRouter = (props) => {
   const router = useRouter();
@@ -39,6 +43,8 @@ class PhotoDetail extends React.Component {
     };
   }
 
+
+
   componentDidUpdate() {
     if (this.state.photoBySlug !== this.props.photoBySlug) {
       this.setState({ photoBySlug: this.props.photoBySlug });
@@ -46,6 +52,7 @@ class PhotoDetail extends React.Component {
   }
 
   componentDidMount() {
+    moment.locale('nl');
     const { photoBySlug } = this.state;
     if (photoBySlug === null) {
       this.loadData();
@@ -230,6 +237,10 @@ class PhotoDetail extends React.Component {
     }
   };
 
+  dateReadable = (date) => {
+    return moment(date).format("dddd, DD MMMM YYYY");
+  }
+
   render() {
     const { photoBySlug, redirect, isServer } = this.state;
     if (redirect) {
@@ -411,9 +422,18 @@ class PhotoDetail extends React.Component {
                     )}
                 </div>
 
-                <Link href={`/fotolocatie/${photoBySlug.location.slug}`}>
+                <div className="flex items-center mb-4">
+                  <div className="mr-2">
+                    <FiCalendar className="text-2xl" />
+                  </div>
 
-                  <div className="flex items-center mb-3">
+                  <div>
+                    {this.dateReadable(photoBySlug.date)}
+                  </div>
+                </div>
+
+                <Link href={`/fotolocatie/${photoBySlug.location.slug}`}>
+                  <div className="flex items-center mb-3 cursor-pointer">
                     <div className="mr-2">
                       <GrLocation className="text-2xl" />
                     </div>

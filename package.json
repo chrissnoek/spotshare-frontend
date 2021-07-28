@@ -22,6 +22,7 @@
     "leaflet": "^1.7.1",
     "leaflet-defaulticon-compatibility": "^0.1.1",
     "moment": "^2.29.1",
+    "momentjs": "^2.0.0",
     "next": "^11.0.1",
     "next-apollo": "^5.0.4",
     "next-images": "^1.7.0",
