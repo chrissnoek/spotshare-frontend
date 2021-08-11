@@ -14,7 +14,7 @@ export default async function graphQLFetch(
   returnError = false
 ) {
   const apiEndpoint =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337/graphql";
+    process.env.NEXT_PUBLIC_API_URL || "https://spotshare-strapi.herokuapp.com/graphql";
 
   try {
     const response = await fetch(apiEndpoint, {
