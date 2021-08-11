@@ -60,7 +60,7 @@ export async function login(input) {
   //console.log(result);
 
   try {
-    const response = await axios.post("http://localhost:1337/auth/local", {
+    const response = await axios.post("https://spotshare-strapi.herokuapp.com/auth/local", {
       identifier: input.identifier,
       password: input.password,
     });
