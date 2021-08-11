@@ -243,243 +243,251 @@ class LocationDetailComponent extends React.Component {
       ? [userLocation.latitude, userLocation.longitude]
       : null;
 
-    return (
-      <div id="page">
-        <Head>
+    if (photos.length > 0) {
 
-          {/* <!-- Primary Meta Tags --> */}
-          <title key="title">Fotolocatie {locationBySlug.title} | Spotshare</title>
-          <meta
-            name="title"
-            key="meta_title"
-            content={`Fotolocatie ${locationBySlug.title} | Spotshare`}
-          />
-          <meta
-            name="description"
-            key="meta_desc"
-            content={`Leer hoe, wanneer en waar je de beste foto's van ${locationBySlug.title} maakt bij Spotshare.`}
-          />
-          {/* <!-- Open Graph / Facebook --> */}
-          <meta
-            property="og:title"
-            key="og_title"
-            content={`Fotolocatie ${locationBySlug.title} | Spotshare`}
-          />
-          <meta
-            property="og:description"
-            key="og_desc"
-            content={`Leer hoe, wanneer en waar je de beste foto's van ${locationBySlug.title} maakt bij Spotshare.`}
-          />
-          <meta property="og:image"
-            key="og_img" content={photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url} />
+      return (
+        <div id="page">
+          <Head>
 
-          {/* <!-- Twitter --> */}
-          <meta
-            property="twitter:title"
-            key="twitter_title"
-            content={`Fotolocatie ${locationBySlug.title} | Spotshare`}
-          />
-          <meta
-            property="twitter:description"
-            key="twitter_desc"
-            content={`Leer hoe, wanneer en waar je de beste foto's van ${locationBySlug.title} maakt bij Spotshare.`}
-          />
-          <meta property="twitter:image"
-            key="twitter_img" content={photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url} />
-        </Head>
+            {/* <!-- Primary Meta Tags --> */}
+            <title key="title">Fotolocatie {locationBySlug.title} | Spotshare</title>
+            <meta
+              name="title"
+              key="meta_title"
+              content={`Fotolocatie ${locationBySlug.title} | Spotshare`}
+            />
+            <meta
+              name="description"
+              key="meta_desc"
+              content={`Leer hoe, wanneer en waar je de beste foto's van ${locationBySlug.title} maakt bij Spotshare.`}
+            />
+            {/* <!-- Open Graph / Facebook --> */}
+            <meta
+              property="og:title"
+              key="og_title"
+              content={`Fotolocatie ${locationBySlug.title} | Spotshare`}
+            />
+            <meta
+              property="og:description"
+              key="og_desc"
+              content={`Leer hoe, wanneer en waar je de beste foto's van ${locationBySlug.title} maakt bij Spotshare.`}
+            />
 
-        <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
-          <a className="revealTooltip pencil fixed bottom-4 right-4 p-4 rounded-full bg-green-500 hover:bg-green-600 text-white flex justify-center items-center">
-            <div className="hidden mr-2">
-              Informatie verbeteren
-            </div>
-            <div className="inline-block text-3xl">
-              <BsPencil />
-            </div>
-          </a>
-        </Link>
+            {photos.length > 0 &&
+              <meta property="og:image"
+                key="og_img" content={photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url} />}
 
-        <div id="photoInfo">
-          <div
-            className="w-full flex flex-col justify-center items-center relative"
-            style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url})`,
-              backgroundSize: `cover`,
-              backgroundPosition: `center center`,
-              height: "80vh",
-            }}
-          >
-            <h1 className="text-3xl font-bold mb-1 text-white block">
-              {locationBySlug.title}
-            </h1>
-            <span className="flex items-center">
-              {locationBySlug.location_categories.length > 0 && <span className="text-white mr-2 text-sm">Categorieen:</span>}
-              {locationBySlug.location_categories.map((location) => (
-                <Link href={`/fotolocaties/categorie/${location.value}`}>
-                  <a className="bg-green-500 py-1 px-3 text-sm rounded-full mr-2 text-white hover:bg-green-600">
-                    {location.label}
+            {/* <!-- Twitter --> */}
+            <meta
+              property="twitter:title"
+              key="twitter_title"
+              content={`Fotolocatie ${locationBySlug.title} | Spotshare`}
+            />
+            <meta
+              property="twitter:description"
+              key="twitter_desc"
+              content={`Leer hoe, wanneer en waar je de beste foto's van ${locationBySlug.title} maakt bij Spotshare.`}
+            />
+            {photos.length > 0 &&
+              <meta property="twitter:image"
+                key="twitter_img" content={photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url} />}
+          </Head>
+
+          <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
+            <a className="revealTooltip pencil fixed bottom-4 right-4 p-4 rounded-full bg-green-500 hover:bg-green-600 text-white flex justify-center items-center">
+              <div className="hidden mr-2">
+                Informatie verbeteren
+              </div>
+              <div className="inline-block text-3xl">
+                <BsPencil />
+              </div>
+            </a>
+          </Link>
+
+          <div id="photoInfo">
+            <div
+              className="w-full flex flex-col justify-center items-center relative"
+              style={{
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url})`,
+                backgroundSize: `cover`,
+                backgroundPosition: `center center`,
+                height: "80vh",
+              }}
+            >
+              <h1 className="text-3xl font-bold mb-1 text-white block">
+                {locationBySlug.title}
+              </h1>
+              <span className="flex items-center">
+                {locationBySlug.location_categories.length > 0 && <span className="text-white mr-2 text-sm">Categorieen:</span>}
+                {locationBySlug.location_categories.map((location) => (
+                  <Link href={`/fotolocaties/categorie/${location.value}`}>
+                    <a className="bg-green-500 py-1 px-3 text-sm rounded-full mr-2 text-white hover:bg-green-600">
+                      {location.label}
+                    </a>
+                  </Link>
+                ))}
+              </span>
+
+              <div className="absolute right-0 bottom-0 m-10">
+                <userContext.Consumer>
+                  {(value) => {
+                    // console.log(value);
+                    if (value.user) {
+                      let favourite;
+                      if (
+                        value.user &&
+                        locationBySlug.usersFavourites.filter(
+                          (favourites) => favourites.id === value.user.id
+                        ).length > 0
+                      ) {
+                        favourite = true;
+                      } else {
+                        favourite = false;
+                      }
+                      return (
+                        <FavButton
+                          favourite={favourite}
+                          updateFav={this.updateFav}
+                          user={value.user}
+                          likedId={locationBySlug.id}
+                          addTitle="Deze locatie opslaan"
+                          removeTitle="Verwijderen uit opgeslagen locaties"
+                        />
+                      );
+                    }
+                  }}
+                </userContext.Consumer>
+
+                <Link href={`/foto/toevoegen/${locationBySlug.id}`}>
+                  <a className="revealTooltip flex pointer justify-end items-center">
+                    <div className="hidden  bg-white rounded py-1 px-3 h-8">
+                      Foto aan deze locatie toevoegen
+                    </div>
+                    <div className="inline-block bg-white rounded py-2 px-3 h-8">
+                      <FaPlus />
+                    </div>
                   </a>
                 </Link>
-              ))}
-            </span>
-
-            <div className="absolute right-0 bottom-0 m-10">
-              <userContext.Consumer>
-                {(value) => {
-                  // console.log(value);
-                  if (value.user) {
-                    let favourite;
-                    if (
-                      value.user &&
-                      locationBySlug.usersFavourites.filter(
-                        (favourites) => favourites.id === value.user.id
-                      ).length > 0
-                    ) {
-                      favourite = true;
-                    } else {
-                      favourite = false;
-                    }
-                    return (
-                      <FavButton
-                        favourite={favourite}
-                        updateFav={this.updateFav}
-                        user={value.user}
-                        likedId={locationBySlug.id}
-                        addTitle="Deze locatie opslaan"
-                        removeTitle="Verwijderen uit opgeslagen locaties"
-                      />
-                    );
-                  }
-                }}
-              </userContext.Consumer>
-
-              <Link href={`/foto/toevoegen/${locationBySlug.id}`}>
-                <a className="revealTooltip flex pointer justify-end items-center">
-                  <div className="hidden  bg-white rounded py-1 px-3 h-8">
-                    Foto aan deze locatie toevoegen
-                  </div>
-                  <div className="inline-block bg-white rounded py-2 px-3 h-8">
-                    <FaPlus />
-                  </div>
-                </a>
-              </Link>
-            </div>
-            {/* 
+              </div>
+              {/* 
             <p className="">Bezoekers:</p>
             {locationBySlug.photos.map((photo) => {
               return <img src={photo.user.picture} />;
             })} */}
-          </div>
+            </div>
 
-          <div className="p-6 ">
-            <section className="container">
-              <div className="sm:py-10">
-                <div className="block sm:flex">
-                  <div className="pb-4 mr-4 w-full">
-                    <h2 className="h1">
-                      Over fotolocatie {locationBySlug.title}
-                    </h2>
-                    <p className="">{locationBySlug.desc ? <div> {locationBySlug.desc} <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link></div> : <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
-                      <a className=" flex  items-center">
-                        <div className=" mr-2">
-                          Informatie aanvullen
-                        </div>
-                        <div className="">
-                          <BsPencil />
-                        </div>
-                      </a>
-                    </Link>}</p>
+            <div className="p-6 ">
+              <section className="container">
+                <div className="sm:py-10">
+                  <div className="block sm:flex">
+                    <div className="pb-4 mr-4 w-full">
+                      <h2 className="h1">
+                        Over fotolocatie {locationBySlug.title}
+                      </h2>
+                      <p className="">{locationBySlug.desc ? <div> {locationBySlug.desc} <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link></div> : <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
+                        <a className=" flex  items-center">
+                          <div className=" mr-2">
+                            Informatie aanvullen
+                          </div>
+                          <div className="">
+                            <BsPencil />
+                          </div>
+                        </a>
+                      </Link>}</p>
+                    </div>
+                    <div className="pb-4 w-full">
+                      <h3>Hoe kom ik bij {locationBySlug.title}</h3>
+                      <p className="">{locationBySlug.directions ? <div> {locationBySlug.directions} <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link></div> : <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
+                        <a className=" flex  items-center">
+                          <div className=" mr-2">
+                            Informatie aanvullen
+                          </div>
+                          <div className="">
+                            <BsPencil />
+                          </div>
+                        </a>
+                      </Link>}</p>
+                    </div>
                   </div>
-                  <div className="pb-4 w-full">
-                    <h3>Hoe kom ik bij {locationBySlug.title}</h3>
-                    <p className="">{locationBySlug.directions ? <div> {locationBySlug.directions} <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link></div> : <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
-                      <a className=" flex  items-center">
-                        <div className=" mr-2">
-                          Informatie aanvullen
-                        </div>
-                        <div className="">
-                          <BsPencil />
-                        </div>
-                      </a>
-                    </Link>}</p>
+                  <div className="block sm:flex">
+                    <div className="pb-4 mr-4 w-full">
+                      <h3>Wat kan ik fotograferen?</h3>
+                      <p className="">{locationBySlug.whattoshoot ? <div> {locationBySlug.whattoshoot} <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link></div> : <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
+                        <a className=" flex  items-center">
+                          <div className=" mr-2">
+                            Informatie aanvullen
+                          </div>
+                          <div className="">
+                            <BsPencil />
+                          </div>
+                        </a>
+                      </Link>}</p>
+                    </div>
+                    <div className="pb-4 w-full">
+                      <h3>Beste tijd om te fotograferen?</h3>
+                      {locationBySlug.months.length > 0 ? <div> {locationBySlug.months.map((month) => (
+                        <p className="mr-1 inline-block">{month.label}</p>
+                      ))} <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link></div> : <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
+                        <a className=" flex  items-center">
+                          <div className=" mr-2">
+                            Informatie aanvullen
+                          </div>
+                          <div className="">
+                            <BsPencil />
+                          </div>
+                        </a>
+                      </Link>}
+                    </div>
                   </div>
                 </div>
-                <div className="block sm:flex">
-                  <div className="pb-4 mr-4 w-full">
-                    <h3>Wat kan ik fotograferen?</h3>
-                    <p className="">{locationBySlug.whattoshoot ? <div> {locationBySlug.whattoshoot} <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link></div> : <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
-                      <a className=" flex  items-center">
-                        <div className=" mr-2">
-                          Informatie aanvullen
-                        </div>
-                        <div className="">
-                          <BsPencil />
-                        </div>
-                      </a>
-                    </Link>}</p>
-                  </div>
-                  <div className="pb-4 w-full">
-                    <h3>Beste tijd om te fotograferen?</h3>
-                    {locationBySlug.months.length > 0 ? <div> {locationBySlug.months.map((month) => (
-                      <p className="mr-1 inline-block">{month.label}</p>
-                    ))} <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link></div> : <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
-                      <a className=" flex  items-center">
-                        <div className=" mr-2">
-                          Informatie aanvullen
-                        </div>
-                        <div className="">
-                          <BsPencil />
-                        </div>
-                      </a>
-                    </Link>}
-                  </div>
-                </div>
-              </div>
 
-              <div className="w-full">
-                <Map
-                  className="map"
-                  id="photoLocation"
-                  center={position}
-                  zoom={this.state.zoom}
-                >
-                  <TileLayer
-                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                  <Marker position={position}>
-                    <Popup>Foto locatie</Popup>
-                  </Marker>
-                  {userLocationKnown && (
-                    <Marker position={calculatedUserLocation} icon={userMarker}>
-                      <Popup>Jouw locatie</Popup>
+                <div className="w-full">
+                  <Map
+                    className="map"
+                    id="photoLocation"
+                    center={position}
+                    zoom={this.state.zoom}
+                  >
+                    <TileLayer
+                      attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <Marker position={position}>
+                      <Popup>Foto locatie</Popup>
                     </Marker>
-                  )}
-                </Map>
-              </div>
-
-              <div className="w-full mt-4">
-                <h2 className="text-xl font-bold mb-1 text-gray-800 block">
-                  Foto's gemaakt op fotolocatie {locationBySlug.title}
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {photos.map((photoItem, index) => {
-                    return (
-                      <PhotoView
-                        key={photoItem.id}
-                        index={index}
-                        photo={photoItem}
-                        deletePhoto={null}
-                      />
-                    );
-                  })}
+                    {userLocationKnown && (
+                      <Marker position={calculatedUserLocation} icon={userMarker}>
+                        <Popup>Jouw locatie</Popup>
+                      </Marker>
+                    )}
+                  </Map>
                 </div>
-              </div>
-            </section>
+
+                <div className="w-full mt-4">
+                  <h2 className="text-xl font-bold mb-1 text-gray-800 block">
+                    Foto's gemaakt op fotolocatie {locationBySlug.title}
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {photos.map((photoItem, index) => {
+                      return (
+                        <PhotoView
+                          key={photoItem.id}
+                          index={index}
+                          photo={photoItem}
+                          deletePhoto={null}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              </section>
+            </div>
           </div>
-        </div>
-      </div >
-    );
+        </div >
+      );
+    } else {
+      return null;
+    }
   }
 }
 
