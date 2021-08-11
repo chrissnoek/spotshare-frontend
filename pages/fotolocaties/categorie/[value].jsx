@@ -62,54 +62,55 @@ const LocationsPerCategorie = ({ locations: _locations, value }) => {
     setSelectedLocation(locationId);
   };
 
-  return (
-    <div className="relative h-screen">
-      <Head>
+  if (locations.length > 0 || filteredLocations.length > 0) {
+    return (
+      <div className="relative h-screen">
+        <Head>
 
-        {/* <!-- Primary Meta Tags --> */}
-        <title key="title">Fotolocaties met categorie {value} | Spotshare</title>
-        <meta
-          name="title"
-          key="meta_title"
-          content={`Fotolocaties met categorie ${value} | Spotshare`}
-        />
-        <meta
-          name="description"
-          key="meta_desc"
-          content={`Bekijk fotolocaties met categorie ${value} bij Spotshare!`}
-        />
-        {/* <!-- Open Graph / Facebook --> */}
-        <meta
-          property="og:title"
-          key="og_title"
-          content={`Fotolocaties met categorie ${value}| Spotshare`}
-        />
-        <meta
-          property="og:description"
-          key="og_desc"
-          content={`Bekijk fotolocaties met categorie ${value} bij Spotshare!`}
-        />
-        <meta property="og:image"
-          key="og_img" content={locations[0].photos[0].photo[0].url} />
+          {/* <!-- Primary Meta Tags --> */}
+          <title key="title">Fotolocaties met categorie {value} | Spotshare</title>
+          <meta
+            name="title"
+            key="meta_title"
+            content={`Fotolocaties met categorie ${value} | Spotshare`}
+          />
+          <meta
+            name="description"
+            key="meta_desc"
+            content={`Bekijk fotolocaties met categorie ${value} bij Spotshare!`}
+          />
+          {/* <!-- Open Graph / Facebook --> */}
+          <meta
+            property="og:title"
+            key="og_title"
+            content={`Fotolocaties met categorie ${value}| Spotshare`}
+          />
+          <meta
+            property="og:description"
+            key="og_desc"
+            content={`Bekijk fotolocaties met categorie ${value} bij Spotshare!`}
+          />
+          {/* <meta property="og:image"
+          key="og_img" content={locations[0].photos[0].photo[0].url} /> */}
 
-        {/* <!-- Twitter --> */}
-        <meta
-          property="twitter:title"
-          key="twitter_title"
-          content={`Fotolocaties met categorie ${value}| Spotshare`}
-        />
-        <meta
-          property="twitter:description"
-          key="twitter_desc"
-          content={`Bekijk fotolocaties met categorie ${value} bij Spotshare!`}
-        />
-        <meta property="twitter:image"
-          key="twitter_img" content={locations[0].photos[0].photo[0].url} />
-      </Head>
-      <div className="flex h-full">
-        <div className="w-full p-4 h-screen overflow-scroll">
-          <h1>Resultaten</h1>
-          {/* <div className="mb-2 flex">
+          {/* <!-- Twitter --> */}
+          <meta
+            property="twitter:title"
+            key="twitter_title"
+            content={`Fotolocaties met categorie ${value}| Spotshare`}
+          />
+          <meta
+            property="twitter:description"
+            key="twitter_desc"
+            content={`Bekijk fotolocaties met categorie ${value} bij Spotshare!`}
+          />
+          {/* <meta property="twitter:image"
+          key="twitter_img" content={locations[0].photos[0].photo[0].url} /> */}
+        </Head>
+        <div className="flex h-full">
+          <div className="w-full p-4 h-screen overflow-scroll">
+            <h1>Resultaten</h1>
+            {/* <div className="mb-2 flex">
             <span className="mr-2">Filter op categorie:</span>
             {locations &&
               (filteredLocations.length > 0 ? (
@@ -130,52 +131,55 @@ const LocationsPerCategorie = ({ locations: _locations, value }) => {
                 />
               ))}
           </div> */}
-          {locations &&
-            (filteredLocations.length > 0
-              ? filteredLocations.map((location) => (
-                <div key={location.id} className="w-full">
-                  <LocationList
-                    size="large"
-                    location={location}
-                    key={location.id}
-                    active={selectedLocation === location.id ? true : false}
-                    selectLocation={selectLocation}
-                  />
-                </div>
-              ))
-              : locations.map((location) => (
-                <div key={location.id} className="w-full">
-                  <LocationList
-                    size="large"
-                    location={location}
-                    key={location.id}
-                    active={selectedLocation === location.id ? true : false}
-                    selectLocation={selectLocation}
-                  />
-                </div>
-              )))}
-        </div>
+            {locations &&
+              (filteredLocations.length > 0
+                ? filteredLocations.map((location) => (
+                  <div key={location.id} className="w-full">
+                    <LocationList
+                      size="large"
+                      location={location}
+                      key={location.id}
+                      active={selectedLocation === location.id ? true : false}
+                      selectLocation={selectLocation}
+                    />
+                  </div>
+                ))
+                : locations.map((location) => (
+                  <div key={location.id} className="w-full">
+                    <LocationList
+                      size="large"
+                      location={location}
+                      key={location.id}
+                      active={selectedLocation === location.id ? true : false}
+                      selectLocation={selectLocation}
+                    />
+                  </div>
+                )))}
+          </div>
 
-        <div className="mb-10 w-full h-full">
-          {showMap &&
-            locations &&
-            (filteredLocations.length > 0 ? (
-              <ResultMap
-                locations={filteredLocations}
-                selectLocation={selectLocation}
-                active={selectedLocation}
-              />
-            ) : (
-              <ResultMap
-                locations={locations}
-                selectLocation={selectLocation}
-                active={selectedLocation}
-              />
-            ))}
+          <div className="mb-10 w-full h-full">
+            {showMap &&
+              locations &&
+              (filteredLocations.length > 0 ? (
+                <ResultMap
+                  locations={filteredLocations}
+                  selectLocation={selectLocation}
+                  active={selectedLocation}
+                />
+              ) : (
+                <ResultMap
+                  locations={locations}
+                  selectLocation={selectLocation}
+                  active={selectedLocation}
+                />
+              ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    )
+  } else {
+    return null
+  };
 };
 
 export default LocationsPerCategorie;

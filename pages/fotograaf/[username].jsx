@@ -310,7 +310,7 @@ const UserProfileComponent = (props) => {
           content={`Bekijk de foto's van ${profile.firstname ? profile.firstname + " " + profile.lastname : profile.username} op Spotshare!`}
         />
         <meta property="og:image"
-          key="og_img" content={profile.photos[0].photo[0].url} />
+          key="og_img" content={profile.photos[0] ? profile.photos[0].photo[0].url : ""} />
 
         {/* <!-- Twitter --> */}
         <meta
@@ -324,7 +324,7 @@ const UserProfileComponent = (props) => {
           content={`Bekijk de foto's van ${profile.firstname ? profile.firstname + " " + profile.lastname : profile.username} op Spotshare!`}
         />
         <meta property="twitter:image"
-          key="twitter_img" content={profile.photos[0].photo[0].url} />
+          key="twitter_img" content={profile.photos[0] ? profile.photos[0].photo[0].url : ""} />
       </Head>
       <div className="container">
         <div className="sm:flex sm:items-center">
