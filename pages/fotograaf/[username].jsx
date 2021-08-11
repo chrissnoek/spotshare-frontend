@@ -309,8 +309,10 @@ const UserProfileComponent = (props) => {
           key="og_desc"
           content={`Bekijk de foto's van ${profile.firstname ? profile.firstname + " " + profile.lastname : profile.username} op Spotshare!`}
         />
-        <meta property="og:image"
-          key="og_img" content={profile.photos[0] ? profile.photos[0].photo[0].url : ""} />
+
+        {profile.photos[0] &&
+          <meta property="og:image"
+            key="og_img" content={profile.photos[0] ? profile.photos[0].photo[0].url : ""} />}
 
         {/* <!-- Twitter --> */}
         <meta
@@ -323,8 +325,9 @@ const UserProfileComponent = (props) => {
           key="twitter_desc"
           content={`Bekijk de foto's van ${profile.firstname ? profile.firstname + " " + profile.lastname : profile.username} op Spotshare!`}
         />
-        <meta property="twitter:image"
-          key="twitter_img" content={profile.photos[0] ? profile.photos[0].photo[0].url : ""} />
+        {profile.photos[0] &&
+          <meta property="twitter:image"
+            key="twitter_img" content={profile.photos[0] ? profile.photos[0].photo[0].url : ""} />}
       </Head>
       <div className="container">
         <div className="sm:flex sm:items-center">
