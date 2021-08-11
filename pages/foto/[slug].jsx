@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import graphQLFetch from "../../graphQLFetch";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet-universal";
 import Link from "next/link";
@@ -13,13 +13,38 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { GrLocation } from 'react-icons/gr';
 import { FiCalendar } from 'react-icons/fi';
+import { BsPencil } from "react-icons/bs";
 import moment from "moment";
 import 'moment/locale/nl';
 
 
 const MyClassWithRouter = (props) => {
+  const [isServer, setIsServer] = useState(true);
   const router = useRouter();
-  return <PhotoDetail {...props} router={router} />;
+
+  useEffect(() => {
+    setIsServer(false);
+  }, []);
+
+  {
+    return !isServer ?
+      <userContext.Consumer>
+        {(value) => {
+          if (value.user) {
+            if (value.user.id === props.photoBySlug.user.id) {
+              console.log(value.user.id, props.photoBySlug.user.id);
+              return <PhotoDetail {...props} router={router} ownPhoto={true} />;
+            } else {
+              return <PhotoDetail {...props} router={router} ownPhoto={false} />;
+            }
+          } else {
+            return <PhotoDetail {...props} router={router} ownPhoto={false} />;
+          }
+        }}
+      </userContext.Consumer>
+      : <PhotoDetail {...props} router={router} ownPhoto={false} />
+  }
+
 };
 export default MyClassWithRouter;
 
@@ -27,11 +52,12 @@ class PhotoDetail extends React.Component {
   constructor(props) {
     super(props);
 
-    const photoBySlug = props.photoBySlug;
+    const { photoBySlug, ownPhoto } = props;
     console.log(photoBySlug);
     this.state = {
       isServer: true,
       photoBySlug,
+      ownPhoto,
       redirect: false,
       zoom: 13,
       userLocationKnown: false,
@@ -48,6 +74,9 @@ class PhotoDetail extends React.Component {
   componentDidUpdate() {
     if (this.state.photoBySlug !== this.props.photoBySlug) {
       this.setState({ photoBySlug: this.props.photoBySlug });
+    }
+    if (this.state.ownPhoto !== this.props.ownPhoto) {
+      this.setState({ ownPhoto: this.props.ownPhoto });
     }
   }
 
@@ -242,7 +271,7 @@ class PhotoDetail extends React.Component {
   }
 
   render() {
-    const { photoBySlug, redirect, isServer } = this.state;
+    const { photoBySlug, redirect, isServer, ownPhoto } = this.state;
     if (redirect) {
       this.props.router.push("/niet-gevonden");
     }
@@ -362,7 +391,21 @@ class PhotoDetail extends React.Component {
                 <h1 className="text-2xl font-bold mb-1 text-gray-800 block">
                   {photoBySlug.title}
                 </h1>
-                <p className="text-gray-600 mb-6">{photoBySlug.desc}</p>
+                <p className="text-gray-600 mb-6">
+                  {photoBySlug.desc ?
+                    <div>{photoBySlug.desc} {ownPhoto && <Link href={`/foto/bewerken/${photoBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link>}</div>
+                    : (ownPhoto && <Link href={`/foto/bewerken/${photoBySlug.slug}`}>
+                      <a className=" flex  items-center">
+                        <div className=" mr-2">
+                          Informatie aanvullen
+                        </div>
+                        <div className="">
+                          <BsPencil />
+                        </div>
+                      </a>
+                    </Link>)
+                  }
+                </p>
 
                 <hr />
 
@@ -390,22 +433,40 @@ class PhotoDetail extends React.Component {
                 </div>
 
                 <div className="my-4">
-                  {photoBySlug.camera && photoBySlug.camera != 'Onbekend' && photoBySlug.camera != 'Unavailable' && (
+                  {photoBySlug.camera && photoBySlug.camera != 'Onbekend' && photoBySlug.camera != 'Unavailable' || ownPhoto ? (
                     <div className="flex items-center mb-3">
                       <div className="mr-2">
                         <IoCameraOutline className="text-2xl" />
                       </div>
-                      <div>{photoBySlug.camera}</div>
+                      <div>{photoBySlug.camera &&
+                        photoBySlug.camera != 'Unavailable'
+                        && photoBySlug.camera != 'Onbekend' ?
+                        <div>{photoBySlug.camera} {ownPhoto && <Link href={`/foto/bewerken/${photoBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link>}</div> :
+                        (ownPhoto && <Link href={`/foto/bewerken/${photoBySlug.slug}`}>
+                          <a className=" flex  items-center">
+                            <div className=" mr-2">
+                              Informatie aanvullen
+                            </div>
+                            <div className="">
+                              <BsPencil />
+                            </div>
+                          </a>
+                        </Link>)}</div>
                     </div>
-                  )}
-                  {(photoBySlug.focalLength ||
-                    photoBySlug.aperture ||
-                    photoBySlug.iso ||
-                    photoBySlug.shutterspeed) && (photoBySlug.focalLength != 'Onbekend' && photoBySlug.focalLength != 'Unavailable' && photoBySlug.aperture != 'Onbekend' && photoBySlug.aperture != 'Unavailable' && photoBySlug.iso != 'Onbekend' && photoBySlug.iso != 'Unavailable' && photoBySlug.shutterspeed != 'Onbekend' && photoBySlug.shutterspeed != 'Unavailable') && (
+                  ) : ""}
+                  <div className="flex items-center">
+                    <div className="mr-2">
+                      <GoSettings className="text-2xl" />
+                    </div>
+                    {(ownPhoto || photoBySlug.focalLength ||
+                      photoBySlug.aperture ||
+                      photoBySlug.iso ||
+                      photoBySlug.shutterspeed) &&
+                      (photoBySlug.focalLength != 'Onbekend' &&
+                        photoBySlug.focalLength != 'Unavailable' &&
+                        photoBySlug.aperture != 'Onbekend' &&
+                        photoBySlug.aperture != 'Unavailable' && photoBySlug.iso != 'Onbekend' && photoBySlug.iso != 'Unavailable' && photoBySlug.shutterspeed != 'Onbekend' && photoBySlug.shutterspeed != 'Unavailable') ? (
                       <div className="flex items-center">
-                        <div className="mr-2">
-                          <GoSettings className="text-2xl" />
-                        </div>
                         {photoBySlug.focalLength && photoBySlug.focalLength != 'Onbekend' && (
                           <div className="mr-2">{photoBySlug.focalLength}</div>
                         )}
@@ -418,8 +479,19 @@ class PhotoDetail extends React.Component {
                         {photoBySlug.shutterspeed && photoBySlug.shutterspeed != 'Onbekend' && (
                           <div className="mr-2">{photoBySlug.shutterspeed.includes('s') ? photoBySlug.shutterspeed : photoBySlug.shutterspeed + 's'}</div>
                         )}
+                        {ownPhoto && <Link href={`/foto/bewerken/${photoBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link>}
                       </div>
-                    )}
+                    ) : (ownPhoto && <Link href={`/foto/bewerken/${photoBySlug.slug}`}>
+                      <a className=" flex  items-center">
+                        <div className=" mr-2">
+                          Informatie aanvullen
+                        </div>
+                        <div className="">
+                          <BsPencil />
+                        </div>
+                      </a>
+                    </Link>)}
+                  </div>
                 </div>
 
                 <div className="flex items-center mb-4">
@@ -428,7 +500,18 @@ class PhotoDetail extends React.Component {
                   </div>
 
                   <div>
-                    {this.dateReadable(photoBySlug.date)}
+                    {photoBySlug.date ?
+                      <div>{this.dateReadable(photoBySlug.date)} {ownPhoto && <Link href={`/foto/bewerken/${photoBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link>}</div>
+                      : (ownPhoto && <Link href={`/foto/bewerken/${photoBySlug.slug}`}>
+                        <a className=" flex  items-center">
+                          <div className=" mr-2">
+                            Informatie aanvullen
+                          </div>
+                          <div className="">
+                            <BsPencil />
+                          </div>
+                        </a>
+                      </Link>)}
                   </div>
                 </div>
 
@@ -469,7 +552,7 @@ class PhotoDetail extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }
