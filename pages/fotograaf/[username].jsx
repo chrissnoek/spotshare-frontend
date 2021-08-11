@@ -431,8 +431,8 @@ const UserProfileComponent = (props) => {
           Favoriete locaties
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {profile.favouriteLocations.map((location) => (
-            <LocationCard key={location.id} location={location} />
+          {profile.favouriteLocations.length > 0 && profile.favouriteLocations.map((location) => (
+            <LocationCard key={location.id} location={location} onClick={(link) => { window.location = "/fotolocatie/" + link.slug }} />
           ))}
         </div>
       </div>

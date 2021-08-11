@@ -50,7 +50,7 @@ class LocationCard extends Component {
               src={this.props.location.photos
                 .sort((a, b) => b.likes - a.likes)[0]
                 .photo[0].url.replace(/-original|-watermark/gi, "-small")}
-              alt={`Bekijk locatie ${location.title}`}
+              alt={`Bekijk locatie ${this.props.location.title}`}
             />
 
             <div className="px-5 py-2">
