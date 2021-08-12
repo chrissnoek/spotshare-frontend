@@ -207,6 +207,7 @@ export async function getServerSideProps({ params }) {
           likes
           photo {
             url
+            formats
             
           }
         }
@@ -226,6 +227,7 @@ export async function getServerSideProps({ params }) {
         photo {
           id
           url
+          formats
         }
       }
     }
