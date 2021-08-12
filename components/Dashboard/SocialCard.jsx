@@ -31,10 +31,7 @@ const SocialCard = ({ photo }) => {
       <img
         className={`rounded block max-w-none w-full h-64 object-cover`}
         style={{ backgroundColor: "grey", width: "480", height: "320" }}
-        src={photo.photo[0].url.replace(
-          /-original|-watermark|-thumbnail/gi,
-          "-small"
-        )}
+        src={photo.photo[0].formats.medium.url}
         alt={photo.title}
       />
     </div>

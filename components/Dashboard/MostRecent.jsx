@@ -43,6 +43,7 @@ createdAt
       desc
       photo {
           url
+          formats
       }
 
       comments {
