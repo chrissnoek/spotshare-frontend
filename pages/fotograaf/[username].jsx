@@ -186,6 +186,8 @@ export async function getServerSideProps({ params }) {
       email
       id
       slug
+      firstname
+      lastname
       location
       followers{
         id
@@ -280,7 +282,7 @@ const UserProfileComponent = (props) => {
       numberOfLikes = numberOfLikes + profile.photos[i].likes;
     }
   }
-  // console.log(profile);
+  console.log(profile);
 
   return (
     <div className="p-6">
@@ -333,11 +335,13 @@ const UserProfileComponent = (props) => {
         <div className="sm:flex sm:items-center">
           <div className="block sm:flex sm:items-center sm:w-full">
             <div className="mx-auto sm:mx-0 mb-2 sm:mr-4">
-              <UserProfilePicture profile={profile} />
+              <UserProfilePicture profile={profile} classNames={'mx-auto'} />
             </div>
             <div className="sm:w-full">
               <h1 className="font-bold text-xl leading-tight text-center sm:text-left">
-                {profile.username}
+                {profile.firstname
+                  ? profile.firstname + " " + profile.lastname
+                  : profile.username}
               </h1>
               <div className="">
                 <p className="flex items-center text-gray-400 text-sm text-center justify-center sm:justify-start">

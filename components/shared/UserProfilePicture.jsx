@@ -1,12 +1,12 @@
 import React from "react";
 import { FaUserSecret } from "react-icons/fa";
 
-const UserProfilePicture = ({ profile, size = 16 }) => {
+const UserProfilePicture = ({ profile, size = 16, classNames }) => {
   return profile.profilePicture !== null &&
     profile.profilePicture !== undefined ? (
     <div
       id="imagePreview"
-      className={`relative h-${size} w-${size} sm:h-${size + 4} sm:w-${size + 4
+      className={classNames + ` relative h-${size} w-${size} sm:h-${size + 4} sm:w-${size + 4
         } overflow-hidden rounded-full`}
     >
       <img
