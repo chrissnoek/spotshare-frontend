@@ -10,7 +10,11 @@ const LocationList = ({ location, active, selectLocation }) => {
   if (featuredPhoto.photo[0].formats) {
     let imageUrl = '';
 
-    if (featuredPhoto.photo[0].formats.medium) {
+    if (featuredPhoto.photo[0].formats.thumbnail) {
+      imageUrl = featuredPhoto.photo[0].formats.thumbnail.url;
+    } else if (featuredPhoto.photo[0].formats.small) {
+      imageUrl = featuredPhoto.photo[0].formats.small.url;
+    } else if (featuredPhoto.photo[0].formats.medium) {
       imageUrl = featuredPhoto.photo[0].formats.medium.url;
     } else if (featuredPhoto.photo[0].formats.large) {
       imageUrl = featuredPhoto.photo[0].formats.large.url;

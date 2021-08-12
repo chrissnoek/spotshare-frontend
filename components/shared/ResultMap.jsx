@@ -117,6 +117,30 @@ const ResultMap = ({ locations, selectLocation, active }) => {
     sessionStorage.setItem("prevsettings", JSON.stringify(viewport));
   };
 
+  const getPopupImage = (location) => {
+    const featuredPhoto = location.photos
+      .sort((a, b) => b.likes - a.likes)[0];
+    let popupImage = '';
+    if (featuredPhoto.photo[0].formats) {
+      if (featuredPhoto.photo[0].formats.thumbnail) {
+        popupImage = featuredPhoto.photo[0].formats.thumbnail.url;
+      } else if (featuredPhoto.photo[0].formats.small) {
+        popupImage = featuredPhoto.photo[0].formats.small.url;
+      } else if (featuredPhoto.photo[0].formats.medium) {
+        popupImage = featuredPhoto.photo[0].formats.medium.url;
+      } else if (featuredPhoto.photo[0].formats.large) {
+        popupImage = featuredPhoto.photo[0].formats.large.url;
+      } else {
+        popupImage = featuredPhoto.photo[0].url;
+      }
+    } else {
+      popupImage = featuredPhoto.photo[0].url;
+    }
+    return popupImage;
+  }
+
+
+
   return (
     <>
       {showMap && (
@@ -162,9 +186,7 @@ const ResultMap = ({ locations, selectLocation, active }) => {
                   </span>
                   <Image
                     className={` block max-w-none w-full h-18 object-cover`}
-                    src={location.photos
-                      .sort((a, b) => b.likes - a.likes)[0]
-                      .photo[0].url.replace(/-original|-watermark/gi, "-small")}
+                    src={getPopupImage(location)}
                     alt={`Bekijk locatie ${location.title}`}
                     width={100}
                     height={76}
