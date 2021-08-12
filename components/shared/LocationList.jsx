@@ -48,7 +48,7 @@ const LocationList = ({ location, active, selectLocation }) => {
             }}
             src={location.photos
               .sort((a, b) => b.likes - a.likes)[0]
-              .photo[0].url.replace(/-original|-watermark/gi, "-small")}
+              .photo[0].formats.thumbnail.url}
             alt={`Bekijk locatie ${location.title}`}
           />
 

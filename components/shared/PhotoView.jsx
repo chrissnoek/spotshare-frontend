@@ -3,6 +3,17 @@ import Link from "next/link";
 import { CgTrash } from "react-icons/cg";
 
 const PhotoView = ({ photo, deletePhoto, index }) => {
+  let imageUrl = '';
+
+  if (photo.photo[0].formats.medium) {
+    imageUrl = photo.photo[0].formats.medium.url;
+  } else if (photo.photo[0].formats.large) {
+    imageUrl = photo.photo[0].formats.large.url;
+  } else {
+    imageUrl = photo.photo[0].url
+  }
+
+  console.log(imageUrl);
   return (
     <React.Fragment>
       <div className="w-full inline-block my-2 mr-2">
@@ -15,7 +26,7 @@ const PhotoView = ({ photo, deletePhoto, index }) => {
               ></a>
             </Link>
             <img
-              src={photo.photo[0].url}
+              src={imageUrl}
               className="object-cover  w-full h-48  block"
               alt="Foto"
             />

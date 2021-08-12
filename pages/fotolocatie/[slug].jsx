@@ -308,7 +308,7 @@ class LocationDetailComponent extends React.Component {
             <div
               className="w-full flex flex-col justify-center items-center relative"
               style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url})`,
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${photos.sort((a, b) => b.likes - a.likes)[0].photo[0].formats.large.url})`,
                 backgroundSize: `cover`,
                 backgroundPosition: `center center`,
                 height: "80vh",
@@ -571,7 +571,7 @@ export async function getServerSideProps({ params }) {
             }
             photo {
                 id
-                
+                formats
                 url
             }
         }
