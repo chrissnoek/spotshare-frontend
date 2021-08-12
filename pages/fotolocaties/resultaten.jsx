@@ -4,6 +4,7 @@ import ResultMap from "../../components/shared/ResultMap.jsx";
 import CategorieFilter from "../../components/shared/CategorieFilter.jsx";
 import LocationList from "../../components/shared/LocationList.jsx";
 import { useRouter } from "next/router";
+import SearchBox from "../../components/Dashboard/SearchBox.jsx";
 
 const Results = ({ locations }) => {
   const [allLocations, setAllLocations] = useState(locations);
@@ -14,16 +15,19 @@ const Results = ({ locations }) => {
   const router = useRouter();
 
   useEffect(() => {
-    // console.log(locations);
+    console.log(locations);
     if (allLocations !== locations) {
+      console.log('allLocations !== locations');
       setAllLocations(locations);
     }
 
     const _activeFilter = getFilterFromUrl();
+    console.log(_activeFilter);
     if (_activeFilter) {
       setActiveFilter(_activeFilter);
     } else {
-      setFilteredLocations(allLocations);
+      console.log('else');
+      setFilteredLocations(locations);
     }
 
     setShowMap(true);
@@ -79,49 +83,66 @@ const Results = ({ locations }) => {
     setSelectedLocation(locationId);
   };
 
-  return (
-    <div className="relative h-screen">
-      <div className="flex h-full">
-        <div className="w-full p-4 h-screen overflow-scroll">
-          <h1>Resultaten</h1>
-          <div className="mb-2 flex">
-            <span className="mr-2">Filter op categorie:</span>
-            {allLocations && (
-              <CategorieFilter
-                active={activeFilter}
-                onFilterChange={onFilterChange}
-                categories={allLocations.map((location) => {
-                  return location.location_categories;
-                })}
+  const redirect = (slug) => {
+    typeof window !== "undefined" && router.push(slug);
+  };
+
+  if (filteredLocations === null || filteredLocations.length === 0) {
+    console.log(filteredLocations);
+    // no results found
+    return (
+      <div className="py-6 px-8 text-center">
+        <h1 className="mb-4">Er zijn helaas geen resultaten gevonden voor je zoek opdracht</h1>
+        <SearchBox redirect={redirect} />
+      </div>
+    );
+
+  } else {
+
+    return (
+      <div className="relative h-screen">
+        <div className="flex h-full">
+          <div className="w-full p-4 h-screen overflow-scroll">
+            <h1>Resultaten</h1>
+            <div className="mb-2 flex">
+              <span className="mr-2">Filter op categorie:</span>
+              {allLocations && (
+                <CategorieFilter
+                  active={activeFilter}
+                  onFilterChange={onFilterChange}
+                  categories={allLocations.map((location) => {
+                    return location.location_categories;
+                  })}
+                />
+              )}
+            </div>
+            {filteredLocations.length > 0 &&
+              filteredLocations.map((location) => (
+                <div key={location.id} className="w-full">
+                  <LocationList
+                    size="large"
+                    location={location}
+                    key={location.id}
+                    active={selectedLocation === location.id ? true : false}
+                    selectLocation={selectLocation}
+                  />
+                </div>
+              ))}
+          </div>
+
+          <div className="mb-10 w-full h-full">
+            {showMap && filteredLocations.length > 0 && (
+              <ResultMap
+                locations={filteredLocations}
+                selectLocation={selectLocation}
+                active={selectedLocation}
               />
             )}
           </div>
-          {filteredLocations.length > 0 &&
-            filteredLocations.map((location) => (
-              <div key={location.id} className="w-full">
-                <LocationList
-                  size="large"
-                  location={location}
-                  key={location.id}
-                  active={selectedLocation === location.id ? true : false}
-                  selectLocation={selectLocation}
-                />
-              </div>
-            ))}
-        </div>
-
-        <div className="mb-10 w-full h-full">
-          {showMap && filteredLocations.length > 0 && (
-            <ResultMap
-              locations={filteredLocations}
-              selectLocation={selectLocation}
-              active={selectedLocation}
-            />
-          )}
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default Results;
@@ -134,7 +155,7 @@ export async function getServerSideProps(context) {
     context.query.lat,
     context.query.lng
   );
-  // console.log(locations);
+  console.log(locations);
 
   return {
     props: {

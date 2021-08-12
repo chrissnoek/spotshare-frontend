@@ -557,26 +557,26 @@ class PhotoDetail extends React.Component {
   }
 }
 
-export async function getStaticPaths() {
-  // build the graphql query
-  const query = `
-        query photoBySlug{
-            photos {
-                slug
-            }
-        }`;
+// export async function getStaticPaths() {
+//   // build the graphql query
+//   const query = `
+//         query photoBySlug{
+//             photos {
+//                 slug
+//             }
+//         }`;
 
-  const vars = {};
-  const result = await graphQLFetch(query, vars, true);
+//   const vars = {};
+//   const result = await graphQLFetch(query, vars, true);
 
-  const paths = result.photos.map((photo) => ({
-    params: { slug: photo.slug.toString() },
-  }));
+//   const paths = result.photos.map((photo) => ({
+//     params: { slug: photo.slug.toString() },
+//   }));
 
-  return { paths, fallback: false };
-}
+//   return { paths, fallback: false };
+// }
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   // build the graphql query
   const query = `
         query photoBySlug($slug: String!){
@@ -647,6 +647,6 @@ export async function getStaticProps({ params }) {
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every second
-    revalidate: 60, // In seconds
+    // revalidate: 60, // In seconds
   };
 }

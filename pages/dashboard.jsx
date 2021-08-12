@@ -113,7 +113,7 @@ const Dashboard = ({ categories: _categories }) => {
                   </li>
                   <li>
                     <span
-                      className={`block py-3 flex items-center ${showNotifications
+                      className={`cursor-pointer block py-3 flex items-center ${showNotifications
                         ? `text-blue-500 font-bold`
                         : `text-gray-900 hover:text-blue-500 hover:font-bold`
                         }`}

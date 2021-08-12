@@ -155,28 +155,28 @@ const UserProfile = ({ profile: _profile }) => {
   );
 };
 
-export async function getStaticPaths() {
-  // build the graphql query
-  const query = `query profile {
-    users {
-      username
-    }
-  }`;
+// export async function getStaticPaths() {
+//   // build the graphql query
+//   const query = `query profile {
+//     users {
+//       username
+//     }
+//   }`;
 
-  const vars = {};
-  const result = await graphQLFetch(query, vars, true);
+//   const vars = {};
+//   const result = await graphQLFetch(query, vars, true);
 
-  const paths = result.users.map((profile) => ({
-    params: { username: profile.username.toString() },
-  }));
+//   const paths = result.users.map((profile) => ({
+//     params: { username: profile.username.toString() },
+//   }));
 
-  return { paths, fallback: false };
-}
+//   return { paths, fallback: false };
+// }
 // This function gets called at build time on server-side.
 // It may be called again, on a serverless function, if
 // revalidation is enabled and a new request comes in
-export async function getStaticProps({ params }) {
-  console.log(params);
+export async function getServerSideProps({ params }) {
+  // console.log(params);
   const query = `query profile($username: String!) {
     users( where: { username: $username } ) {
       username
@@ -240,7 +240,7 @@ export async function getStaticProps({ params }) {
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every second
-    revalidate: 60, // In seconds
+    // revalidate: 60, // In seconds
   };
 }
 

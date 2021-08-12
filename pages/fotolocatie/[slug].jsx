@@ -525,28 +525,28 @@ function LocationPhotoItem(props) {
 
 const LocationDetailComponentRouter = LocationDetailComponent;
 
-export async function getStaticPaths() {
-  // build the graphql query
-  const query = `
-        query {
-            locations {
-                slug
-            }
-        }
-    `;
+// export async function getStaticPaths() {
+//   // build the graphql query
+//   const query = `
+//         query {
+//             locations {
+//                 slug
+//             }
+//         }
+//     `;
 
-  const vars = {};
-  const result = await graphQLFetch(query, vars, true);
-  // console.log("urls", result);
+//   const vars = {};
+//   const result = await graphQLFetch(query, vars, true);
+//   // console.log("urls", result);
 
-  const paths = result.locations.map((location) => ({
-    params: { slug: location.slug },
-  }));
+//   const paths = result.locations.map((location) => ({
+//     params: { slug: location.slug },
+//   }));
 
-  return { paths, fallback: false };
-}
+//   return { paths, fallback: false };
+// }
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   // build the graphql query
   const query = `query locationBySlug($slug: String!){
     locationBySlug(slug: $slug) {
@@ -608,6 +608,6 @@ export async function getStaticProps({ params }) {
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every second
-    revalidate: 60, // In seconds
+    // revalidate: 60, // In seconds
   };
 }

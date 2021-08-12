@@ -25,7 +25,7 @@ const SearchBox = (props) => {
       // if HTTP-status is 200-299
       // get the response body (the method explained below)
       let json = await response.json();
-      //console.log(json);
+      console.log(json);
       //
       if (json.length > 0) {
         // the entered city can be converted to lat long
@@ -35,9 +35,7 @@ const SearchBox = (props) => {
           `/fotolocaties/resultaten/?lat=${json[0].lat}&lng=${json[0].lon}`
         );
       } else {
-        toast.error(
-          "Het lijkt erop dat je geen geldige locatie hebt ingevuld :-("
-        );
+        alert("Het lijkt erop dat je geen geldige locatie hebt ingevuld :-(, probeer het bijvoorbeeld met een stadsnaam!");
       }
     } else {
       alert("HTTP-Error: " + response.status);

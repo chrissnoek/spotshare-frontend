@@ -117,7 +117,7 @@ function AddPhoto(props) {
           <input
             type="number"
             name="iso"
-            placeholder="iso"
+            placeholder="ISO"
             value={iso || ""}
             onChange={props.onChange}
             className="special mb-0 flex-shrink flex-grow flex-auto  w-px flex-1 border h-10 border-gray-400 rounded rounded-l-none py-2 px-3 relative text-sm"
@@ -143,7 +143,7 @@ function AddPhoto(props) {
       <input
         type="text"
         name="camera"
-        placeholder="camera"
+        placeholder="Camera"
         onChange={props.onChange}
         value={camera || ""}
       />
@@ -152,7 +152,7 @@ function AddPhoto(props) {
         name="focalLength"
         value={focalLength || ""}
         onChange={props.onChange}
-        placeholder="focalLength"
+        placeholder="Focal length"
       />
       <textarea
         type="text"
