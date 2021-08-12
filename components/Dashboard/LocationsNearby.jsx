@@ -23,6 +23,7 @@ const LocationsNearby = () => {
       console.log("succes");
       var crd = pos.coords;
       const _locations = await findNearbyLocations(crd.latitude, crd.longitude);
+      console.log(_locations);
       setLocations(_locations);
     };
 
@@ -65,7 +66,7 @@ const LocationsNearby = () => {
                     className={`object-cover`}
                     src={location.photos
                       .sort((a, b) => b.likes - a.likes)[0]
-                      .photo[0].url.replace(/-original|-watermark/gi, "-small")}
+                      .photo[0].formats.thumbnail.url.replace(/-original|-watermark/gi, "-small")}
                     alt={`Bekijk locatie ${location.title}`}
                     layout="fill"
                     object="cover"

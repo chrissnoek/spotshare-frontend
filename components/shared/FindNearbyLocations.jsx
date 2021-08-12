@@ -75,6 +75,7 @@ export const findNearbyLocations = async (
             slug
             photo {
                 url 
+                formats
             }
         }
         }
