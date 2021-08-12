@@ -89,6 +89,7 @@ const ForgotPassword = () => {
         //  console.log(response);
         //  console.log("Your user received an email");
         setSuccess(true);
+        setSuccess(false);
         setData({});
       })
       .catch((error) => {
