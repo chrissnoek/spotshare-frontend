@@ -112,7 +112,7 @@ const PasswordReset = () => {
     // // console.log(result);
 
     axios
-      .post("http://localhost:1337/auth/reset-password", {
+      .post("https://spotshare-strapi.herokuapp.com/auth/reset-password", {
         code: code, // code contained in the reset link of step 3.
         password: data.password,
         passwordConfirmation: data.passwordConfirmation,

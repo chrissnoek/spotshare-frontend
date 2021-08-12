@@ -16,7 +16,7 @@ const MyClassWithRouter = (props) => {
       const search = `?${name}=${value}`;
 
       axios
-        .get(`http://localhost:1337/auth/facebook/callback${search}`)
+        .get(`https://spotshare-strapi.herokuapp.com/auth/facebook/callback${search}`)
         .then((response) => {
           // Handle success.
           // console.log(response);
@@ -49,7 +49,7 @@ export default MyClassWithRouter;
 
 // try {
 //   // console.log(action, action.search);
-//   const requestURL = `http://localhost:1337/auth/${action.provider}/callback${action.search}`;
+//   const requestURL = `https://spotshare-strapi.herokuapp.com/auth/${action.provider}/callback${action.search}`;
 //   const response = yield call(request, requestURL, { method: "GET" });
 
 //   if (response.jwt) {
@@ -70,11 +70,11 @@ export default MyClassWithRouter;
 // // console.log(accessToken);
 
 // // console.log(
-// 	`http://localhost:1337/auth/facebook/callback${location.search}`
+// 	`https://spotshare-strapi.herokuapp.com/auth/facebook/callback${location.search}`
 // );
 
 // axios
-//   .get(`http://localhost:1337/auth/facebook/callback${location.search}`)
+//   .get(`https://spotshare-strapi.herokuapp.com/auth/facebook/callback${location.search}`)
 //   .then((response) => {
 //     // Handle success.
 //     // console.log(response);

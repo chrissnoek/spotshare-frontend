@@ -713,7 +713,7 @@ class AddPhotoForm extends React.Component {
       formData.append("refId", data.createPhoto.photo.id);
 
       const request = new XMLHttpRequest();
-      request.open("POST", `http://localhost:1337/upload`);
+      request.open("POST", `https://spotshare-strapi.herokuapp.com/upload`);
       request.send(formData);
       request.addEventListener("load", redirect);
     } else {

@@ -81,7 +81,7 @@ const ForgotPassword = () => {
 
     // Request API.
     axios
-      .post("http://localhost:1337/auth/forgot-password", {
+      .post("https://spotshare-strapi.herokuapp.com/auth/forgot-password", {
         email: data.email, // user's email
       })
       .then((response) => {
