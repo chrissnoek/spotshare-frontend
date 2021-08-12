@@ -37,7 +37,7 @@ const LocationList = ({ location, active, selectLocation }) => {
     };
 
     return (
-      <div>
+      <div className="cursor-pointer">
         <div
           onMouseOver={() => {
             selectLocation(location.id);
