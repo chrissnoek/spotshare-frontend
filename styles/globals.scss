@@ -143,6 +143,12 @@ form.photoAdd {
   animation-timing-function: linear;
 }
 
+@media screen and (max-width: 768px) {
+  #crowd-shortcut {
+    display: none !important;
+  }
+}
+
 @-webkit-keyframes spin {
   from {
     -webkit-transform: rotate(0deg);
