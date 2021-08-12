@@ -12,6 +12,7 @@ const ForgotPassword = () => {
   const [errors, setErrors] = useState({});
   const [loginError, setLoginError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = ({ currentTarget: input }) => {
     const _errors = { ...errors };
@@ -92,6 +93,7 @@ const ForgotPassword = () => {
       })
       .catch((error) => {
         //  console.log("An error occurred:", error.response);
+        setLoading(false);
       });
 
     // const result = await graphQLFetch(query, vars, true);
@@ -101,10 +103,14 @@ const ForgotPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const errors = validate();
     setErrors(errors || {});
-    if (errors) return;
+    if (errors) {
+      setLoading(false);
+      return;
+    }
 
     doSubmit();
   };
@@ -210,7 +216,7 @@ const ForgotPassword = () => {
           {loginError && <ErrorBox />}
           {renderInput("email", "Email", "Emailadres")}
           <div className="flex items-center justify-between">
-            <div>{renderButton("Wachtwoord resetten")}</div>
+            <div>{renderButton("Wachtwoord resetten", loading)}</div>
           </div>
           <div className="flex items-center justify-center">
             <Link href="/inloggen">

@@ -6,7 +6,6 @@ import graphQLFetch from "../graphQLFetch.js";
 import { useRouter } from "next/router";
 import URLSearchParams from "url-search-params";
 import auth from "../services/authService";
-import { toast } from "react-toastify";
 import axios from "axios";
 import Head from "next/head";
 
@@ -16,6 +15,7 @@ const PasswordReset = () => {
   const [loginError, setLoginError] = useState(false);
   const [code, setCode] = useState();
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -127,16 +127,21 @@ const PasswordReset = () => {
         // console.log("An error occurred:", error.response);
         // error message
         // console.log("ERROR!");
-        toast.error("Je code is verlopen, probeer het opnieuw.");
+        alert("Je code is verlopen, probeer het opnieuw.");
+        setLoading(false);
       });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const errors = validate();
     setErrors(errors || {});
-    if (errors) return;
+    if (errors) {
+      setLoading(false);
+      return;
+    }
 
     doSubmit();
   };
@@ -224,7 +229,7 @@ const PasswordReset = () => {
               "password"
             )}
             <div className="flex items-center justify-between">
-              <div>{renderButton("Wachtwoord resetten")}</div>
+              <div>{renderButton("Wachtwoord resetten", loading)}</div>
             </div>
           </form>
         )}

@@ -12,6 +12,7 @@ import Head from "next/head";
 const RegisterForm = () => {
   const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const checkRedirect = async () => {
@@ -55,6 +56,7 @@ const RegisterForm = () => {
   };
 
   const doSubmit = () => {
+    setLoading(true);
     // call server
 
     // redirect user to homepage
@@ -98,7 +100,7 @@ const RegisterForm = () => {
     placeholder,
     type = "text",
     classes = "w-full",
-    onBlur = () => {}
+    onBlur = () => { }
   ) => {
     return (
       <Input
@@ -127,9 +129,8 @@ const RegisterForm = () => {
     // if email already exists, add error to email
     if (!available) {
       const _errors = { ...errors };
-      const errorMessage = `${
-        type.charAt(0).toUpperCase() + type.slice(1)
-      } is al in gebruik.`;
+      const errorMessage = `${type.charAt(0).toUpperCase() + type.slice(1)
+        } is al in gebruik.`;
       _errors[type] = errorMessage;
 
       setErrors(_errors);
@@ -179,6 +180,7 @@ const RegisterForm = () => {
     if (registered === true) {
       window.location = "/";
     } else {
+      setLoading(false);
       // console.log(registered);
     }
   };
@@ -298,7 +300,7 @@ const RegisterForm = () => {
           )}
 
           <div className="flex items-center justify-between">
-            {renderButton("Kom bij de club!")}
+            {renderButton("Kom bij de club!", loading)}
           </div>
           <div className="flex justify-center itemst-center w-full">
             <span className="text-gray-600 text-center text-sm mr-2 block">

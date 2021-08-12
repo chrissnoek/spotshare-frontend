@@ -11,6 +11,7 @@ const Login = () => {
   const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
   const [loginError, setLoginError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const checkRedirect = async () => {
@@ -58,10 +59,12 @@ const Login = () => {
       window.location = "/";
     } else {
       setLoginError(true);
+      setLoading(false);
     }
   };
 
   const doSubmit = () => {
+    setLoading(true);
     // call server
     // redirect user to homepage
     // console.log("submitted");
@@ -141,7 +144,7 @@ const Login = () => {
     placeholder,
     type = "text",
     classes = "w-full",
-    onBlur = () => {}
+    onBlur = () => { }
   ) => {
     return (
       <Input
@@ -231,7 +234,7 @@ const Login = () => {
             "password"
           )}
           <div className="flex items-center justify-between">
-            <div>{renderButton("Log in")}</div>
+            <div>{renderButton("Log in", loading)}</div>
           </div>
           <div className="flex items-center justify-center">
             <Link href="/wachtwoord-vergeten">
