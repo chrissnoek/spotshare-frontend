@@ -20,11 +20,26 @@ function HomeScreen({ featuredPhoto, randomPhotos, context }) {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(context);
     if(context.user) {
       router.push("/dashboard");
     }
   }, [context]);
+
+  const randomPhotosUrl = [];
+
+  const one = randomPhotos[0].photo[0];
+  const two = randomPhotos[1].photo[0];
+  const three = randomPhotos[2].photo[0];
+  const four = randomPhotos[3].photo[0];
+  const five = randomPhotos[4].photo[0];
+  const six = randomPhotos[5].photo[0];
+
+  randomPhotosUrl[0] = one.formats?.medium?.url || one.formats?.large?.url || one.url;
+  randomPhotosUrl[1] = two.formats?.medium?.url || two.formats?.large?.url || two.url;
+  randomPhotosUrl[2] = three.formats?.medium?.url || three.formats?.large?.url || three.url;
+  randomPhotosUrl[3] = four.formats?.medium?.url || four.formats?.large?.url || four.url;
+  randomPhotosUrl[4] = five.formats?.medium?.url || five.formats?.large?.url || five.url;
+  randomPhotosUrl[5] = six.formats?.medium?.url || six.formats?.large?.url || six.url;
 
   return (
     <div>
@@ -80,10 +95,7 @@ function HomeScreen({ featuredPhoto, randomPhotos, context }) {
               <div className="w-40 h-80 relative mb-4">
                 <Image
                   className="w-full h-full rounded oveflow-hidden"
-                  src={randomPhotos[0].photo[0].url.replace(
-                    /-original|-watermark/g,
-                    "-thumbnail"
-                  )}
+                  src={randomPhotosUrl[0]}
                   alt=""
                   layout="fill"
                   objectFit="cover"
@@ -92,10 +104,7 @@ function HomeScreen({ featuredPhoto, randomPhotos, context }) {
               <div className="w-40 h-80 relative">
                 <Image
                   className="w-full h-full rounded oveflow-hidden"
-                  src={randomPhotos[1].photo[0].url.replace(
-                    /-original|-watermark/g,
-                    "-thumbnail"
-                  )}
+                  src={randomPhotosUrl[1]}
                   alt=""
                   layout="fill"
                   objectFit="cover"
@@ -107,10 +116,7 @@ function HomeScreen({ featuredPhoto, randomPhotos, context }) {
               <div className="w-40 h-80 relative mb-4">
                 <Image
                   className=" w-full h-full rounded oveflow-hidden"
-                  src={randomPhotos[2].photo[0].url.replace(
-                    /-original|-watermark/g,
-                    "-thumbnail"
-                  )}
+                  src={randomPhotosUrl[2]}
                   alt=""
                   layout="fill"
                   objectFit="cover"
@@ -119,10 +125,7 @@ function HomeScreen({ featuredPhoto, randomPhotos, context }) {
               <div className="w-40 h-80 relative">
                 <Image
                   className="mb-4 w-full h-full rounded oveflow-hidden"
-                  src={randomPhotos[3].photo[0].url.replace(
-                    /-original|-watermark/g,
-                    "-thumbnail"
-                  )}
+                  src={randomPhotosUrl[3]}
                   alt=""
                   layout="fill"
                   objectFit="cover"
@@ -134,10 +137,7 @@ function HomeScreen({ featuredPhoto, randomPhotos, context }) {
               <div className="w-40 h-80 relative">
                 <Image
                   className="mb-4 w-full h-full rounded oveflow-hidden"
-                  src={randomPhotos[5].photo[0].url.replace(
-                    /-original|-watermark/g,
-                    "-thumbnail"
-                  )}
+                  src={randomPhotosUrl[4]}
                   alt=""
                   layout="fill"
                   objectFit="cover"
@@ -269,16 +269,11 @@ function HomeScreen({ featuredPhoto, randomPhotos, context }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
-  const firstID = getRandomInt(15);
-  const secondID = getRandomInt(15);
-  const thirdID = getRandomInt(15);
-  const fourthID = getRandomInt(15);
-  const fifthID = getRandomInt(15);
-  const sixtID = getRandomInt(15);
+  const start = getRandomInt(1900);
   // console.log(firstID, secondID, thirdID, fourthID, fifthID, sixtID);
 
   // build the graphql query
@@ -300,12 +295,13 @@ export async function getStaticProps() {
         }
       }
     }
-    randomPhotos: photos(limit:6) {
+    randomPhotos: photos(limit:6, start: ${start}) {
       id
       slug
       title
       photo {
         url
+        formats
       }
     }
   }`;
@@ -321,6 +317,6 @@ export async function getStaticProps() {
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every second
-    revalidate: 86400, // In seconds
+    // revalidate: 86400, // In seconds
   };
 }
