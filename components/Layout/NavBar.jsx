@@ -61,16 +61,15 @@ const NavBar = () => {
         </div>
       </div>
       <nav
-        className={`px-2 pt-2 pb-4 sm:p-0 items-center sm:flex ${
-          isOpen ? " block" : " hidden"
-        }`}
+        className={`px-2 pt-2 pb-4 sm:p-0 items-center sm:flex ${isOpen ? " block" : " hidden"
+          }`}
       >
         <Link href="/foto/toevoegen">
           <a
             onClick={closeMenu}
-            className="block text-white font-semibold rounded hover:bg-gray-800 px-2 py-1"
+            className="block text-white font-semibold rounded bg-green-500 text-white hover:bg-green-600 px-2 py-1 "
           >
-            Uploaden
+            Foto uploaden
           </a>
         </Link>
 
@@ -113,7 +112,9 @@ const NavBar = () => {
                 onClick={closeMenu}
                 className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
               >
-                {user.username}
+                {user.firstname
+                  ? user.firstname + " " + user.lastname
+                  : user.username}
               </a>
             </Link>
             <Link href="/uitloggen">

@@ -145,7 +145,7 @@ const Dashboard = ({ categories: _categories }) => {
                 )}
               </div>
 
-              <div className="w-full md:w-1/4  px-14">
+              <div className="w-full md:w-1/4 px-6 md:px-14">
                 <LocationsNearby />
                 <CategorieList categories={categories} />
               </div>
