@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FiTrash2 } from "react-icons/fi";
+import CreatableSelect from "react-select/creatable";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+
+const animatedComponents = makeAnimated();
 
 function AddPhoto(props) {
   if (props.currentStep && props.currentStep !== 1) {
     return null;
   }
+
+  useEffect(() => {
+    props.fetchCategories();
+  }, []);
 
   const {
     date,
@@ -17,6 +26,8 @@ function AddPhoto(props) {
     title,
   } = props.state.photo;
   const { photoLoading, tempFile } = props.state;
+
+  const { photo_categories, locationCategoryValues } = props;
 
   let showInputClass =
     "relative border-2 border-dashed rounded mb-2 p-4 text-center cursor-pointer hover:border-green-500";
@@ -153,6 +164,19 @@ function AddPhoto(props) {
         value={focalLength || ""}
         onChange={props.onChange}
         placeholder="Focal length"
+      />
+      <CreatableSelect
+        components={animatedComponents}
+        isMulti
+        onChange={(e) => {
+          props.handleSelect(e, "photo_categories");
+        }}
+        options={locationCategoryValues}
+        placeholder="Tags"
+        value={photo_categories}
+        onCreateOption={props.onCategoryCreate}
+        formatCreateLabel={(label) => `Maak nieuwe categorie: "${label}`}
+        className={'mb-2'}
       />
       <textarea
         type="text"

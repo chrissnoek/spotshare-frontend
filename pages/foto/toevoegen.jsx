@@ -98,6 +98,7 @@ class AddPhotoForm extends React.Component {
       monthValues: [],
       months: null,
       location_categories: null,
+      photo_categories: null,
       newLocation: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -218,7 +219,74 @@ class AddPhotoForm extends React.Component {
     this.updateContext();
   }
 
-  onCategoryCreate = async (option) => {
+  onPhotoCategoryCreate = async (option) => {
+    const label = option;
+
+    // check if slug is available, if not, add number
+    const value = slugify(option, {
+      replacement: "-", // replace spaces with replacement character, defaults to `-`
+      remove: undefined, // remove characters that match regex, defaults to `undefined`
+      lower: true, // convert to lower case, defaults to `false`
+      strict: true, // strip special characters except replacement, defaults to `false`
+    });
+
+    const query = `mutation CreateLocationCategory($input: createLocationCategoryInput) {
+            createLocationCategory(input: $input){
+            locationCategory{
+              label
+              value
+              id
+            }
+          }
+          }`;
+
+    let input = {};
+    input["data"] = {
+      label: label,
+      value: value,
+    };
+
+    const data = await graphQLFetch(query, { input }, true);
+
+    if (data) {
+      const { label, value, id } = data.createLocationCategory.locationCategory;
+      this.setState((prevState) => {
+        const oldCategories = [...this.state.locationCategoryValues];
+        const newCategory = {
+          label: label,
+          value: value,
+          id: id,
+        };
+        oldCategories.push(newCategory);
+
+        const selectedValues =
+          this.state.photo_categories != null
+            ? this.state.photo_categories
+            : [];
+        selectedValues.push(newCategory);
+
+        const categoryIds = this.state.photo.photo_categories
+          ? this.state.photo.photo_categories
+          : [];
+        categoryIds.push(newCategory.id);
+
+        return {
+          photo: {
+            ...prevState.photo,
+            photo_categories: [...categoryIds],
+          },
+          locationCategoryValues: [...oldCategories],
+          photo_categories: selectedValues,
+        };
+      });
+      return {
+        label: label,
+        value: value,
+      };
+    }
+  };
+
+  onLocationCategoryCreate = async (option) => {
     const label = option;
 
     // check if slug is available, if not, add number
@@ -283,6 +351,27 @@ class AddPhotoForm extends React.Component {
         value: value,
       };
     }
+  };
+
+  handlePhotoCategorySelect = (newValue, name) => {
+    /*
+        set the ID of the location_categories to location object
+        and update the selected values in object location_categories in the state
+        */
+    let ids;
+    if (newValue !== null) {
+      ids = newValue.map((item) => {
+        return item.id;
+      });
+    } else {
+      ids = [];
+    }
+
+    this.setState((prevState) => ({
+      ...prevState,
+      photo: { ...prevState.photo, [name]: ids },
+      [name]: newValue,
+    }));
   };
 
   handleSelect = (newValue, name) => {
@@ -673,6 +762,7 @@ class AddPhotoForm extends React.Component {
                     camera
                     focalLength
                     id
+                    photo_categories
                     location {
                         id
                         title
@@ -689,7 +779,7 @@ class AddPhotoForm extends React.Component {
     delete input.data.longitude;
     delete input.data.latitude;
 
-    // console.log("input", input);
+    console.log("input", input);
 
     const data = await graphQLFetch(query, { input }, true);
 
@@ -769,7 +859,7 @@ class AddPhotoForm extends React.Component {
             <title key="title">Foto toevoegen | Spotshare</title>
             <meta name="robots" content="noindex,nofollow,noarchive" key="robots" />
           </Head>
-          <h1 className="my-2 font-bold">Foto toevegen</h1>
+          <h1 className="my-2 font-bold">Foto toevoegen</h1>
 
           <AddPhoto
             currentStep={this.state.currentStep}
@@ -781,6 +871,11 @@ class AddPhotoForm extends React.Component {
             handleOnDragOver={this.handleOnDragOver}
             handleOnDragLeave={this.handleOnDragLeave}
             removeImage={this.removeImage}
+            onCategoryCreate={this.onPhotoCategoryCreate}
+            fetchCategories={this.fetchCategories}
+            locationCategoryValues={this.state.locationCategoryValues}
+            photo_categories={this.state.photo_categories}
+            handleSelect={this.handlePhotoCategorySelect}
           />
           {this.state.currentStep === 2 && (
             <Step2
@@ -793,7 +888,7 @@ class AddPhotoForm extends React.Component {
               onChange={this.handleInputChange}
               updateNewLocationCoords={this.updateNewLocationCoords}
               handleSelect={this.handleSelect}
-              onCategoryCreate={this.onCategoryCreate}
+              onCategoryCreate={this.onLocationCategoryCreate}
               fetchCategories={this.fetchCategories}
               onNewLocationClick={this.onNewLocationClick}
               setNewLocation={this.setNewLocation}
@@ -959,7 +1054,7 @@ class Step2 extends React.Component {
         )}
         {newLocation && (
           <React.Fragment>
-            <h2>Nieuwe locatie toevoegen</h2>
+            <h2 className="mt-2">Nieuwe locatie toevoegen</h2>
             <input
               type="text"
               name="title"
@@ -987,6 +1082,7 @@ class Step2 extends React.Component {
             <Select
               components={animatedComponents}
               closeMenuOnSelect={false}
+              className="mb-2"
               isMulti
               options={monthValues}
               placeholder="Beste maand om te fotograferen"
@@ -994,7 +1090,7 @@ class Step2 extends React.Component {
                 this.props.handleSelect(e, "months");
               }}
             />
-            <CreatableSelect
+            {/* <CreatableSelect
               components={animatedComponents}
               isMulti
               onChange={(e) => {
@@ -1005,7 +1101,7 @@ class Step2 extends React.Component {
               value={location_categories}
               onCreateOption={this.props.onCategoryCreate}
               formatCreateLabel={(label) => `Maak nieuwe categorie: "${label}`}
-            />
+            /> */}
           </React.Fragment>
         )}
         <button
