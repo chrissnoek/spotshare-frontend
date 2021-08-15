@@ -152,21 +152,6 @@ class AddPhotoForm extends React.Component {
     });
   };
 
-  previousButton() {
-    let currentStep = this.state.currentStep;
-    if (currentStep !== 1) {
-      return (
-        <button
-          className="block px-3 py- my-2 text-white rounded text-l bg-gray-700"
-          type="button"
-          onClick={this._prev}
-        >
-          Vorige
-        </button>
-      );
-    }
-    return null;
-  }
 
   nextButton(disabled, btnClass) {
     let currentStep = this.state.currentStep;
@@ -184,6 +169,7 @@ class AddPhotoForm extends React.Component {
     }
     return null;
   }
+
 
   changeMarkers = () => {
     // loading leaflet in componentDidMount because it doenst support SSR
@@ -625,28 +611,27 @@ class AddPhotoForm extends React.Component {
     return result;
   };
 
+
   createSlug = async (slug, suffix, previousSuffix) => {
     var result = await this.checkForAvailableSlug(slug);
 
     if (!result.photoBySlug) {
-      // slug is available, proceed
+      // console.log("final returned slug by Createdslug:", slug);
       return slug;
     } else {
-      // slug is not available, try again
-
       if (!suffix) {
         suffix = 1;
       } else {
         suffix++;
       }
-      var n = str.lastIndexOf(previousSuffix);
-      slug.replace(previousSlug, "");
+      const cleanSlug = slug.replace(previousSuffix, "");
 
       const createdSuffix = "-" + suffix;
-      let adjustedSlug = slug + reactedSlug;
+      let adjustedSlug = cleanSlug + createdSuffix;
       return this.createSlug(adjustedSlug, suffix, createdSuffix);
     }
   };
+
 
   fetchCategories = async () => {
     // build the graphql query
@@ -675,6 +660,7 @@ class AddPhotoForm extends React.Component {
     e.persist();
 
     this.setState({ loading: true });
+    this.setState({ uploadPercentage: '10' });
 
     const {
       blob,
@@ -693,6 +679,8 @@ class AddPhotoForm extends React.Component {
             blob: "Voeg je nog een foto toe? 📸",
           },
         }));
+        this.setState({ loading: false });
+        this.setState({ uploadPercentage: '0' });
       }
       if (!title) {
         // console.log("no title in state.photo");
@@ -706,6 +694,7 @@ class AddPhotoForm extends React.Component {
       }
       // console.log("returning");
       this.setState({ loading: false });
+      this.setState({ uploadPercentage: '0' });
       return;
     }
 
@@ -713,8 +702,10 @@ class AddPhotoForm extends React.Component {
     if (newLocation) {
       createdLocation = await this.createLocation();
       // console.log(createdLocation);
+      this.setState({ uploadPercentage: '50' });
     } else {
       // console.log("no new location found");
+      this.setState({ uploadPercentage: '50' });
     }
 
     // check if slug is available, if not, add number
@@ -790,10 +781,12 @@ class AddPhotoForm extends React.Component {
     const data = await graphQLFetch(query, { input }, true);
 
     if (data) {
+      this.setState({ uploadPercentage: '75' });
       // console.log("photo page created, uploading foto..");
       //after pages is created, use refId to upload files with xhr request
 
       const redirect = () => {
+        this.setState({ uploadPercentage: '100' });
         //if the query returns an id in data, the photo is created
         // redirect to created photo
         this.props.redirect(data.createPhoto.photo.slug);
@@ -814,6 +807,7 @@ class AddPhotoForm extends React.Component {
       request.addEventListener("load", redirect);
     } else {
       // console.log("failed");
+      this.setState({ uploadPercentage: 0 });
       this.setState({ loading: false });
     }
   }
@@ -845,7 +839,7 @@ class AddPhotoForm extends React.Component {
   };
 
   render() {
-    let btnClass = "block px-3 py- my-2 text-white rounded text-l";
+    let btnClass = "block px-4 py-2 my-2 text-white rounded text-l float-right";
     let disabled =
       this.state.currentStep == 1
         ? this.state.photo.title === undefined ||
@@ -899,20 +893,12 @@ class AddPhotoForm extends React.Component {
               fetchCategories={this.fetchCategories}
               onNewLocationClick={this.onNewLocationClick}
               setNewLocation={this.setNewLocation}
+              _prev={this._prev}
             />
           )}
 
-          <div className="shadow w-full bg-grey-light">
-            <div
-              className="bg-blue-500 text-xs leading-none py-1 text-center text-white"
-              style={{ width: this.state.uploadPercentage + "%" }}
-            >
-              {this.state.uploadPercentage + "%"}
-            </div>
-          </div>
-
-          {this.previousButton()}
           {this.nextButton(disabled, btnClass)}
+          <div className="clear-both"></div>
         </form>
       </React.Fragment>
     );
@@ -935,7 +921,7 @@ class Step2 extends React.Component {
         lng: 5.4411363,
       },
       zoom,
-      loadingNearbyLocations: false,
+      loadingNearbyLocations: false
     };
   }
 
@@ -1004,16 +990,23 @@ class Step2 extends React.Component {
       location_categories,
       newLocation,
       monthValues,
-      loading
+      loading,
+      location,
+      selectedLocation,
+      uploadPercentage
     } = this.props.state;
     const { marker } = this.state;
     const position = [marker.lat, marker.lng];
 
     const { nearbyLocations, zoom, loadingNearbyLocations } = this.state;
 
+    const disabled = newLocation && (!location.hasOwnProperty('title') || location.title == '');
+
+    console.log(uploadPercentage, uploadPercentage + "%");
+
     return (
       <div className="form-group">
-        <h2>Waar is heb je de foto gemaakt?</h2>
+        <h2>Waar heb je de foto gemaakt?</h2>
         <Map
           className="map"
           id="photoLocation"
@@ -1039,7 +1032,7 @@ class Step2 extends React.Component {
         {nearbyLocations && !newLocation && (
           <div>
             <div className="my-2 font-bold">Bedoel je misschien deze locatie?</div>
-            <div className="flex flex-wrap -mx-2">
+            <div className="flex flex-wrap">
               {nearbyLocations.map(
                 (location) =>
                   location.photos.length > 0 && (
@@ -1054,7 +1047,7 @@ class Step2 extends React.Component {
             </div>
             <div
               onClick={this.props.onNewLocationClick}
-              className="rounded bg-blue-500 text-white w-full p-2"
+              className="rounded bg-blue-500 text-white w-full p-2 text-center cursor-pointer hover:bg-blue-600"
             >
               Nee, nieuwe locatie toevoegen
             </div>
@@ -1112,14 +1105,34 @@ class Step2 extends React.Component {
             /> */}
           </React.Fragment>
         )}
-        <button
-          type="submit"
-          className={"block px-3 py- my-2 text-white rounded text-l " +
-            (loading ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-600')}
-          disabled={loading}
-        >
-          {loading ? <FaSpinner className="animate-spin" /> : 'Uploaden'}
-        </button>
+
+        <div className="flex mt-4">
+          <button
+            className="block px-4 py-2 my-2 text-white rounded text-l bg-gray-700"
+            type="button"
+            onClick={this.props._prev}
+          >
+            Vorige
+          </button>
+
+          {(selectedLocation || newLocation) && <button
+            type="submit"
+            className={"block px-4 py-2 my-2 text-white rounded text-l ml-auto " +
+              (loading || disabled ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-600')}
+            disabled={loading || disabled}
+          >
+            {loading ? <FaSpinner className="animate-spin" /> : 'Uploaden'}
+          </button>}
+        </div>
+
+        {loading && <div className="shadow w-full bg-grey-light">
+          <div
+            className="bg-blue-500 text-xs leading-none py-1 text-center text-black"
+            style={{ width: uploadPercentage + "%" }}
+          >
+            {uploadPercentage + "%"}
+          </div>
+        </div>}
 
       </div>
     );
