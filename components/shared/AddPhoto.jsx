@@ -27,7 +27,7 @@ function AddPhoto(props) {
   } = props.state.photo;
   const { photoLoading, tempFile } = props.state;
 
-  const { photo_categories, locationCategoryValues } = props;
+  const { photo_categories, photoCategoryValues } = props;
 
   let showInputClass =
     "relative border-2 border-dashed rounded mb-2 p-4 text-center cursor-pointer hover:border-green-500";
@@ -171,7 +171,7 @@ function AddPhoto(props) {
         onChange={(e) => {
           props.handleSelect(e, "photo_categories");
         }}
-        options={locationCategoryValues}
+        options={photoCategoryValues}
         placeholder="Tags"
         value={photo_categories}
         onCreateOption={props.onCategoryCreate}

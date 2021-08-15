@@ -165,7 +165,7 @@ export async function getStaticProps() {
 		locationCategories{
 		  label
       value
-      photos {
+      locations {
         id
       }
 		}
@@ -177,7 +177,7 @@ export async function getStaticProps() {
   return {
     props: {
       categories: result.locationCategories.filter(
-        (cat) => cat.photos.length > 0
+        (cat) => cat.locations.length > 0
       ),
     },
     // Next.js will attempt to re-generate the page:

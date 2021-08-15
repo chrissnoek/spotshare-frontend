@@ -5,36 +5,20 @@ import LocationList from "../../../components/shared/LocationList.jsx";
 import { useRouter } from "next/router";
 import Head from "next/head"
 
-const LocationsPerCategorie = ({ locations: _locations, photos, value }) => {
+const LocationsPerCategorie = ({ locations: _locations, value }) => {
   const [locations, setLocations] = useState(_locations);
   const [filteredLocations, setFilteredLocations] = useState({});
   const [selectedLocation, setSelectedLocation] = useState();
   const [showMap, setShowMap] = useState(false);
   const router = useRouter();
 
-  const getLocationCategories = ((location) => {
-    const location_categories = [];
-
-    location.photos.forEach((photo) => {
-      if (photo.photo_categories.length > 0) {
-        photo.photo_categories.forEach((categorie) => {
-          const i = location_categories.findIndex(_item => _item.id === categorie.id);
-          if (i === -1) location_categories.push(categorie);
-        });
-      }
-    });
-
-    return location_categories;
-  })
 
   useEffect(() => {
     const _activeFilter = getActiveFilter();
 
-
-
     if (locations) {
       const _filteredLocations = locations.filter((location) => {
-        const include = getLocationCategories(location).filter((categorie) => {
+        const include = location.location_categories.filter((categorie) => {
           if (categorie.id === _activeFilter) {
             return true;
           } else {
@@ -223,71 +207,47 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   // build the graphql query
-  const query = `
-  query locationCategorie($value:String!){
-    locationCategories(where:{value: $value}) {
-      label
-      value
-      photos {
-        id
-        likes
-        title
-        slug
-        photo {
-            url 
-            formats
-        }
-        photo_categories {
-          id
+  const query = `query locationCategorie($value:String!){
+        locationCategories(where:{value: $value}) {
           label
-          value
-        }
-        location {
+        value
+        locations {
           id
           title
           longitude
           latitude
           slug
-          photos {
-            id
-            likes
-            title
-            slug
-            photo_categories {
-              id
-              label
-              value
-            }
-            photo {
-                url
-                formats
+          location_categories {
+            label
+            value
+            locations {
+              title
             }
           }
+          photos {
+                id
+                likes
+                title
+                slug
+                photo {
+                    url 
+                    formats
+                }
+            }
         }
       }
-    }
-  }`;
+      }`;
 
   const { value } = params;
 
   const result = await graphQLFetch(query, { value }, true);
-  console.log("result", result);
 
-  const allLocations = [];
-
-  const allPhotos = result.locationCategories[0].photos;
-  allPhotos.forEach((photo) => {
-    const i = allLocations.findIndex(_item => _item.id === photo.location.id);
-    if (i === -1) allLocations.push(photo.location);
-
-  });
-
-  console.log(allLocations);
 
   return {
     props: {
-      locations: allLocations,
-      photos: allPhotos,
+      locations: result.locationCategories[0].locations.filter(
+        (location) => location.photos.length > 0
+      ),
       value
     },
     // Next.js will attempt to re-generate the page:

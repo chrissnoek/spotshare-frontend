@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import graphQLFetch from "../../../graphQLFetch.js";
 import { useRouter } from "next/router";
+import CreatableSelect from "react-select/creatable";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import slugify from "slugify";
 import Head from "next/head";
 import { userContext } from "../../../services/userContext.js";
 import Link from "next/link";
@@ -51,6 +53,7 @@ const EditLocation = () => {
 	const [selectedLocationCategories, setSelectedLocationCategories] = useState(
 		[]
 	);
+	const [creatableValues, setCreatableValues] = useState([]);
 	const [selectedMonths, setSelectedMonths] = useState([]);
 	const [values, setValues] = useState({
 		title: "",
@@ -112,8 +115,8 @@ const EditLocation = () => {
 	}, [router.query]);
 
 	useEffect(() => {
-		console.log("locatin updated", location);
 		if (location) {
+			setCreatableValues(location.location_categories);
 			setValues({
 				title: location.title,
 				desc: location.desc,
@@ -149,14 +152,14 @@ const EditLocation = () => {
 		setMonthValues(result.months);
 	};
 
-	const handleSelect = (newValue, name) => {
+	const handleSelect = (newValues, name) => {
 		/*
 			set the ID of the location_categories to location object
 			and update the selected values in object location_categories in the state
 			*/
 		let ids;
-		if (newValue !== null) {
-			ids = newValue.map((item) => {
+		if (newValues !== null) {
+			ids = newValues.map((item) => {
 				return item.id;
 			});
 		} else {
@@ -165,12 +168,68 @@ const EditLocation = () => {
 
 		if (name === "locationCategories") {
 			setSelectedLocationCategories(ids);
+			setCreatableValues(newValues);
 		} else {
 			setSelectedMonths(ids);
 		}
 	};
 
+	const onCategoryCreate = async (option) => {
+		const label = option;
 
+		const value = slugify(option, {
+			replacement: "-", // replace spaces with replacement character, defaults to `-`
+			remove: undefined, // remove characters that match regex, defaults to `undefined`
+			lower: true, // convert to lower case, defaults to `false`
+			strict: true, // strip special characters except replacement, defaults to `false`
+		});
+
+		const query = `mutation CreateLocationCategory($input: createLocationCategoryInput) {
+            createLocationCategory(input: $input){
+            locationCategory{
+              label
+              value
+              id
+            }
+          }
+          }`;
+
+		let input = {};
+		input["data"] = {
+			label: label,
+			value: value,
+		};
+
+		const data = await graphQLFetch(query, { input }, true);
+
+		if (data) {
+			const { label, value, id } = data.createLocationCategory.locationCategory;
+
+			const newCategory = {
+				label: label,
+				value: value,
+				id: id,
+			};
+
+			const oldCategories = [...locationCategoryValues];
+			oldCategories.push(newCategory);
+			setLocationCategoryValues(oldCategories);
+
+			const oldIds = [...selectedLocationCategories];
+			oldIds.push(id);
+			setSelectedLocationCategories(oldIds);
+
+			const oldCreatableValues = [...creatableValues];
+			oldCreatableValues.push(newCategory);
+			setCreatableValues(oldCreatableValues);
+
+			return {
+				label: label,
+				value: value,
+				id: id,
+			};
+		}
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -258,6 +317,20 @@ const EditLocation = () => {
 					onChange={onInputChange}
 					placeholder="Tips en advies, wat kan je fotograferen op deze locatie?"
 				/>
+				<div className="relative z-1 mb-2">
+					<CreatableSelect
+						components={animatedComponents}
+						isMulti
+						onChange={(e) => {
+							handleSelect(e, "locationCategories");
+						}}
+						options={locationCategoryValues}
+						placeholder="Categorieën"
+						value={creatableValues}
+						onCreateOption={onCategoryCreate}
+						formatCreateLabel={(label) => `Maak nieuwe categorie: "${label}`}
+					/>
+				</div>
 				<div className="relative z-1">
 					<Select
 						components={animatedComponents}

@@ -156,9 +156,9 @@ const EditPhoto = () => {
             strict: true, // strip special characters except replacement, defaults to `false`
         });
 
-        const query = `mutation CreateLocationCategory($input: createLocationCategoryInput) {
-            createLocationCategory(input: $input){
-            locationCategory{
+        const query = `mutation CreatePhotoCategory($input: createPhotoCategoryInput) {
+            createPhotoCategory(input: $input){
+            photoCategory{
               label
               value
               id
@@ -175,7 +175,7 @@ const EditPhoto = () => {
         const data = await graphQLFetch(query, { input }, true);
 
         if (data) {
-            const { label, value, id } = data.createLocationCategory.locationCategory;
+            const { label, value, id } = data.createPhotoCategory.photoCategory;
 
             const newCategory = {
                 label: label,
@@ -188,9 +188,7 @@ const EditPhoto = () => {
             setPhotoCategoryValues(oldCategories);
 
             const oldIds = [...selectedPhotoCategories];
-            console.log(oldIds);
             oldIds.push(id);
-            console.log(oldIds);
             setSelectedPhotoCategories(oldIds);
 
             const oldCreatableValues = [...creatableValues];
@@ -207,8 +205,8 @@ const EditPhoto = () => {
 
     const fetchCategories = async () => {
         // build the graphql query
-        const query = `query locationCategories{
-            locationCategories {
+        const query = `query photoCategories{
+            photoCategories {
               label
               value
               id
@@ -216,7 +214,7 @@ const EditPhoto = () => {
           }`;
         const result = await graphQLFetch(query, {}, true);
 
-        setPhotoCategoryValues(result.locationCategories);
+        setPhotoCategoryValues(result.photoCategories);
     };
 
 
@@ -226,7 +224,6 @@ const EditPhoto = () => {
     }, [router.query]);
 
     useEffect(() => {
-        console.log('creatabels elect photo', photo);
         if (photo) {
             setCreatableValues(photo.photo_categories);
             setValues({

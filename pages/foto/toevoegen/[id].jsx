@@ -31,6 +31,8 @@ class PhotoAddToLocation extends React.Component {
             }
           }`;
 
+    console.log(this.props)
+
     const id = this.props.router.query.id;
 
     const data = await graphQLFetch(query, { id }, true);
@@ -52,6 +54,7 @@ class PhotoAddToLocation extends React.Component {
               value={value}
               redirect={this.redirect}
               fetchLocation={this.fetchLocation}
+              router={this.props.router}
             />
           );
         }}
@@ -73,6 +76,8 @@ class MapElement extends React.Component {
       invalidFields: {},
       blob: null,
       location: null,
+      photoCategoryValues: [],
+      photo_categories: null,
     };
     this.fileInput = React.createRef();
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -80,7 +85,7 @@ class MapElement extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    // console.log("update");
+    console.log("update");
     const {
       value: { user: prevUser },
     } = prevProps;
@@ -92,6 +97,10 @@ class MapElement extends React.Component {
       // console.log("updating context");
       this.updateContext();
     }
+
+    if (!this.state.location || this.props.router?.query?.id !== this.state.location?.id) {
+      this.getLocation();
+    }
   }
 
   updateContext() {
@@ -101,11 +110,10 @@ class MapElement extends React.Component {
     }));
   }
 
-  async componentDidMount() {
-    // console.log(this.props.value);
-
+  async getLocation() {
     const data = await this.props.fetchLocation();
-    if (data) {
+    console.log({ data });
+    if (data && !data.errors) {
       // console.log("props from mount", this.props);
       this.setState({
         location: data.location,
@@ -116,11 +124,15 @@ class MapElement extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.getLocation();
+  }
+
   async handleSubmit(e) {
     // console.log("submitted");
     e.preventDefault();
     e.persist();
-    updateContext();
+    this.updateContext();
 
     const {
       blob,
@@ -246,6 +258,88 @@ class MapElement extends React.Component {
       // console.log("failed");
     }
   }
+
+  fetchCategories = async () => {
+    // build the graphql query
+    const query = `query photoCategories{
+            photoCategories {
+              label
+              value
+              id
+            }
+          }`;
+    const result = await graphQLFetch(query, {}, true);
+    this.setState({
+      photoCategoryValues: result.photoCategories,
+    });
+  };
+
+  onPhotoCategoryCreate = async (option) => {
+    const label = option;
+
+    // check if slug is available, if not, add number
+    const value = slugify(option, {
+      replacement: "-", // replace spaces with replacement character, defaults to `-`
+      remove: undefined, // remove characters that match regex, defaults to `undefined`
+      lower: true, // convert to lower case, defaults to `false`
+      strict: true, // strip special characters except replacement, defaults to `false`
+    });
+
+    const query = `mutation CreatePhotoCategory($input: createPhotoCategoryInput) {
+            createPhotoCategory(input: $input){
+            photoCategory{
+              label
+              value
+              id
+            }
+          }
+          }`;
+
+    let input = {};
+    input["data"] = {
+      label: label,
+      value: value,
+    };
+
+    const data = await graphQLFetch(query, { input }, true);
+
+    if (data) {
+      const { label, value, id } = data.createPhotoCategory.photoCategory;
+      this.setState((prevState) => {
+        const oldCategories = [...this.state.photoCategoryValues];
+        const newCategory = {
+          label: label,
+          value: value,
+          id: id,
+        };
+        oldCategories.push(newCategory);
+
+        const selectedValues =
+          this.state.photo_categories != null
+            ? this.state.photo_categories
+            : [];
+        selectedValues.push(newCategory);
+
+        const categoryIds = this.state.photo.photo_categories
+          ? this.state.photo.photo_categories
+          : [];
+        categoryIds.push(newCategory.id);
+
+        return {
+          photo: {
+            ...prevState.photo,
+            photo_categories: [...categoryIds],
+          },
+          photoCategoryValues: [...oldCategories],
+          photo_categories: selectedValues,
+        };
+      });
+      return {
+        label: label,
+        value: value,
+      };
+    }
+  };
 
   photoValidation = (file) => {
     if (file.size > 27000000) {
@@ -460,6 +554,27 @@ class MapElement extends React.Component {
     }
   };
 
+  handlePhotoCategorySelect = (newValue, name) => {
+    /*
+        set the ID of the location_categories to location object
+        and update the selected values in object location_categories in the state
+        */
+    let ids;
+    if (newValue !== null) {
+      ids = newValue.map((item) => {
+        return item.id;
+      });
+    } else {
+      ids = [];
+    }
+
+    this.setState((prevState) => ({
+      ...prevState,
+      photo: { ...prevState.photo, [name]: ids },
+      [name]: newValue,
+    }));
+  };
+
   render() {
     const { location } = this.state;
     if (location === null) {
@@ -481,7 +596,7 @@ class MapElement extends React.Component {
           name="photoAdd"
           encType="multipart/form-data"
           onSubmit={this.handleSubmit}
-          className="photoAdd block py-3 px-4 border border-gray-300 rounded md:mx-auto md:my-6 md:w-9/12 lg:w-1/2 rounded md:shadow-lg md:p-6"
+          className="photoAdd block py-3 px-4 border border-gray-300 md:mx-auto md:my-6 md:w-9/12 lg:w-1/2 rounded md:shadow-lg md:p-6"
         >
           <Head>
             <meta name="robots" content="noindex,nofollow,noarchive" key="robots" />
@@ -502,6 +617,12 @@ class MapElement extends React.Component {
             handleOnDragOver={this.handleOnDragOver}
             handleOnDragLeave={this.handleOnDragLeave}
             removeImage={this.removeImage}
+
+            onCategoryCreate={this.onPhotoCategoryCreate}
+            fetchCategories={this.fetchCategories}
+            photoCategoryValues={this.state.photoCategoryValues}
+            photo_categories={this.state.photo_categories}
+            handleSelect={this.handlePhotoCategorySelect}
           />
           <button disabled={disabled} type="submit" className={btnClass}>
             Uploaden

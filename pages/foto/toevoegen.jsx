@@ -95,6 +95,7 @@ class AddPhotoForm extends React.Component {
       locationKnown: false,
       selectedLocation: null,
       locationCategoryValues: [],
+      photoCategoryValues: [],
       monthValues: [],
       months: null,
       location_categories: null,
@@ -217,9 +218,9 @@ class AddPhotoForm extends React.Component {
       strict: true, // strip special characters except replacement, defaults to `false`
     });
 
-    const query = `mutation CreateLocationCategory($input: createLocationCategoryInput) {
-            createLocationCategory(input: $input){
-            locationCategory{
+    const query = `mutation CreatePhotoCategory($input: createPhotoCategoryInput) {
+            createPhotoCategory(input: $input){
+            photoCategory{
               label
               value
               id
@@ -236,9 +237,9 @@ class AddPhotoForm extends React.Component {
     const data = await graphQLFetch(query, { input }, true);
 
     if (data) {
-      const { label, value, id } = data.createLocationCategory.locationCategory;
+      const { label, value, id } = data.createPhotoCategory.photoCategory;
       this.setState((prevState) => {
-        const oldCategories = [...this.state.locationCategoryValues];
+        const oldCategories = [...this.state.photoCategoryValues];
         const newCategory = {
           label: label,
           value: value,
@@ -262,7 +263,7 @@ class AddPhotoForm extends React.Component {
             ...prevState.photo,
             photo_categories: [...categoryIds],
           },
-          locationCategoryValues: [...oldCategories],
+          photoCategoryValues: [...oldCategories],
           photo_categories: selectedValues,
         };
       });
@@ -641,6 +642,11 @@ class AddPhotoForm extends React.Component {
               value
               id
             }
+            photoCategories {
+              label
+              value
+              id
+            }
             months {
               label
               value
@@ -650,6 +656,7 @@ class AddPhotoForm extends React.Component {
     const result = await graphQLFetch(query, {}, true);
     this.setState({
       locationCategoryValues: result.locationCategories,
+      photoCategoryValues: result.photoCategories,
       monthValues: result.months,
     });
   };
@@ -874,7 +881,7 @@ class AddPhotoForm extends React.Component {
             removeImage={this.removeImage}
             onCategoryCreate={this.onPhotoCategoryCreate}
             fetchCategories={this.fetchCategories}
-            locationCategoryValues={this.state.locationCategoryValues}
+            photoCategoryValues={this.state.photoCategoryValues}
             photo_categories={this.state.photo_categories}
             handleSelect={this.handlePhotoCategorySelect}
           />
