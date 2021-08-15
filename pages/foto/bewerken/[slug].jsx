@@ -6,6 +6,12 @@ import { userContext } from "../../../services/userContext.js";
 import Link from "next/link";
 import { RiLoader4Line } from "react-icons/ri"
 import moment from "moment";
+import makeAnimated from "react-select/animated";
+import CreatableSelect from "react-select/creatable";
+import { FaSpinner } from "react-icons/fa";
+import slugify from "slugify";
+
+const animatedComponents = makeAnimated();
 
 const EditPhotoWrapper = () => {
 
@@ -41,6 +47,12 @@ const EditPhotoWrapper = () => {
 const EditPhoto = () => {
     const router = useRouter();
     const [photo, setPhoto] = useState();
+    const [photoCategoryValues, setPhotoCategoryValues] = useState();
+    const [selectedPhotoCategories, setSelectedPhotoCategories] = useState(
+        []
+    );
+    const [creatableValues, setCreatableValues] = useState({});
+    const [loading, setLoading] = useState(false);
 
     const [values, setValues] = useState({
         title: "",
@@ -73,6 +85,11 @@ const EditPhoto = () => {
                 iso
                 aperture
                 camera
+                photo_categories {
+                    label
+                    value
+                    id
+                }
                 comments {
                     id
                     body
@@ -121,16 +138,97 @@ const EditPhoto = () => {
         if (result && result.photoBySlug) {
             setPhoto(result.photoBySlug);
 
+            const catIds = result.photoBySlug.photo_categories.map(
+                (category) => category.id
+            );
+
+            setSelectedPhotoCategories(catIds);
         }
     };
 
+    const onCategoryCreate = async (option) => {
+        const label = option;
+
+        const value = slugify(option, {
+            replacement: "-", // replace spaces with replacement character, defaults to `-`
+            remove: undefined, // remove characters that match regex, defaults to `undefined`
+            lower: true, // convert to lower case, defaults to `false`
+            strict: true, // strip special characters except replacement, defaults to `false`
+        });
+
+        const query = `mutation CreateLocationCategory($input: createLocationCategoryInput) {
+            createLocationCategory(input: $input){
+            locationCategory{
+              label
+              value
+              id
+            }
+          }
+          }`;
+
+        let input = {};
+        input["data"] = {
+            label: label,
+            value: value,
+        };
+
+        const data = await graphQLFetch(query, { input }, true);
+
+        if (data) {
+            const { label, value, id } = data.createLocationCategory.locationCategory;
+
+            const newCategory = {
+                label: label,
+                value: value,
+                id: id,
+            };
+
+            const oldCategories = [...photoCategoryValues];
+            oldCategories.push(newCategory);
+            setPhotoCategoryValues(oldCategories);
+
+            const oldIds = [...selectedPhotoCategories];
+            console.log(oldIds);
+            oldIds.push(id);
+            console.log(oldIds);
+            setSelectedPhotoCategories(oldIds);
+
+            const oldCreatableValues = [...creatableValues];
+            oldCreatableValues.push(newCategory);
+            setCreatableValues(oldCreatableValues);
+
+            return {
+                label: label,
+                value: value,
+                id: id,
+            };
+        }
+    };
+
+    const fetchCategories = async () => {
+        // build the graphql query
+        const query = `query locationCategories{
+            locationCategories {
+              label
+              value
+              id
+            }
+          }`;
+        const result = await graphQLFetch(query, {}, true);
+
+        setPhotoCategoryValues(result.locationCategories);
+    };
+
+
     useEffect(() => {
         fetchData();
+        fetchCategories();
     }, [router.query]);
 
     useEffect(() => {
-        console.log({ photo });
+        console.log('creatabels elect photo', photo);
         if (photo) {
+            setCreatableValues(photo.photo_categories);
             setValues({
                 title: photo.title,
                 desc: photo.desc,
@@ -144,6 +242,7 @@ const EditPhoto = () => {
         }
     }, [photo]);
 
+
     const onInputChange = (e) => {
         const _values = { ...values };
         if (e.target.name === 'date') {
@@ -156,16 +255,19 @@ const EditPhoto = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         const oldPhoto = { ...photo };
 
-        // oldPhoto.title = values.title;
-        // oldPhoto.desc = values.desc;
-        // oldPhoto.date = values.date;
-        // oldPhoto.shutterspeed = values.shutterspeed;
-        // oldPhoto.iso = values.iso;
-        // oldPhoto.aperture = values.aperture;
-        // oldPhoto.camera = values.camera;
-        // oldPhoto.focalLength = values.focalLength;
+        oldPhoto.title = values.title;
+        oldPhoto.desc = values.desc;
+        oldPhoto.date = values.date;
+        oldPhoto.shutterspeed = values.shutterspeed;
+        oldPhoto.iso = values.iso;
+        oldPhoto.aperture = values.aperture;
+        oldPhoto.camera = values.camera;
+        oldPhoto.focalLength = values.focalLength;
+
+        values.photo_categories = selectedPhotoCategories;
 
         // console.log(oldPhoto);
 
@@ -188,15 +290,30 @@ const EditPhoto = () => {
         const data = await graphQLFetch(query, { input }, true);
 
         if (data) {
-            // console.log(data);
             const { slug } = data.updatePhoto.photo;
             router.push(`/foto/${slug}`);
+        } else {
+            alert('Er is iets mis gegaan, probeer het opnieuw!');
+            setLoading(false);
         }
 
-        // get all data for grahqpl
-        // create mutation query
-        // do grahqplfetch
-        // if data, redirect to updated location
+    };
+
+    const handleSelect = (newValue) => {
+        /*
+            set the ID of the location_categories to location object
+            and update the selected values in object location_categories in the state
+            */
+        let ids;
+        if (newValue !== null) {
+            ids = newValue.map((item) => {
+                return item.id;
+            });
+        } else {
+            ids = [];
+        }
+
+        setSelectedPhotoCategories(ids);
     };
 
 
@@ -301,6 +418,22 @@ const EditPhoto = () => {
                     onChange={onInputChange}
                     placeholder="focalLength"
                 />
+
+                <div className="relative z-1 mb-2">
+                    <CreatableSelect
+                        components={animatedComponents}
+                        isMulti
+                        onChange={(e) => {
+                            handleSelect(e);
+                        }}
+                        options={photoCategoryValues}
+                        placeholder="Categorieën"
+                        value={creatableValues}
+                        onCreateOption={onCategoryCreate}
+                        formatCreateLabel={(label) => `Maak nieuwe categorie: "${label}`}
+                    />
+                </div>
+
                 <textarea
                     type="text"
                     name="desc"
@@ -311,9 +444,11 @@ const EditPhoto = () => {
 
                 <button
                     type="submit"
-                    className="block px-3 py- my-2 text-white rounded text-l bg-blue-500"
+                    className={"block px-4 py-2 my-2 text-white rounded text-l ml-auto " +
+                        (loading ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-600')}
+                    disabled={loading}
                 >
-                    Opslaan
+                    {loading ? <FaSpinner className="animate-spin" /> : 'Opslaan'}
                 </button>
             </form>
         </div>

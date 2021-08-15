@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import graphQLFetch from "../../../graphQLFetch.js";
 import { useRouter } from "next/router";
-import CreatableSelect from "react-select/creatable";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import slugify from "slugify";
 import Head from "next/head";
 import { userContext } from "../../../services/userContext.js";
 import Link from "next/link";
 import { RiLoader4Line } from "react-icons/ri"
+import { FaSpinner } from "react-icons/fa";
 
 const animatedComponents = makeAnimated();
 
@@ -59,6 +58,7 @@ const EditLocation = () => {
 		directions: "",
 		whattoshoot: "",
 	});
+	const [loading, setLoading] = useState(false);
 
 	const fetchData = async () => {
 		let result;
@@ -170,61 +170,11 @@ const EditLocation = () => {
 		}
 	};
 
-	const onCategoryCreate = async (option) => {
-		const label = option;
 
-		const value = slugify(option, {
-			replacement: "-", // replace spaces with replacement character, defaults to `-`
-			remove: undefined, // remove characters that match regex, defaults to `undefined`
-			lower: true, // convert to lower case, defaults to `false`
-			strict: true, // strip special characters except replacement, defaults to `false`
-		});
-
-		const query = `mutation CreateLocationCategory($input: createLocationCategoryInput) {
-            createLocationCategory(input: $input){
-            locationCategory{
-              label
-              value
-              id
-            }
-          }
-          }`;
-
-		let input = {};
-		input["data"] = {
-			label: label,
-			value: value,
-		};
-
-		const data = await graphQLFetch(query, { input }, true);
-
-		if (data) {
-			const { label, value, id } = data.createLocationCategory.locationCategory;
-
-			const newCategory = {
-				label: label,
-				value: value,
-				id: id,
-			};
-
-			const oldCategories = [...locationCategoryValues];
-			oldCategories.push(newCategory);
-			setLocationCategoryValues(oldCategories);
-
-			const oldIds = [...selectedLocationCategories];
-			oldIds.push(id);
-			setSelectedLocationCategories(oldIds);
-
-			return {
-				label: label,
-				value: value,
-				id: id,
-			};
-		}
-	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true);
 		const oldLocation = { ...location };
 		oldLocation.location_categories = selectedLocationCategories;
 		oldLocation.months = selectedMonths;
@@ -258,12 +208,11 @@ const EditLocation = () => {
 			// console.log(data);
 			const { slug } = data.updateLocation.location;
 			router.push(`/fotolocatie/${slug}`);
+		} else {
+			alert('er is iets mis gegaan, probeer het opnieuw!');
+			setLoading(false);
 		}
 
-		// get all data for grahqpl
-		// create mutation query
-		// do grahqplfetch
-		// if data, redirect to updated location
 	};
 
 	return !location ? (
@@ -322,25 +271,14 @@ const EditLocation = () => {
 						}}
 					/>
 				</div>
-				<div className="relative z-1">
-					<CreatableSelect
-						components={animatedComponents}
-						isMulti
-						onChange={(e) => {
-							handleSelect(e, "locationCategories");
-						}}
-						options={locationCategoryValues}
-						placeholder="Categorieën"
-						defaultValue={location.location_categories}
-						onCreateOption={onCategoryCreate}
-						formatCreateLabel={(label) => `Maak nieuwe categorie: "${label}`}
-					/>
-				</div>
+
 				<button
 					type="submit"
-					className="block px-3 py- my-2 text-white rounded text-l bg-blue-500"
+					className={"block px-4 py-2 my-2 text-white rounded text-l ml-auto " +
+						(loading ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-600')}
+					disabled={loading}
 				>
-					Uploaden
+					{loading ? <FaSpinner className="animate-spin" /> : 'Opslaan'}
 				</button>
 			</form>
 		</div>
