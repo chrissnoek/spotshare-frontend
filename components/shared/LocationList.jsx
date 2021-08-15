@@ -85,7 +85,7 @@ const LocationList = ({ location, active, selectLocation }) => {
 
             <div className="px-5 py-2">
               <h3 className="text-black text-lg">{location.title}</h3>
-              {location_categories.map((category) => (
+              {[location_categories[0], location_categories[1], location_categories[2]].map((category) => (typeof category != "undefined" &&
                 <LocationHashtag key={category.id} category={category} />
               ))}
             </div>

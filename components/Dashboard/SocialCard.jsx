@@ -29,8 +29,8 @@ const SocialCard = ({ photo }) => {
         <a className="top-0 left-0 h-full w-full absolute "></a>
       </Link>
       <img
-        className={`rounded block max-w-none w-full h-64 object-cover`}
-        style={{ backgroundColor: "grey", width: "480", height: "320" }}
+        className={`rounded block max-w-none w-full object-contain`}
+        style={{ backgroundColor: "black", width: "100%", maxHeight: "750px" }}
         src={photo.photo[0].formats.medium.url}
         alt={photo.title}
       />

@@ -51,7 +51,7 @@ const EditPhoto = () => {
     const [selectedPhotoCategories, setSelectedPhotoCategories] = useState(
         []
     );
-    const [creatableValues, setCreatableValues] = useState(undefined);
+    const [creatableValues, setCreatableValues] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const [values, setValues] = useState({
@@ -197,11 +197,11 @@ const EditPhoto = () => {
             oldCreatableValues.push(newCategory);
             setCreatableValues(oldCreatableValues);
 
-            return {
-                label: label,
-                value: value,
-                id: id,
-            };
+            // return {
+            //     label: label,
+            //     value: value,
+            //     id: id,
+            // };
         }
     };
 
@@ -299,22 +299,24 @@ const EditPhoto = () => {
 
     };
 
-    const handleSelect = (newValue) => {
-        console.log(newValue);
+    const handleSelect = (newValues, action) => {
+        console.log(newValues, action);
         /*
             set the ID of the location_categories to location object
             and update the selected values in object location_categories in the state
             */
         let ids;
-        if (newValue !== null) {
-            ids = newValue.map((item) => {
+        if (newValues !== null) {
+            ids = newValues.map((item) => {
                 return item.id;
             });
         } else {
             ids = [];
         }
 
-        setCreatableValues(...newValue);
+        // const oldCreatableValues = [...creatableValues];
+        // oldCreatableValues.push(...newValues);
+        setCreatableValues(newValues);
         setSelectedPhotoCategories(ids);
     };
 

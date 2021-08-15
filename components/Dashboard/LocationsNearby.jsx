@@ -89,9 +89,9 @@ const LocationsNearby = () => {
                   />
                 </div>
 
-                <div className="w-full">
+                <div className="w-full leading-tight">
                   <h3 className="text-black text-sm">{location.title}</h3>
-                  {getLocationCategories(location).map((category) => (
+                  {[getLocationCategories(location)[0], getLocationCategories(location)[1], getLocationCategories(location)[2]].map((category) => (typeof category != "undefined" &&
                     <LocationHashtag key={category.id} category={category} />
                   ))}
                 </div>
