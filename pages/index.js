@@ -41,6 +41,8 @@ function HomeScreen({ featuredPhoto, randomPhotos, context }) {
   randomPhotosUrl[4] = five.formats?.medium?.url || five.formats?.large?.url || five.url;
   randomPhotosUrl[5] = six.formats?.medium?.url || six.formats?.large?.url || six.url;
 
+  let featuredPhotoUrl = featuredPhoto.photo[0].formats?.medium?.url || featuredPhoto.photo[0].formats?.medium?.large || featuredPhoto.photo[0].url;
+
   return (
     <div>
       <section className="py-12 sm:py-24 bg-gray-900">
@@ -64,7 +66,7 @@ function HomeScreen({ featuredPhoto, randomPhotos, context }) {
             <div
               className="rounded w-full h-64"
               style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${featuredPhoto.photo[0].url})`,
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${featuredPhotoUrl})`,
                 backgroundSize: `cover`,
                 backgroundPosition: `center center`,
               }}
@@ -284,6 +286,7 @@ export async function getServerSideProps() {
       title
       photo {
         url
+        formats
       }
       user {
         id

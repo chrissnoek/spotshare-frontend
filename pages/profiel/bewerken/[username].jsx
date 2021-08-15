@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import graphQLFetch from "../../../graphQLFetch.js";
 import { FaUserSecret } from "react-icons/fa";
 import Form from "../../../components/shared/Form";
@@ -7,10 +7,38 @@ import Joi from "@hapi/joi";
 import slugify from "slugify";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { userContext } from "../../../services/userContext.js";
 
 const MyClassWithRouter = (props) => {
+  const [isServer, setIsServer] = useState(true);
   const router = useRouter();
-  return <DataEdit {...props} router={router} />;
+
+  useEffect(() => {
+    setIsServer(false);
+  }, []);
+
+
+  {
+    return !isServer ?
+      (<userContext.Consumer>
+        {(value) => {
+          console.log('value', value);
+          if (value.user) {
+            if (value.user.id) {
+              return <DataEdit {...props} router={router} userId={value.user.id} />;
+            } else {
+              return <DataEdit {...props} router={router} userId={null} />;
+            }
+          } else {
+            return <DataEdit {...props} router={router} userId={null} />;
+          }
+        }}
+      </userContext.Consumer>)
+      : <DataEdit {...props} router={router} userId={null} />;
+  }
+
+
+
 };
 export default MyClassWithRouter;
 
@@ -39,6 +67,7 @@ class DataEdit extends Form {
   async loadData() {
     // provide the query with the variables
     const result = await this.fetchData();
+
     if (result) {
       this.setState({ data: result.users[0] });
     }
@@ -46,14 +75,24 @@ class DataEdit extends Form {
 
   componentDidMount() {
     const { data } = this.state;
+    const { userId } = this.props;
+    this.setState({ userId });
+
     if (data === null) {
       this.loadData();
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.userId !== this.props.userId) {
+      this.setState({ userId: this.props.userId });
     }
   }
 
   constructor(props) {
     super(props);
     this.state = {
+      userId: null,
       data: null,
       errors: {},
       photoLoading: false,
@@ -214,11 +253,12 @@ class DataEdit extends Form {
   };
 
   render() {
-    const { data, photoLoading, tempFile } = this.state;
-    if (data === null) {
+    const { data, photoLoading, tempFile, userId } = this.state;
+    if (data === null || data.id !== userId) {
       // console.log("return null from render");
       return null;
     }
+
 
     return (
       <form

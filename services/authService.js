@@ -108,9 +108,9 @@ export async function checkAvailability(type, value) {
   if (!value) return;
 
   const result = await graphQLFetch(query, value, true, true);
-  console.log(result);
-  console.log(result.users.length);
-  if (result.users.length > 0) {
+  //console.log(result);
+  //console.log(result.users.length);
+  if (result.users?.length > 0) {
     return false;
   } else {
     return true;

@@ -762,7 +762,9 @@ class AddPhotoForm extends React.Component {
                     camera
                     focalLength
                     id
-                    photo_categories
+                    photo_categories {
+                      id
+                    }
                     location {
                         id
                         title

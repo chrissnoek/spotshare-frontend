@@ -8,12 +8,19 @@ import Input from "../components/shared/Input";
 import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import graphQLFetch from "../graphQLFetch.js";
+import UserProfilePicture from "../components/shared/UserProfilePicture";
 
-const RegisterForm = () => {
+const RegisterForm = (props) => {
   const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const { featuredPhoto } = props;
+
+  let featuredPhotoUrl = featuredPhoto.photo[0].formats?.medium?.url || featuredPhoto.photo[0].formats?.medium?.large || featuredPhoto.photo[0].url;
+
 
   const checkRedirect = async () => {
     const user = await auth.getCurrentUser();
@@ -315,15 +322,30 @@ const RegisterForm = () => {
           </div>
         </form>
 
-        <div className="w-full">
+        <div className="w-full relative">
           <div
             className="w-full h-full"
             style={{
-              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(https://picsum.photos/1500/1500)`,
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${featuredPhotoUrl})`,
               backgroundSize: `cover`,
               backgroundPosition: `center center`,
             }}
           ></div>
+          <div className="hidden md:inline-block rounded-full shadow-lg px-1 py-1 -mt-6 ml-1 bg-white text-black justify-center absolute bottom-6 right-6">
+            <div className="flex justify-center items-center ">
+              <div className="mr-2">
+                <UserProfilePicture profile={featuredPhoto.user} size={3} />
+              </div>
+              <span className="text-black mr-2 text-xs">
+                <span className="text-xl">📸</span>{" "}
+                <span className="text-italic">{featuredPhoto.title}</span>
+                door{" "}
+                <span className="text-italic">
+                  {featuredPhoto.user.firstname} {featuredPhoto.user.lastname}
+                </span>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -331,3 +353,42 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
+
+export async function getStaticProps() {
+  // console.log(firstID, secondID, thirdID, fourthID, fifthID, sixtID);
+
+  // build the graphql query
+  const query = `query {
+    featuredPhoto: photos(where:{featured:1}){
+      id
+      slug
+      title
+      photo {
+        url
+        formats
+      }
+      user {
+        id
+        username
+      firstname
+      lastname
+        profilePicture {
+          url
+        }
+      }
+    }
+  }`;
+
+  const result = await graphQLFetch(query, {}, true);
+  // console.log("result", result);
+
+  return {
+    props: {
+      featuredPhoto: result.featuredPhoto[0],
+    },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every second
+    revalidate: 86400, // In seconds
+  };
+}
