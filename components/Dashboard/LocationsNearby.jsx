@@ -7,6 +7,28 @@ import Image from "next/image";
 const LocationsNearby = () => {
   const [locations, setLocations] = useState();
 
+  const getImageUrl = (location) => {
+    let featuredPhoto = location.photos
+      .sort((a, b) => b.likes - a.likes)[0];
+
+    let imageUrl = '';
+
+    if (featuredPhoto.photo[0].formats) {
+      if (featuredPhoto.photo[0].formats.thumbnail) {
+        imageUrl = featuredPhoto.photo[0].formats.thumbnail.url;
+      } else if (featuredPhoto.photo[0].formats.small) {
+        imageUrl = featuredPhoto.photo[0].formats.small.url;
+      } else if (featuredPhoto.photo[0].formats.medium) {
+        imageUrl = featuredPhoto.photo[0].formats.medium.url;
+      } else if (featuredPhoto.photo[0].formats.large) {
+        imageUrl = featuredPhoto.photo[0].formats.large.url;
+      }
+    } else {
+      imageUrl = featuredPhoto.photo[0].url;
+    }
+    return imageUrl;
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -80,9 +102,7 @@ const LocationsNearby = () => {
                 <div className="w-20 h-20 mr-4 relative">
                   <Image
                     className={`object-cover`}
-                    src={location.photos
-                      .sort((a, b) => b.likes - a.likes)[0]
-                      .photo[0].formats.thumbnail.url.replace(/-original|-watermark/gi, "-small")}
+                    src={getImageUrl(location)}
                     alt={`Bekijk locatie ${location.title}`}
                     layout="fill"
                     object="cover"
