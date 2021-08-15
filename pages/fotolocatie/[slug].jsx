@@ -48,6 +48,8 @@ class LocationDetailComponent extends React.Component {
 
     const locationBySlug = props.locationBySlug;
 
+    console.log({ locationBySlug });
+
     this.state = {
       isServer: true,
       userLikedLocation: false,
@@ -256,6 +258,18 @@ class LocationDetailComponent extends React.Component {
       }
     });
 
+    let featuredPhoto = photos
+      .sort((a, b) => b.likes - a.likes)[0];
+    let imageUrl = '';
+
+    if (featuredPhoto.photo[0].formats) {
+      if (featuredPhoto.photo[0].formats.large) {
+        imageUrl = featuredPhoto.photo[0].formats.large.url;
+      }
+    } else {
+      imageUrl = featuredPhoto.photo[0].url;
+    }
+
     // const location_categories = locationBySlug.photos.map((photo) => {
     //   if (photo.photo_categories.length > 0) {
     //     return photo.photo_categories.map((category) => category);
@@ -297,7 +311,7 @@ class LocationDetailComponent extends React.Component {
 
             {photos.length > 0 &&
               <meta property="og:image"
-                key="og_img" content={photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url} />}
+                key="og_img" content={imageUrl} />}
 
             {/* <!-- Twitter --> */}
             <meta
@@ -312,7 +326,7 @@ class LocationDetailComponent extends React.Component {
             />
             {photos.length > 0 &&
               <meta property="twitter:image"
-                key="twitter_img" content={photos.sort((a, b) => b.likes - a.likes)[0].photo[0].url} />}
+                key="twitter_img" content={imageUrl} />}
           </Head>
 
           <Link href={`/fotolocatie/bewerken/${locationBySlug.slug}`}>
@@ -330,7 +344,7 @@ class LocationDetailComponent extends React.Component {
             <div
               className="w-full flex flex-col justify-center items-center relative"
               style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${photos.sort((a, b) => b.likes - a.likes)[0].photo[0].formats.large.url})`,
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${imageUrl})`,
                 backgroundSize: `cover`,
                 backgroundPosition: `center center`,
                 height: "80vh",

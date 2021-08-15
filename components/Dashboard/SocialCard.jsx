@@ -5,6 +5,18 @@ import moment from 'moment';
 import 'moment/locale/nl';
 
 const SocialCard = ({ photo }) => {
+  let imageUrl = '';
+
+  if (photo.photo[0].formats) {
+    if (photo.photo[0].formats.medium) {
+      imageUrl = photo.photo[0].formats.medium.url;
+    } else if (photo.photo[0].formats.large) {
+      imageUrl = photo.photo[0].formats.large.url;
+    }
+  } else {
+    imageUrl = photo.photo[0].url;
+  }
+
   // console.log(photo);
   moment.locale('nl');
   return (
@@ -31,7 +43,7 @@ const SocialCard = ({ photo }) => {
       <img
         className={`rounded block max-w-none w-full object-contain`}
         style={{ backgroundColor: "black", width: "100%", maxHeight: "750px" }}
-        src={photo.photo[0].formats.medium.url}
+        src={imageUrl}
         alt={photo.title}
       />
     </div>
