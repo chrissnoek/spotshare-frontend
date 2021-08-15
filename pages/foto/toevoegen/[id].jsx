@@ -535,21 +535,18 @@ class MapElement extends React.Component {
     var result = await this.checkForAvailableSlug(slug);
 
     if (!result.photoBySlug) {
-      // slug is available, proceed
+      // console.log("final returned slug by Createdslug:", slug);
       return slug;
     } else {
-      // slug is not available, try again
-
       if (!suffix) {
         suffix = 1;
       } else {
         suffix++;
       }
-      var n = str.lastIndexOf(previousSuffix);
-      slug.replace(previousSlug, "");
+      const cleanSlug = slug.replace(previousSuffix, "");
 
       const createdSuffix = "-" + suffix;
-      let adjustedSlug = slug + reactedSlug;
+      let adjustedSlug = cleanSlug + createdSuffix;
       return this.createSlug(adjustedSlug, suffix, createdSuffix);
     }
   };
