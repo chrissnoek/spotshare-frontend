@@ -17,7 +17,7 @@ import { userContext } from "../../services/userContext.js";
 import { findNearbyLocations } from "../../components/shared/FindNearbyLocations";
 import { useRouter } from "next/router";
 import auth from "../../services/authService";
-import Head from "next/head"
+import Head from "next/head";
 
 const animatedComponents = makeAnimated();
 
@@ -100,6 +100,7 @@ class AddPhotoForm extends React.Component {
       location_categories: null,
       photo_categories: null,
       newLocation: false,
+      loading: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onFileChange = this.onFileChange.bind(this);
@@ -673,6 +674,8 @@ class AddPhotoForm extends React.Component {
     e.preventDefault();
     e.persist();
 
+    this.setState({ loading: true });
+
     const {
       blob,
       newLocation,
@@ -702,6 +705,7 @@ class AddPhotoForm extends React.Component {
         }));
       }
       // console.log("returning");
+      this.setState({ loading: false });
       return;
     }
 
@@ -810,6 +814,7 @@ class AddPhotoForm extends React.Component {
       request.addEventListener("load", redirect);
     } else {
       // console.log("failed");
+      this.setState({ loading: false });
     }
   }
 
@@ -999,6 +1004,7 @@ class Step2 extends React.Component {
       location_categories,
       newLocation,
       monthValues,
+      loading
     } = this.props.state;
     const { marker } = this.state;
     const position = [marker.lat, marker.lng];
@@ -1108,10 +1114,13 @@ class Step2 extends React.Component {
         )}
         <button
           type="submit"
-          className="block px-3 py- my-2 text-white rounded text-l bg-blue-500"
+          className={"block px-3 py- my-2 text-white rounded text-l " +
+            (loading ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-600')}
+          disabled={loading}
         >
-          Uploaden
+          {loading ? <FaSpinner className="animate-spin" /> : 'Uploaden'}
         </button>
+
       </div>
     );
   }
