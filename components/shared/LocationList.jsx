@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 import LocationHashtag from "./LocationHashtag.jsx";
 
 const LocationList = ({ location, active, selectLocation }) => {
+
+  console.log(location);
+
   let featuredPhoto = location.photos
     .sort((a, b) => b.likes - a.likes)[0];
 

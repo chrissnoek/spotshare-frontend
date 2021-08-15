@@ -68,7 +68,7 @@ const Dashboard = ({ categories: _categories }) => {
               />
             </Head>
             <div className="block md:flex mt-4 md:mt-14">
-              <div className="w-full md:w-1/4 px-6 md:px-14">
+              <div className="w-full md:w-1/4 px-6 lg:px-14">
                 <Link href={`/fotograaf/${value.user.username}`}>
                   <div className="flex items-center cursor-pointer">
 
@@ -145,7 +145,7 @@ const Dashboard = ({ categories: _categories }) => {
                 )}
               </div>
 
-              <div className="w-full md:w-1/4 px-6 md:px-14">
+              <div className="w-full md:w-1/4 px-6 lg:px-14">
                 <LocationsNearby />
                 <CategorieList categories={categories} />
               </div>
@@ -165,7 +165,7 @@ export async function getStaticProps() {
 		locationCategories{
 		  label
       value
-      locations {
+      photos {
         id
       }
 		}
@@ -177,7 +177,7 @@ export async function getStaticProps() {
   return {
     props: {
       categories: result.locationCategories.filter(
-        (cat) => cat.locations.length > 0
+        (cat) => cat.photos.length > 0
       ),
     },
     // Next.js will attempt to re-generate the page:
