@@ -87,21 +87,20 @@ export default Notifications;
 const Notification = ({ notification, onClick, onDeleteNotification }) => {
   const { giver, photo } = notification;
 
+  //console.log(giver);
+
   const generateText = () => {
     if (notification.action === "like") {
-      return `${
-        !giver.firstame ? giver.username : giver.firstname
-      } vind je foto ${photo.title} leuk`;
+      return `${giver.firstname ? giver.firstname + ' ' + giver.lastname : giver.username
+        } vind je foto ${photo.title} leuk`;
     }
     if (notification.action === "comment") {
-      return `${
-        !giver.firstame ? giver.username : giver.firstname
-      } heeft gereageerd op je foto ${photo.title}`;
+      return `${giver.firstname ? giver.firstname + ' ' + giver.lastname : giver.username
+        } heeft gereageerd op je foto ${photo.title}`;
     }
     if (notification.action === "follow") {
-      return `${
-        !giver.firstame ? giver.username : giver.firstname
-      } volgt je nu!`;
+      return `${giver.firstname ? giver.firstname + ' ' + giver.lastname : giver.username
+        } volgt je nu!`;
     }
   };
 
@@ -123,7 +122,7 @@ const Notification = ({ notification, onClick, onDeleteNotification }) => {
     <>
       <div
         onClick={goToPage}
-        className="flex items-center relative my-2 px-6 py-4 hover:bg-gray-100 cursor-pointer z-10"
+        className="flex items-center relative my-2 px-6 py-3 hover:bg-gray-100 cursor-pointer z-10"
       >
         <div className="mr-4">
           <UserProfilePicture profile={notification.giver} size={8} />

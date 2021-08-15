@@ -66,13 +66,14 @@ class PhotoDetail extends React.Component {
         longitude: null,
         latitude: null,
       },
+      loadingComment: false,
     };
   }
 
 
 
   componentDidUpdate() {
-    if (this.state.photoBySlug !== this.props.photoBySlug) {
+    if (this.state.photoBySlug.id !== this.props.photoBySlug.id) {
       this.setState({ photoBySlug: this.props.photoBySlug });
     }
     if (this.state.ownPhoto !== this.props.ownPhoto) {
@@ -210,6 +211,7 @@ class PhotoDetail extends React.Component {
   };
 
   addComment = async (data, receiver) => {
+    this.setState({ loadingComment: true });
     // console.log(data, receiver);
 
     const query = `mutation createPhotoComment($input: createPhotoCommentInput){
@@ -240,7 +242,7 @@ class PhotoDetail extends React.Component {
     // console.log(input);
 
     const response = await graphQLFetch(query, input, true, true);
-    // console.log(response);
+    console.log(response);
 
     if (response) {
       if (!response.errors) {
@@ -251,17 +253,16 @@ class PhotoDetail extends React.Component {
           data.data.photo
         );
         let _comments = [...this.state.photoBySlug.comments];
-        _comments.push({
-          body: response.createPhotoComment.photoComment.body,
-          id: response.createPhotoComment.photoComment.id,
-          parent: response.createPhotoComment.photoComment.parent,
-          user: response.createPhotoComment.photoComment.user,
-        });
+        console.log(_comments);
+        _comments.push(response.createPhotoComment.photoComment);
+        console.log(_comments);
         this.setState((prevState) => ({
           photoBySlug: { ...prevState.photoBySlug, comments: _comments },
         }));
+        this.setState({ loadingComment: false });
       } else {
         // console.log("an error happened");
+        this.setState({ loadingComment: false });
       }
     }
   };
@@ -278,10 +279,10 @@ class PhotoDetail extends React.Component {
     if (photoBySlug === null) {
       return null;
     } else {
-      // console.log(photoBySlug);
+      console.log('photoBySlug on rerender: ', photoBySlug);
     }
 
-    const { userLocation, userLocationKnown, userMarker } = this.state;
+    const { userLocation, userLocationKnown, userMarker, loadingComment } = this.state;
 
     const position = [
       photoBySlug.location.latitude,
@@ -414,6 +415,7 @@ class PhotoDetail extends React.Component {
                   photoId={photoBySlug.id}
                   addComment={this.addComment}
                   receiver={photoBySlug.user.id}
+                  loadingComment={loadingComment}
                 />
               </div>
 

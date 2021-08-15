@@ -2,8 +2,8 @@ import React, { Fragment, useState, useEffect } from "react";
 import { FaUserSecret } from "react-icons/fa";
 import ReplyBox from "./ReplyBox.jsx";
 
-export const Comment = ({ item, idx, photoId, addComment, receiver }) => {
-  console.log(item);
+export const Comment = ({ item, photoId, addComment, receiver }) => {
+  // console.log(item);
   const [showReplyBox, setShowReplyBox] = useState(false);
 
   const replyClick = () => {
@@ -15,7 +15,7 @@ export const Comment = ({ item, idx, photoId, addComment, receiver }) => {
   };
 
   return (
-    <Fragment key={idx}>
+    <Fragment>
       <div className="comment mb-2">
         <div>
           <div className="flex">

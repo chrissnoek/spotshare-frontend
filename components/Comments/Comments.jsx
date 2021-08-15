@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Comment } from "./RecursiveComment.jsx";
 import ReplyBox from "./ReplyBox.jsx";
+import { FaSpinner } from "react-icons/fa";
 
-const PhotoComment = ({ comments, photoId, addComment, receiver }) => {
+const PhotoComment = ({ comments, photoId, addComment, receiver, loadingComment }) => {
   const [unflattenedComments, setUnflattenedComments] = useState([]);
 
   useEffect(() => {
@@ -39,25 +40,26 @@ const PhotoComment = ({ comments, photoId, addComment, receiver }) => {
   };
 
   return (
-    <>
+    <div className="relative">
+      {loadingComment && <div className="w-full h-full absolute bg-white bg-opacity-50 flex justify-center items-center"><FaSpinner className="animate-spin fill-current text-black" /></div>}
       <ReplyBox photoId={photoId} addComment={addComment} receiver={receiver} />
 
       <div className="">
         {unflattenedComments.length
           ? unflattenedComments.map((item, idx) => {
-              return (
-                <Comment
-                  item={item}
-                  key={idx}
-                  photoId={photoId}
-                  addComment={addComment}
-                  receiver={receiver}
-                />
-              );
-            })
+            return (
+              <Comment
+                item={item}
+                key={item.id}
+                photoId={photoId}
+                addComment={addComment}
+                receiver={receiver}
+              />
+            );
+          })
           : ""}
       </div>
-    </>
+    </div>
   );
 };
 

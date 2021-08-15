@@ -420,7 +420,7 @@ const EditPhoto = () => {
                     name="focalLength"
                     value={values.focalLength || ""}
                     onChange={onInputChange}
-                    placeholder="focalLength"
+                    placeholder="Focal Length"
                 />
 
                 <div className="relative z-1 mb-2">

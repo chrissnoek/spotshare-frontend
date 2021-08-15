@@ -120,6 +120,8 @@ form.photoAdd {
 
 #notifications {
   min-width: 296px;
+  max-height: calc(100vh - 50px);
+  overflow-y: scroll;
 
   @media screen and (min-width: 320px) {
     min-width: 320px;

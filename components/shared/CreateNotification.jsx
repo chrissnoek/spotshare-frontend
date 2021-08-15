@@ -1,6 +1,10 @@
 import graphQLFetch from "../../graphQLFetch";
 
 const CreateNotification = async (giver, receiver, action, photo) => {
+
+  if (giver === receiver) return;
+  console.log('giver, receiver', giver, receiver);
+
   const query = `mutation createNotification($input:createNotificationInput!) {
         createNotification(input:$input) {
           notification {
