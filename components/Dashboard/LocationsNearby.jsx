@@ -46,6 +46,22 @@ const LocationsNearby = () => {
     navigator.geolocation.getCurrentPosition(success, error, options);
   };
 
+  const getLocationCategories = (location) => {
+    const allPhotos = location.photos.map((photo) => photo);
+    const location_categories = [];
+
+    allPhotos.forEach((photo) => {
+      if (photo.photo_categories.length > 0) {
+        photo.photo_categories.forEach((categorie) => {
+          const i = location_categories.findIndex(_item => _item.id === categorie.id);
+          if (i === -1) location_categories.push(categorie);
+        });
+      }
+    });
+
+    return location_categories;
+  }
+
   return (
     <div className="">
       <h2 className="text-black mb-4">Locaties in de buurt</h2>
@@ -75,7 +91,7 @@ const LocationsNearby = () => {
 
                 <div className="w-full">
                   <h3 className="text-black text-sm">{location.title}</h3>
-                  {location.location_categories.map((category) => (
+                  {getLocationCategories(location).map((category) => (
                     <LocationHashtag key={category.id} category={category} />
                   ))}
                 </div>

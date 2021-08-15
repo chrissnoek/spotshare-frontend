@@ -243,6 +243,28 @@ class LocationDetailComponent extends React.Component {
       ? [userLocation.latitude, userLocation.longitude]
       : null;
 
+
+    const allPhotos = locationBySlug.photos.map((photo) => photo);
+    const location_categories = [];
+
+    allPhotos.forEach((photo) => {
+      if (photo.photo_categories.length > 0) {
+        photo.photo_categories.forEach((categorie) => {
+          const i = location_categories.findIndex(_item => _item.id === categorie.id);
+          if (i === -1) location_categories.push(categorie);
+        });
+      }
+    });
+
+    // const location_categories = locationBySlug.photos.map((photo) => {
+    //   if (photo.photo_categories.length > 0) {
+    //     return photo.photo_categories.map((category) => category);
+    //   } else {
+    //     return;
+    //   }
+    // });
+    // console.log(location_categories);
+
     if (photos.length > 0) {
 
       return (
@@ -318,8 +340,8 @@ class LocationDetailComponent extends React.Component {
                 {locationBySlug.title}
               </h1>
               <span className="flex items-center">
-                {locationBySlug.location_categories.length > 0 && <span className="text-white mr-2 text-sm">Categorieen:</span>}
-                {locationBySlug.location_categories.map((location) => (
+                {location_categories.length > 0 && <span className="text-white mr-2 text-sm">Categorieen:</span>}
+                {location_categories.map((location) => (
                   <Link href={`/fotolocaties/categorie/${location.value}`}>
                     <a className="bg-green-500 py-1 px-3 text-sm rounded-full mr-2 text-white hover:bg-green-600">
                       {location.label}
@@ -563,6 +585,11 @@ export async function getServerSideProps({ params }) {
             }
             title
             slug
+            photo_categories {
+              id
+              label
+              value
+            }
             user {
               
               id
@@ -582,10 +609,6 @@ export async function getServerSideProps({ params }) {
         latitude
         directions
         whattoshoot
-        location_categories {
-          label
-          value
-        }
         months {
           label
           value

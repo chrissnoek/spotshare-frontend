@@ -22,6 +22,18 @@ const LocationList = ({ location, active, selectLocation }) => {
       imageUrl = featuredPhoto.photo[0].url;
     }
 
+    const allPhotos = location.photos.map((photo) => photo);
+    const location_categories = [];
+
+    allPhotos.forEach((photo) => {
+      if (photo.photo_categories.length > 0) {
+        photo.photo_categories.forEach((categorie) => {
+          const i = location_categories.findIndex(_item => _item.id === categorie.id);
+          if (i === -1) location_categories.push(categorie);
+        });
+      }
+    });
+
     const router = useRouter();
     let cardClass = active
       ? "w-full mb-1 border-2 border-green-500"
@@ -70,7 +82,7 @@ const LocationList = ({ location, active, selectLocation }) => {
 
             <div className="px-5 py-2">
               <h3 className="text-black text-lg">{location.title}</h3>
-              {location.location_categories.map((category) => (
+              {location_categories.map((category) => (
                 <LocationHashtag key={category.id} category={category} />
               ))}
             </div>

@@ -68,18 +68,23 @@ export const findNearbyLocations = async (
 			}
 		}
 		slug
-        photos {
-            id
-            likes
-            title
-            slug
-            photo {
-                url 
-                formats
-            }
-        }
-        }
-      }`;
+    photos {
+      id
+      likes
+      title
+      slug
+      photo_categories {
+        id
+        value
+        label
+      }
+      photo {
+          url 
+          formats
+      }
+    }
+  }
+}`;
 
   const search = {
     minlat: parseFloat(minlat),

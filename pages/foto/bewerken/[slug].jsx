@@ -51,7 +51,7 @@ const EditPhoto = () => {
     const [selectedPhotoCategories, setSelectedPhotoCategories] = useState(
         []
     );
-    const [creatableValues, setCreatableValues] = useState({});
+    const [creatableValues, setCreatableValues] = useState(undefined);
     const [loading, setLoading] = useState(false);
 
     const [values, setValues] = useState({
@@ -300,6 +300,7 @@ const EditPhoto = () => {
     };
 
     const handleSelect = (newValue) => {
+        console.log(newValue);
         /*
             set the ID of the location_categories to location object
             and update the selected values in object location_categories in the state
@@ -313,6 +314,7 @@ const EditPhoto = () => {
             ids = [];
         }
 
+        setCreatableValues(...newValue);
         setSelectedPhotoCategories(ids);
     };
 
