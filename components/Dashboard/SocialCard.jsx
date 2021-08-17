@@ -42,7 +42,7 @@ const SocialCard = ({ photo }) => {
       </Link>
       <img
         className={`rounded block max-w-none w-full object-contain`}
-        style={{ backgroundColor: "black", width: "100%", maxHeight: "750px" }}
+        style={{ backgroundColor: "black", width: "100%", maxHeight: "700px" }}
         src={imageUrl}
         alt={photo.title}
       />

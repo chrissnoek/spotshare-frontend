@@ -1062,7 +1062,7 @@ class Step2 extends React.Component {
         )}
         {newLocation && (
           <React.Fragment>
-            <h2 className="mt-2">Nieuwe locatie toevoegen</h2>
+            <h2 className="mt-4 mb-2">Nieuwe locatie toevoegen</h2>
             <input
               type="text"
               name="title"
@@ -1098,7 +1098,7 @@ class Step2 extends React.Component {
                 this.props.handleSelect(e, "months");
               }}
             />
-            {/* <CreatableSelect
+            <CreatableSelect
               components={animatedComponents}
               isMulti
               onChange={(e) => {
@@ -1109,7 +1109,7 @@ class Step2 extends React.Component {
               value={location_categories}
               onCreateOption={this.props.onCategoryCreate}
               formatCreateLabel={(label) => `Maak nieuwe categorie: "${label}`}
-            /> */}
+            />
           </React.Fragment>
         )}
 
