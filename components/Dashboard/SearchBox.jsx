@@ -116,10 +116,10 @@ const SearchBox = (props) => {
             <FaSearch className="absolute top-0 right-0 m-3 fill-current text-gray-500" />
           </div>
           {showDropdown && (
-            <div className="dropdown bg-white rounded-b border absolute w-full">
+            <div className="dropdown bg-white rounded-b border absolute w-full cursor-pointer" onClick={searchCurLoc}>
               <div className="flex justify-center items-center px-4 py-2">
                 <TiLocationArrow />
-                <span onClick={searchCurLoc}>Gebruik huidige locatie</span>
+                <span>Gebruik huidige locatie</span>
               </div>
             </div>
           )}
