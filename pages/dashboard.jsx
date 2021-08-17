@@ -96,7 +96,7 @@ const Dashboard = ({ categories: _categories }) => {
                     <span>Dashboard</span>
                   </li>
                   <li>
-                    <Link href={`/fotograaf/${value.user.slug}#fav`}>
+                    <Link href={`/fotograaf/${value.user.slug}?tab=favoriete-locaties`}>
                       <a className="block py-3 text-gray-900 hover:text-blue-500 hover:font-bold flex items-center">
                         <FaBookmark className="mr-2" />
                         <span>Opgeslagen locaties</span>

@@ -28,6 +28,30 @@ class LocationCard extends Component {
     let className =
       " flex items-center p-1";
     className += active ? " border-green-500 border" : "";
+
+    const featuredPhoto = this.props.location.photos
+      .sort((a, b) => b.likes - a.likes)[0]
+      .photo[0];
+
+    let imageUrl = '';
+
+    if (featuredPhoto.formats) {
+      if (featuredPhoto.formats.thumbnail) {
+        imageUrl = featuredPhoto.formats.thumbnail.url;
+      } else if (featuredPhoto.formats.small) {
+        imageUrl = featuredPhoto.formats.small.url;
+      } else if (featuredPhoto.formats.medium) {
+        imageUrl = featuredPhoto.formats.medium.url;
+      } else if (featuredPhoto.formats.large) {
+        imageUrl = featuredPhoto.formats.large.url;
+      } else {
+        imageUrl = featuredPhoto.url;
+      }
+    } else {
+      imageUrl = featuredPhoto.url;
+    }
+
+
     return (
       <React.Fragment>
         <div
@@ -47,9 +71,7 @@ class LocationCard extends Component {
               style={{
                 backgroundColor: "grey",
               }}
-              src={this.props.location.photos
-                .sort((a, b) => b.likes - a.likes)[0]
-                .photo[0].url.replace(/-original|-watermark/gi, "-small")}
+              src={imageUrl}
               alt={`Bekijk locatie ${this.props.location.title}`}
             />
 

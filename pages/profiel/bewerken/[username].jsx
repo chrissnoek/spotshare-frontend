@@ -52,6 +52,9 @@ class DataEdit extends Form {
               firstname
               lastname
               location
+              website
+              fb_page
+              insta_page
               profilePicture {
                 url
               }
@@ -336,6 +339,9 @@ class DataEdit extends Form {
             {this.renderInput("firstname", "Voornaam", "Voornaam", "text")}
             {this.renderInput("lastname", "Achternaam", "Achternaam", "text")}
             {this.renderInput("location", "Woonplaats", "Woonplaats", "text")}
+            {this.renderInput("website", "Website", "Website", "text")}
+            {this.renderInput("fb_page", "Facebook", "Facebook", "text")}
+            {this.renderInput("insta_page", "Instagram", "Instagram", "text")}
           </div>
           {this.renderButton("Profiel opslaan", this.state.saving)}
         </div>
@@ -372,6 +378,9 @@ export async function getServerSideProps({ params }) {
       firstname
       lastname
       location
+      website
+      fb_page
+      insta_page
       profilePicture {
         url
       }

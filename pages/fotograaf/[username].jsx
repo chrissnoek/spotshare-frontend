@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import graphQLFetch from "../../graphQLFetch.js";
 import { MdEdit } from "react-icons/md";
 import { TiLocation } from "react-icons/ti";
+import { BiWorld } from "react-icons/bi";
 import { userContext } from "../../services/userContext.js";
 import PhotoView from "../../components/shared/PhotoView";
 import Link from "next/link";
@@ -10,9 +11,14 @@ import UserProfilePicture from "../../components/shared/UserProfilePicture.jsx";
 import CreateNotification from "../../components/shared/CreateNotification.jsx";
 import LocationCard from "../../components/shared/LocationCard.jsx";
 import Head from "next/head";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { useRouter } from "next/router";
+import Image from "next/image";
+import LocationHashtag from "../../components/shared/LocationHashtag.jsx";
 
 const UserProfile = ({ profile: _profile }) => {
   const [profile, setProfile] = useState(_profile);
+  const router = useRouter();
 
   useEffect(() => {
     setProfile(_profile);
@@ -138,6 +144,7 @@ const UserProfile = ({ profile: _profile }) => {
               profile={profile}
               updateFollow={updateFollow}
               deletePhoto={deletePhoto}
+              router={router}
             />
           );
         } else {
@@ -147,6 +154,7 @@ const UserProfile = ({ profile: _profile }) => {
               profile={profile}
               updateFollow={updateFollow}
               deletePhoto={deletePhoto}
+              router={router}
             />
           );
         }
@@ -189,6 +197,9 @@ export async function getServerSideProps({ params }) {
       firstname
       lastname
       location
+      website
+      fb_page
+      insta_page
       followers{
         id
       }
@@ -249,7 +260,7 @@ export async function getServerSideProps({ params }) {
 }
 
 const UserProfileComponent = (props) => {
-  const { curUser, profile, updateFollow, deletePhoto } = props;
+  const { curUser, profile, updateFollow, deletePhoto, router } = props;
   if (profile === null) {
     // console.log("return null from render");
     return null;
@@ -285,6 +296,15 @@ const UserProfileComponent = (props) => {
     }
   }
   console.log(profile);
+
+  const {
+    query: { tab }
+  } = router;
+
+  const isTabOne = tab === "fotos" || tab == null;
+  const isTabTwo = tab === "favoriete-locaties";
+
+  console.log(isTabOne, isTabTwo);
 
   return (
     <div className="p-6">
@@ -345,12 +365,28 @@ const UserProfileComponent = (props) => {
                   ? profile.firstname + " " + profile.lastname
                   : profile.username}
               </h1>
-              <div className="">
-                <p className="flex items-center text-gray-400 text-sm text-center justify-center sm:justify-start">
+              <div className="flex mt-2">
+                {profile.location && <p className="mr-4 flex items-center text-gray-400 text-sm text-center justify-center sm:justify-start">
                   <TiLocation />
                   &nbsp;
                   {profile.location}
-                </p>
+                </p>}
+                {profile.website && <a href={profile.website} className="mr-4 flex items-center text-gray-400 hover:text-gray-600 hover:underline text-sm text-center justify-center sm:justify-start">
+                  <BiWorld />
+                  &nbsp;
+                  website
+                </a>}
+                {profile.fb_page && <a href={profile.fb_page} className="mr-4 flex items-center text-gray-400 hover:text-gray-600 hover:underline text-sm text-center justify-center sm:justify-start">
+                  <FaFacebook />
+                  &nbsp;
+                  Facebook
+                </a>}
+                {profile.insta_page && <a href={profile.insta_page} className="mr-4 flex items-center text-gray-400 hover:text-gray-600 hover:underline text-sm text-center justify-center sm:justify-start">
+                  <FaInstagram />
+                  &nbsp;
+                  Instagram
+                </a>}
+
               </div>
 
               <div className="hidden sm:block">
@@ -417,33 +453,91 @@ const UserProfileComponent = (props) => {
           </div>
         </div>
         <hr className="my-3" />
-        <h2 className="my-3">Foto's</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {profile.photos.reverse().map((photo, index) => (
-            <PhotoView
-              key={photo.id}
-              index={index}
-              deletePhoto={
-                !isServer && curUser && curUser.id === profile.id
-                  ? deletePhoto
-                  : null
-              }
-              photo={photo}
-            />
-          ))}
+        <div className="flex">
+          <Link href={{ pathname: `/fotograaf/${profile.username}`, query: { tab: "fotos" } }}>
+            <a className={`inline-block py-2 px-3 mr-3 rounded hover:bg-gray-100 text-gray-500 ${isTabOne ? 'bg-green-200 hover:bg-green-200 text-green-600 font-bold' : ''}`}>Foto's</a>
+          </Link>
+          <Link href={{ pathname: `/fotograaf/${profile.username}`, query: { tab: "favoriete-locaties" } }}>
+            <a className={`inline-block py-2 px-3 rounded hover:bg-gray-100 text-gray-500 ${isTabTwo ? 'bg-green-200 hover:bg-green-200 text-green-600 font-bold' : ''}`}>Favoriete locaties</a>
+          </Link>
         </div>
         <hr className="my-3" />
-        <h2 id="fav" className="my-3">
+        {isTabOne && <><h2 className="my-3">Foto's</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {profile.photos.reverse().map((photo, index) => (
+              <PhotoView
+                key={photo.id}
+                index={index}
+                deletePhoto={
+                  !isServer && curUser && curUser.id === profile.id
+                    ? deletePhoto
+                    : null
+                }
+                photo={photo}
+              />
+            ))}
+          </div></>}
+        {isTabTwo && <><h2 id="fav" className="my-3">
           Favoriete locaties
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {profile.favouriteLocations.length > 0 && profile.favouriteLocations.reverse().map((location) => (
-            <LocationCard key={location.id} location={location} onClick={(link) => { window.location = "/fotolocatie/" + link.slug }} />
-          ))}
-        </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {profile.favouriteLocations.length > 0 && profile.favouriteLocations.reverse().map((location) => (
+              <LocationView key={location.id} location={location} />
+            ))}
+          </div></>}
       </div>
-    </div>
+    </div >
   );
 };
 
 export default UserProfile;
+
+const LocationView = ({ location }) => {
+
+  console.log(location);
+
+  const featuredPhoto = location.photos
+    .sort((a, b) => b.likes - a.likes)[0]
+    .photo[0];
+
+  let imageUrl = '';
+
+  if (featuredPhoto.formats) {
+    if (featuredPhoto.formats.medium) {
+      imageUrl = featuredPhoto.formats.medium.url;
+    } else if (featuredPhoto.formats.large) {
+      imageUrl = featuredPhoto.formats.large.url;
+    } else {
+      imageUrl = featuredPhoto.url;
+    }
+  } else {
+    imageUrl = featuredPhoto.url;
+  }
+
+  return (
+    <div className="rounded overflow-hidden relative">
+      <Link href={`/fotolocatie/${location.slug}`}>
+        <a className="absolute w-full h-full top-0 left-0 z-10"></a>
+      </Link>
+      <div className="relative">
+        <div className="w-full h-36 md:w-26 h-26 mr-4 relative">
+          <Image
+            className={`object-cover w-full`}
+            src={imageUrl}
+            alt={`Bekijk locatie ${location.title}`}
+            layout="fill"
+            object="cover"
+          />
+        </div>
+        <div className="absolute w-full h-full top-0 left-0" style={{ background: "linear-gradient(0deg, #00000088 30%, #ffffff44 100%" }}></div>
+        <div className="absolute ml-3 mb-2 bottom-0 left-0 w-full">
+          <div>
+            {[location.location_categories[0], location.location_categories[1], location.location_categories[2]].map((category) => (typeof category != "undefined" &&
+              <LocationHashtag key={category.id} category={category} />
+            ))}</div>
+          <h3 className=" text-white ">{location.title}</h3>
+        </div>
+      </div>
+    </div>
+  )
+}
