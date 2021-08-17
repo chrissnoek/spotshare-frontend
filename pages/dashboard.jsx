@@ -68,7 +68,7 @@ const Dashboard = ({ categories: _categories }) => {
               />
             </Head>
             <div className="flex flex-col md:flex-row mt-4 md:mt-14">
-              <div className="w-full md:w-1/4 px-6 xl:px-8 order-1 ">
+              <div className="w-full md:w-1/4 px- lg:pl-14 order-1 ">
                 <Link href={`/fotograaf/${value.user.username}`}>
                   <div className="flex items-center cursor-pointer mb-2 md:mb-0">
 
