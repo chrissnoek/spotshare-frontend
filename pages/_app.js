@@ -1,5 +1,7 @@
 import "../styles/globals.scss";
 import "leaflet/dist/leaflet.css";
+// Import Swiper styles
+import 'swiper/swiper.scss';
 import { userContext } from "../services/userContext.js";
 import { useEffect, useState } from "react";
 import auth from "../services/authService";

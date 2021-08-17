@@ -102,7 +102,7 @@ const UserProfile = ({ profile: _profile }) => {
     const newList = [...photos];
     newList.splice(index, 1);
     const _profile = { ...profile };
-    _profile.photos = newList;
+    _profile.photos = newList.reverse();
     setProfile(_profile);
 
     // get the id of the photo to be deleted
@@ -419,7 +419,7 @@ const UserProfileComponent = (props) => {
         <hr className="my-3" />
         <h2 className="my-3">Foto's</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {profile.photos.map((photo, index) => (
+          {profile.photos.reverse().map((photo, index) => (
             <PhotoView
               key={photo.id}
               index={index}
@@ -437,7 +437,7 @@ const UserProfileComponent = (props) => {
           Favoriete locaties
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {profile.favouriteLocations.length > 0 && profile.favouriteLocations.map((location) => (
+          {profile.favouriteLocations.length > 0 && profile.favouriteLocations.reverse().map((location) => (
             <LocationCard key={location.id} location={location} onClick={(link) => { window.location = "/fotolocatie/" + link.slug }} />
           ))}
         </div>

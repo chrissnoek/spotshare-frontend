@@ -67,10 +67,10 @@ const Dashboard = ({ categories: _categories }) => {
                 content="Meest recente updates in de Spotshare community en locaties bij je in de buurt."
               />
             </Head>
-            <div className="block md:flex mt-4 md:mt-14">
-              <div className="w-full md:w-1/4 px-6 lg:px-14">
+            <div className="flex flex-col md:flex-row mt-4 md:mt-14">
+              <div className="w-full md:w-1/4 px-6 xl:px-8 order-1 ">
                 <Link href={`/fotograaf/${value.user.username}`}>
-                  <div className="flex items-center cursor-pointer">
+                  <div className="flex items-center cursor-pointer mb-2 md:mb-0">
 
                     <div className="mr-4">
                       <UserProfilePicture profile={value.user} size={10} />
@@ -84,7 +84,7 @@ const Dashboard = ({ categories: _categories }) => {
                     </div>
                   </div>
                 </Link>
-                <ul className="mt-6">
+                <ul className="hidden md:block mt-6 ">
                   <li
                     className={`block py-3 flex items-center ${!showNotifications
                       ? `text-blue-500 font-bold`
@@ -134,7 +134,7 @@ const Dashboard = ({ categories: _categories }) => {
                 </ul>
               </div>
 
-              <div className="w-full px-6 md:px-0 md:w-1/2">
+              <div className="w-full px-6 md:px-0 md:w-1/2 order-3 md:order-2">
                 {showNotifications ? (
                   <NotificationBoard user={value.user} />
                 ) : (
@@ -145,7 +145,7 @@ const Dashboard = ({ categories: _categories }) => {
                 )}
               </div>
 
-              <div className="w-full md:w-1/4 px-6 lg:px-14">
+              <div className="w-full md:w-1/4 px-6 xl:px-8 order-2 md:order-3">
                 <LocationsNearby />
                 <CategorieList categories={categories} />
               </div>
