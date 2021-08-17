@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { TiLocationArrow } from "react-icons/ti";
 import { toast } from "react-toastify";
@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 const SearchBox = (props) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [formValue, setFormValue] = useState("");
+  const [loadingCurLoc, setLoadingCurLoc] = useState(false);
+  const inputEl = useRef(null);
 
   const handleDropdown = (focussed) => {
     setShowDropdown(focussed);
@@ -47,6 +49,10 @@ const SearchBox = (props) => {
   };
 
   const searchCurLoc = () => {
+    inputEl.current.placeholder = 'loading...';
+    inputEl.current.disabled = true;
+    setLoadingCurLoc(true);
+
     // get users position
     var options = {
       enableHighAccuracy: true,
@@ -76,6 +82,7 @@ const SearchBox = (props) => {
     };
 
     navigator.geolocation.getCurrentPosition(success, error, options);
+    setLoadingCurLoc(false);
   };
 
   return (
@@ -92,9 +99,10 @@ const SearchBox = (props) => {
             <input type="hidden" name="lng" id="lng" />
 
             <input
-              className="rounded border border-gray-300 px-4 py-2 w-full top-0 left-0 focus:rounded-t"
+              className={`rounded border border-gray-300 px-4 py-2 w-full top-0 left-0 focus:rounded-t ${searchCurLoc && ' searching'}`}
               type="search"
               placeholder="Locatie zoeken"
+              ref={inputEl}
               onFocus={() => {
                 handleDropdown(true);
               }}
