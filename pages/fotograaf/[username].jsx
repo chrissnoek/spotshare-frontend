@@ -15,6 +15,7 @@ import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import LocationHashtag from "../../components/shared/LocationHashtag.jsx";
+import { Map, TileLayer, Marker, Popup } from "react-leaflet-universal";
 
 const UserProfile = ({ profile: _profile }) => {
   const [profile, setProfile] = useState(_profile);
@@ -234,6 +235,16 @@ export async function getServerSideProps({ params }) {
           id
           title
           slug
+          photos {
+            likes
+            id
+            title
+            slug
+            photo {
+              url
+              formats
+            }
+          }
         }
         photo {
           id
@@ -260,6 +271,15 @@ export async function getServerSideProps({ params }) {
 }
 
 const UserProfileComponent = (props) => {
+  const [bounds, setBounds] = useState([]);
+  const [showMap, setShowMap] = useState(false);
+  const [hoverIcon, setHoverIcon] = useState(false);
+  const [locIcon, setLocIcon] = useState(false);
+  const [visitedIcon, setVisIcon] = useState(false);
+  const [visitedLocations, setVisitedLocations] = useState([]);
+  const [allLocations, setAllLocations] = useState([]);
+  const [active, selectActive] = useState();
+
   const { curUser, profile, updateFollow, deletePhoto, router } = props;
   if (profile === null) {
     // console.log("return null from render");
@@ -303,8 +323,133 @@ const UserProfileComponent = (props) => {
 
   const isTabOne = tab === "fotos" || tab == null;
   const isTabTwo = tab === "favoriete-locaties";
+  const isTabThree = tab === "bezochte-locaties";
 
-  console.log(isTabOne, isTabTwo);
+  useEffect(() => {
+    if (tab === "bezochte-locaties") {
+      console.log({ profile });
+      let _allLocations = profile.photos.map((photo) => photo.location);
+
+      console.log({ _allLocations });
+
+      _allLocations = _allLocations.filter((location, index, self) =>
+        index === self.findIndex((l) => (
+          l.id === location.id
+        ))
+      );
+
+      console.log({ _allLocations });
+
+      setAllLocations(_allLocations);
+      loadMap(_allLocations);
+    }
+  }, [tab]);
+
+
+  const loadMap = (_allLocations) => {
+    // loading leaflet in componentDidMount because it doenst support SSR
+    const L = require("leaflet");
+    console.log({ _allLocations });
+
+    delete L.Icon.Default.prototype._getIconUrl;
+
+    const _hoverIcon = new L.Icon({
+      iconUrl: "/images/userMarker.svg",
+      iconRetinaUrl: "/images/userMarker.svg",
+
+      iconAnchor: [16, 40],
+      popupAnchor: [0, -40],
+      shadowUrl: "/images/marker-shadow.png",
+      shadowAnchor: [13, 40],
+      iconSize: new L.Point(32, 40),
+      className: "little-blue-dot-" + location.id,
+    });
+
+    const _locIcon = new L.Icon({
+      iconUrl: "/images/locationMarker.svg",
+      iconRetinaUrl: "/images/locationMarker.svg",
+      iconAnchor: [16, 40],
+      popupAnchor: [0, -40],
+      shadowUrl: "/images/marker-shadow.png",
+      shadowAnchor: [13, 40],
+      iconSize: new L.Point(32, 40),
+      className: "little-blue-dot-" + location.id,
+    });
+
+    const _visIcon = new L.Icon({
+      iconUrl: "/images/visitedMarker.svg",
+      iconRetinaUrl: "/images/visitedMarker.svg",
+      iconAnchor: [16, 40],
+      popupAnchor: [0, -40],
+      shadowUrl: "/images/marker-shadow.png",
+      shadowAnchor: [13, 40],
+      iconSize: new L.Point(32, 40),
+      className: "little-blue-dot-" + location.id,
+    });
+
+    setHoverIcon(_hoverIcon);
+    setLocIcon(_locIcon);
+    setVisIcon(_visIcon);
+
+    // get users position
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    };
+    //const bounds = Leaflet.latLngBounds([position, position2]);
+    const _bounds = L.latLngBounds(
+      _allLocations.map((location) => {
+        return [location.latitude, location.longitude];
+      })
+    );
+    console.log(_bounds);
+    setBounds(_bounds);
+
+    if (sessionStorage.getItem("visitedLocations")) {
+      setVisitedLocations(
+        JSON.parse(sessionStorage.getItem("visitedLocations"))
+      );
+    }
+
+    setShowMap(true);
+  };
+
+  const goToLocation = (slug, id) => {
+    let data = [];
+    if (sessionStorage.getItem("visitedLocations")) {
+      data = JSON.parse(sessionStorage.getItem("visitedLocations"));
+    }
+    if (data.indexOf(id) === -1) {
+      data.push(id);
+    }
+    sessionStorage.setItem("visitedLocations", JSON.stringify(data));
+
+    router.push(`/fotolocatie/${slug}`);
+  };
+
+  const getPopupImage = (location) => {
+    console.log(location);
+    const featuredPhoto = location.photos
+      .sort((a, b) => b.likes - a.likes)[0];
+    let popupImage = '';
+    if (featuredPhoto.photo[0].formats) {
+      if (featuredPhoto.photo[0].formats.thumbnail) {
+        popupImage = featuredPhoto.photo[0].formats.thumbnail.url;
+      } else if (featuredPhoto.photo[0].formats.small) {
+        popupImage = featuredPhoto.photo[0].formats.small.url;
+      } else if (featuredPhoto.photo[0].formats.medium) {
+        popupImage = featuredPhoto.photo[0].formats.medium.url;
+      } else if (featuredPhoto.photo[0].formats.large) {
+        popupImage = featuredPhoto.photo[0].formats.large.url;
+      } else {
+        popupImage = featuredPhoto.photo[0].url;
+      }
+    } else {
+      popupImage = featuredPhoto.photo[0].url;
+    }
+    return popupImage;
+  }
 
   return (
     <div className="p-6">
@@ -365,7 +510,7 @@ const UserProfileComponent = (props) => {
                   ? profile.firstname + " " + profile.lastname
                   : profile.username}
               </h1>
-              <div className="flex mt-2">
+              <div className="flex mb-6 mt-2 justify-center sm:mb-0 sm:justify-start">
                 {profile.location && <p className="mr-4 flex items-center text-gray-400 text-sm text-center justify-center sm:justify-start">
                   <TiLocation />
                   &nbsp;
@@ -458,7 +603,10 @@ const UserProfileComponent = (props) => {
             <a className={`inline-block py-2 px-3 mr-3 rounded hover:bg-gray-100 text-gray-500 ${isTabOne ? 'bg-green-200 hover:bg-green-200 text-green-600 font-bold' : ''}`}>Foto's</a>
           </Link>
           <Link href={{ pathname: `/fotograaf/${profile.username}`, query: { tab: "favoriete-locaties" } }}>
-            <a className={`inline-block py-2 px-3 rounded hover:bg-gray-100 text-gray-500 ${isTabTwo ? 'bg-green-200 hover:bg-green-200 text-green-600 font-bold' : ''}`}>Favoriete locaties</a>
+            <a className={`inline-block py-2 px-3 mr-3 rounded hover:bg-gray-100 text-gray-500 ${isTabTwo ? 'bg-green-200 hover:bg-green-200 text-green-600 font-bold' : ''}`}>Favoriete locaties</a>
+          </Link>
+          <Link href={{ pathname: `/fotograaf/${profile.username}`, query: { tab: "bezochte-locaties" } }}>
+            <a className={`inline-block py-2 px-3 rounded hover:bg-gray-100 text-gray-500 ${isTabThree ? 'bg-green-200 hover:bg-green-200 text-green-600 font-bold' : ''}`}>Bezochte locaties</a>
           </Link>
         </div>
         <hr className="my-3" />
@@ -485,6 +633,65 @@ const UserProfileComponent = (props) => {
               <LocationView key={location.id} location={location} />
             ))}
           </div></>}
+        {isTabThree && <><h2 id="fav" className="my-3">
+          Bezochte locaties
+        </h2>
+
+          {showMap && (<Map
+            className="map"
+            center={[52.0841037, 4.9424092]}
+            zoom={13}
+            bounds={bounds || null}
+          >
+            <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {allLocations.map((location) => {
+              return (
+                <Marker
+                  position={[location.latitude, location.longitude]}
+                  key={location.id}
+                  onMouseOver={() => {
+                    console.log("check", active, location.id);
+                    selectActive(location.id);
+                  }}
+                  onMouseOut={() => {
+                    selectActive("");
+                  }}
+                  className="hover:translate-x-2 bg-black border border-red-500"
+                  icon={
+                    active === location.id
+                      ? hoverIcon
+                      : visitedLocations.indexOf(location.id) !== -1
+                        ? visitedIcon
+                        : locIcon
+                  }
+                >
+                  <Popup autoPan={false}>
+                    <span className="font-bold text-large block mb-2">
+                      {location.title}
+                    </span>
+                    <Image
+                      className={` block max-w-none w-full h-18 object-cover`}
+                      src={getPopupImage(location)}
+                      alt={`Bekijk locatie ${location.title}`}
+                      width={100}
+                      height={76}
+                    />
+                    <div
+                      className="text-blue-400 font-bold text-large mt-2 hover:text-blue-500 hover:underline cursor-pointer"
+                      onClick={() => {
+                        goToLocation(location.slug, location.id);
+                      }}
+                    >
+                      Bekijk fotolocatie »
+                    </div>
+                  </Popup>
+                </Marker>)
+            })}
+          </Map>)}
+        </>}
       </div>
     </div >
   );
