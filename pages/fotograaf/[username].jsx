@@ -371,17 +371,17 @@ const UserProfileComponent = (props) => {
                   &nbsp;
                   {profile.location}
                 </p>}
-                {profile.website && <a href={profile.website} className="mr-4 flex items-center text-gray-400 hover:text-gray-600 hover:underline text-sm text-center justify-center sm:justify-start">
+                {profile.website && <a href={profile.website} className="mr-4 flex items-center text-gray-400 hover:text-gray-600 hover:underline text-sm text-center justify-center sm:justify-start" target="_blank" rel="nofollow noopener">
                   <BiWorld />
                   &nbsp;
                   website
                 </a>}
-                {profile.fb_page && <a href={profile.fb_page} className="mr-4 flex items-center text-gray-400 hover:text-gray-600 hover:underline text-sm text-center justify-center sm:justify-start">
+                {profile.fb_page && <a href={profile.fb_page.includes('http') ? profile.fb_page : (profile.fb_page.includes('www.') ? 'http://' + profile.fb_page : 'https://www.facebook.com/' + profile.fb_page)} className="mr-4 flex items-center text-gray-400 hover:text-gray-600 hover:underline text-sm text-center justify-center sm:justify-start" target="_blank" rel="nofollow noopener">
                   <FaFacebook />
                   &nbsp;
                   Facebook
                 </a>}
-                {profile.insta_page && <a href={profile.insta_page} className="mr-4 flex items-center text-gray-400 hover:text-gray-600 hover:underline text-sm text-center justify-center sm:justify-start">
+                {profile.insta_page && <a href={profile.insta_page.includes('http') ? profile.insta_page : (profile.insta_page.includes('www.') ? 'http://' + profile.insta_page : 'https://www.instagram.com/' + profile.insta_page)} className="mr-4 flex items-center text-gray-400 hover:text-gray-600 hover:underline text-sm text-center justify-center sm:justify-start" target="_blank" rel="nofollow noopener">
                   <FaInstagram />
                   &nbsp;
                   Instagram
