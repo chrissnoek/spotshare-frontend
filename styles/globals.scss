@@ -142,6 +142,15 @@ form.photoAdd {
   width: auto !important;
 }
 
+#searchResults,
+#searchResultsMap {
+  height: 50vh;
+
+  @screen lg {
+    height: 100vh;
+  }
+}
+
 
 .spin {
   animation-name: spin;

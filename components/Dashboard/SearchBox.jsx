@@ -31,8 +31,7 @@ const SearchBox = (props) => {
       //
       if (json.length > 0) {
         // the entered city can be converted to lat long
-        sessionStorage.getItem("prevsettings") &&
-          sessionStorage.removeItem("prevsettings");
+        sessionStorage.removeItem("prevsettings");
         props.redirect(
           `/fotolocaties/resultaten/?lat=${json[0].lat}&lng=${json[0].lon}`
         );
@@ -63,8 +62,7 @@ const SearchBox = (props) => {
     const success = async (pos) => {
       var crd = pos.coords;
 
-      sessionStorage.getItem("prevsettings") &&
-        sessionStorage.removeItem("prevsettings");
+      sessionStorage.removeItem("prevsettings");
 
       props.redirect(
         `/fotolocaties/resultaten/?lat=${crd.latitude}&lng=${crd.longitude}`
@@ -75,6 +73,7 @@ const SearchBox = (props) => {
       fetch("https://ipapi.co/json")
         .then((res) => res.json())
         .then(async (location) => {
+          sessionStorage.removeItem("prevsettings");
           props.redirect(
             `/fotolocaties/resultaten/?lat=${location.latitude}&lng=${location.longitude}`
           );

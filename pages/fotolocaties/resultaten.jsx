@@ -87,7 +87,7 @@ const Results = ({ locations }) => {
     typeof window !== "undefined" && router.push(slug);
   };
 
-  if (filteredLocations === null || filteredLocations.length === 0) {
+  if ((filteredLocations === null || filteredLocations.length === 0) && allLocations.length === 0) {
     console.log(filteredLocations);
     // no results found
     return (
@@ -101,8 +101,8 @@ const Results = ({ locations }) => {
 
     return (
       <div className="relative h-screen">
-        <div className="flex h-full">
-          <div className="w-full p-4 h-screen overflow-scroll">
+        <div className="block lg:flex h-full">
+          <div className="w-full p-4 h-screen overflow-scroll" id="searchResults">
             <h1>Resultaten</h1>
             <div className="mb-2 flex">
               <span className="mr-2">Filter op categorie:</span>
@@ -130,7 +130,7 @@ const Results = ({ locations }) => {
               ))}
           </div>
 
-          <div className="mb-10 w-full h-full">
+          <div className="mb-10 w-full h-full" id="searchResultsMap">
             {showMap && filteredLocations.length > 0 && (
               <ResultMap
                 locations={filteredLocations}

@@ -108,8 +108,8 @@ const LocationsPerCategorie = ({ locations: _locations, value }) => {
           {/* <meta property="twitter:image"
           key="twitter_img" content={locations[0].photos[0].photo[0].url} /> */}
         </Head>
-        <div className="flex h-full">
-          <div className="w-full p-4 h-screen overflow-scroll">
+        <div className="block lg:flex h-full">
+          <div className="w-full p-4 h-screen overflow-scroll" id="searchResults">
             <h1>Resultaten</h1>
             {/* <div className="mb-2 flex">
             <span className="mr-2">Filter op categorie:</span>
@@ -158,7 +158,7 @@ const LocationsPerCategorie = ({ locations: _locations, value }) => {
                 )))}
           </div>
 
-          <div className="mb-10 w-full h-full">
+          <div className="mb-10 w-full h-full" id="searchResultsMap">
             {showMap &&
               locations &&
               (filteredLocations.length > 0 ? (
