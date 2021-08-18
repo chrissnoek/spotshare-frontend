@@ -61,6 +61,18 @@ const Footer = () => {
               <div className="text-xs uppercase text-gray-500 font-medium">
                 Gebruiker
               </div>
+              <a
+                className="my-3 block text-white"
+                href="https://www.spotshare.nl/blog/"
+              >
+                Blog <span className="text-teal-600 text-xs p-1"></span>
+              </a>
+              <Link href="/gebruikersvoorwaarden">
+                <a className="my-3 block text-white">
+                  Gebruikers voorwaarden{" "}
+                  <span className="text-teal-600 text-xs p-1"></span>
+                </a>
+              </Link>
               <Link href="/inloggen">
                 <a className="my-3 block text-white">
                   Inloggen
@@ -80,16 +92,25 @@ const Footer = () => {
               </div>
               <a
                 className="my-3 block text-white"
-                href="https://www.spotshare.nl/blog/"
+                href="mailto:info@spotshare.nl"
+                target="_blank"
               >
-                Blog <span className="text-teal-600 text-xs p-1"></span>
+                Contact: info@spotshare.nl
               </a>
-              <Link href="/gebruikersvoorwaarden">
-                <a className="my-3 block text-white">
-                  Gebruikers voorwaarden{" "}
-                  <span className="text-teal-600 text-xs p-1"></span>
-                </a>
-              </Link>
+              <a
+                className="my-3 block text-white"
+                href="https://instagram.com/spotsharenl"
+                target="_blank"
+              >
+                Instagram: @spotsharenl
+              </a>
+              <a
+                className="my-3 block text-white"
+                href="https://www.facebook.com/groups/spotsharenl/"
+                target="_blank"
+              >
+                Facebook groep: Spotshare Members
+              </a>
             </div>
           </div>
         </div>
