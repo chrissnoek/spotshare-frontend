@@ -5,10 +5,15 @@ import LocationHashtag from "./LocationHashtag.jsx";
 
 const LocationList = ({ location, active, selectLocation }) => {
 
-  console.log(location);
+  if (location.photos.length === 0) {
+    console.log(location.photos.length, location.id);
+    return null;
+  }
 
   let featuredPhoto = location.photos
     .sort((a, b) => b.likes - a.likes)[0];
+
+  // console.log(featuredPhoto);
 
   if (featuredPhoto.photo[0].formats) {
     let imageUrl = '';

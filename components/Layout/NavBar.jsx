@@ -33,101 +33,103 @@ const NavBar = () => {
   };
 
   return (
-    <header className="bg-gray-900 sm:flex sm:justify-between sm:px-6 sm:py-3 sm:items-center">
-      <div className="flex items-center justify-between px-4 py-3 sm:p-0 bg-gray-900">
-        <div>
-          <Link href="/">
-            <a onClick={closeMenu}>
-              <img
-                src="http://dkotwt30gflnm.cloudfront.net/assets/spotshare-logo.png"
-                className="h-8"
-                alt="Spotshare, de mooiste fotolocaties bij jou in de buurt"
-              />
+    <header className="bg-gray-900">
+      <div className="container  sm:flex sm:justify-between sm:px-6 sm:py-3 sm:items-center">
+        <div className=" flex items-center justify-between px-4 py-3 sm:p-0 bg-gray-900">
+          <div>
+            <Link href="/">
+              <a onClick={closeMenu}>
+                <img
+                  src="http://dkotwt30gflnm.cloudfront.net/assets/spotshare-logo.png"
+                  className="h-8"
+                  alt="Spotshare, de mooiste fotolocaties bij jou in de buurt"
+                />
+              </a>
+            </Link>
+          </div>
+          <div className="sm:hidden">
+            <button
+              onClick={toggleOpen}
+              type="button"
+              className="text-gray-400 hover:text-white focus:text-white focus:outline-none"
+            >
+              {isOpen ? (
+                <FiX className="fill-current text-white" />
+              ) : (
+                <FiMenu className="fill-current text-white" />
+              )}
+            </button>
+          </div>
+        </div>
+        <nav
+          className={`px-2 pt-2 pb-4 sm:p-0 items-center sm:flex ${isOpen ? " block" : " hidden"
+            }`}
+        >
+          <Link href="/foto/toevoegen">
+            <a
+              onClick={closeMenu}
+              className="block text-white font-semibold rounded bg-green-500 text-white hover:bg-green-600 px-2 py-1 "
+            >
+              Foto uploaden
             </a>
           </Link>
-        </div>
-        <div className="sm:hidden">
-          <button
-            onClick={toggleOpen}
-            type="button"
-            className="text-gray-400 hover:text-white focus:text-white focus:outline-none"
-          >
-            {isOpen ? (
-              <FiX className="fill-current text-white" />
-            ) : (
-              <FiMenu className="fill-current text-white" />
-            )}
-          </button>
-        </div>
-      </div>
-      <nav
-        className={`px-2 pt-2 pb-4 sm:p-0 items-center sm:flex ${isOpen ? " block" : " hidden"
-          }`}
-      >
-        <Link href="/foto/toevoegen">
-          <a
-            onClick={closeMenu}
-            className="block text-white font-semibold rounded bg-green-500 text-white hover:bg-green-600 px-2 py-1 "
-          >
-            Foto uploaden
-          </a>
-        </Link>
 
-        {!user ? (
-          <React.Fragment>
-            <Link href="/aanmelden">
-              <a
-                onClick={closeMenu}
-                className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
-              >
-                Aanmelden
-              </a>
-            </Link>
-            <Link href="/inloggen">
-              <a
-                onClick={closeMenu}
-                className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
-              >
-                Inloggen
-              </a>
-            </Link>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <div className="relative">
-              <a
-                onClick={notIconClick}
-                className="relative block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
-              >
-                <IoNotificationsOutline className="text-2xl" />
-              </a>
-              <Notifications
-                onClick={onNotClick}
-                user={user}
-                show={openNotifications}
-              />
-            </div>
-            <Link href={`/fotograaf/${user.username}`}>
-              <a
-                onClick={closeMenu}
-                className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
-              >
-                {user.firstname
-                  ? user.firstname + " " + user.lastname
-                  : user.username}
-              </a>
-            </Link>
-            <Link href="/uitloggen">
-              <a
-                onClick={closeMenu}
-                className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
-              >
-                Uitloggen
-              </a>
-            </Link>
-          </React.Fragment>
-        )}
-      </nav>
+          {!user ? (
+            <React.Fragment>
+              <Link href="/aanmelden">
+                <a
+                  onClick={closeMenu}
+                  className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
+                >
+                  Aanmelden
+                </a>
+              </Link>
+              <Link href="/inloggen">
+                <a
+                  onClick={closeMenu}
+                  className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
+                >
+                  Inloggen
+                </a>
+              </Link>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <div className="relative">
+                <a
+                  onClick={notIconClick}
+                  className="relative block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
+                >
+                  <IoNotificationsOutline className="text-2xl" />
+                </a>
+                <Notifications
+                  onClick={onNotClick}
+                  user={user}
+                  show={openNotifications}
+                />
+              </div>
+              <Link href={`/fotograaf/${user.username}`}>
+                <a
+                  onClick={closeMenu}
+                  className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
+                >
+                  {user.firstname
+                    ? user.firstname + " " + user.lastname
+                    : user.username}
+                </a>
+              </Link>
+              <Link href="/uitloggen">
+                <a
+                  onClick={closeMenu}
+                  className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
+                >
+                  Uitloggen
+                </a>
+              </Link>
+            </React.Fragment>
+          )}
+        </nav>
+      </div>
     </header>
   );
 };

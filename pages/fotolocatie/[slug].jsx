@@ -252,6 +252,8 @@ class LocationDetailComponent extends React.Component {
     if (featuredPhoto.photo[0].formats) {
       if (featuredPhoto.photo[0].formats.large) {
         imageUrl = featuredPhoto.photo[0].formats.large.url;
+      } else {
+        imageUrl = featuredPhoto.photo[0].url;
       }
     } else {
       imageUrl = featuredPhoto.photo[0].url;

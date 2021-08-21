@@ -8,9 +8,11 @@ import auth from "../services/authService";
 import Layout from "../components/Layout";
 import Head from "next/head";
 import Script from "next/script";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState();
+  const router = useRouter();
 
   const getCurUser = async () => {
     const _user = await auth.getCurrentUser();
@@ -18,9 +20,27 @@ function MyApp({ Component, pageProps }) {
     // console.log("user from app component", _user);
   };
 
+  console.log(router.pathname);
+
   useEffect(() => {
     getCurUser();
   }, []);
+
+  const renderGTMSnippet = () => {
+    return (
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-M27C98');
+        `,
+        }}
+      />
+    );
+  }
 
   return (
     <userContext.Provider value={{ user }}>
@@ -34,6 +54,8 @@ function MyApp({ Component, pageProps }) {
             content="e36c5bff17d0ae554867c3c60fcbe8786838958570a063a46a75f8ce183949f3"
           />
 
+          {renderGTMSnippet()}
+          
           <script
             dangerouslySetInnerHTML={{
               __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-M27C98');`,
@@ -92,7 +114,11 @@ function MyApp({ Component, pageProps }) {
           <meta property="twitter:image" 
             key="twitter_img" content="/images/ogimage.jpg" />
         </Head>
-        <Component {...pageProps} />
+        {router.pathname !== '/fotolocatie/[slug]' && router.pathname !== '/foto/[slug]' ? <div className="container">
+          <Component {...pageProps} />
+           </div> :
+           <Component {...pageProps} />
+           }
       </Layout>
     </userContext.Provider>
   );
