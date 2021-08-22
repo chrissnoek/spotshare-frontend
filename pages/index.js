@@ -89,7 +89,7 @@ function HomeScreen({ featuredPhoto, randomPhotos, context }) {
           </div>
         </div>
       </section>
-      <section className="py-12">
+      <section className="py-12 container">
         <div className="flex flex-col sm:flex-row items-center ">
           <div className="flex">
             {/* <!-- eerste rij --> */}
