@@ -41,6 +41,11 @@ module.exports = withImages({
   async redirects() {
     return [
       {
+  source: '/member/:path*',
+  destination: '/fotograaf/:path*',
+  permanent: true
+},
+      {
 source: '/foto/chainbridge-edam',
 destination: '/foto/chainbridge-edam',
 permanent: true,
