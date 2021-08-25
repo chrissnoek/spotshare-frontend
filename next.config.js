@@ -46,6 +46,11 @@ module.exports = withImages({
   permanent: true
 },
       {
+source: '/login',
+destination: '/inloggen',
+permanent: true,
+},
+      {
 source: '/foto/chainbridge-edam',
 destination: '/foto/chainbridge-edam',
 permanent: true,
