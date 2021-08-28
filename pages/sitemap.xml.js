@@ -11,7 +11,7 @@ export const getServerSideProps = async ({
     const baseUrl = "https://app.spotshare.nl";
 
     const staticPages = fs
-        .readdirSync("pages")
+        .readdirSync("./")
         .filter((staticPage) => {
             return ![
                 "_app.js",
