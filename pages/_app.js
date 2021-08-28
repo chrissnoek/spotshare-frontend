@@ -78,6 +78,7 @@ function MyApp({ Component, pageProps }) {
             content="De mooiste fotolocaties van Nederland, gewoon bij jouw in de buurt! Zowel de bekende als onbekende fotolocaties in Nederland ontdek je bij SpotShare."
           />
           <meta name="author" content="Spotshare" />
+          <meta name="google-site-verification" content="vgJdLi7tH7W9NzP_6-OnBxvPbrxSK9C3TEQ6RKGZzHA" />
 
           {/* <!-- Open Graph / Facebook --> */}
           <meta property="og:type" content="website" />
