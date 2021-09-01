@@ -8,6 +8,7 @@ export const getServerSideProps = async ({
     res
 }) => {
 
+    const siteUrl = 'https://app.spotshare.nl';
     const baseUrl = {
         development: 'pages',
         production: './',
@@ -22,6 +23,7 @@ export const getServerSideProps = async ({
                 "_error.js",
                 "sitemap.xml.js",
                 "sitemap2.xml.js",
+                "sitemap3.xml.js",
                 "connect",
                 "foto",
                 "fotograaf",
@@ -34,18 +36,9 @@ export const getServerSideProps = async ({
             ].includes(staticPage);
         })
         .map((staticPagePath) => {
-            return `${baseUrl}/${staticPagePath.replace('.jsx', '')}`;
+            return `${siteUrl}/${staticPagePath.replace('.jsx', '')}`;
         });
 
-          const photoBySlugQuery = `
-                query photoBySlug {
-                    photos {
-                        slug
-                        updatedAt
-                    }
-                }`;
-
-        const photoBySlugResult = await graphQLFetch(photoBySlugQuery, {}, true);
 
         const photographerBySlugQuery = `
               query photographerBySlug {
@@ -73,20 +66,10 @@ export const getServerSideProps = async ({
             `;
         })
         .join("")}
-        ${photoBySlugResult.photos
-            .map(({ slug, updatedAt }) => {
-            return `<url>
-                    <loc>${baseUrl}/foto/${slug}</loc>
-                    <lastmod>${updatedAt.toISOString()}</lastmod>
-                    <changefreq>monthly</changefreq>
-                    <priority>1.0</priority>
-                </url> `;
-            })
-        .join("")}
         ${photographerBySlugResult.users
             .map(({ slug, updatedAt }) => {
             return `<url>
-                    <loc>${baseUrl}/fotograaf/${slug}</loc>
+                    <loc>${siteUrl}/fotograaf/${slug}</loc>
                     <lastmod>${updatedAt.toISOString()}</lastmod>
                     <changefreq>monthly</changefreq>
                     <priority>1.0</priority>

@@ -8,7 +8,7 @@ export const getServerSideProps = async ({
 
     const baseUrl = {
         development: 'pages',
-        production: './',
+        production: 'https://app.spotshare.nl',
       }[process.env.NODE_ENV];
 
       const locationBySlugQuery = `
@@ -53,12 +53,13 @@ export const getServerSideProps = async ({
   ];
 
 
+    const siteUrl = 'https://app.spotshare.nl';
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
         ${locationsBySlugResult.locations
             .map(({ slug, updatedAt }) => {
             return `<url>
-                    <loc>${baseUrl}/fotolocatie/${slug}</loc>
+                    <loc>${siteUrl}/fotolocatie/${slug}</loc>
                     <lastmod>${updatedAt.toISOString()}</lastmod>
                     <changefreq>monthly</changefreq>
                     <priority>1.0</priority>
@@ -68,7 +69,7 @@ export const getServerSideProps = async ({
         ${locationCategories
             .map(({ value }) => {
             return `<url>
-                    <loc>${baseUrl}/fotolocaties/categorie/${value}</loc>
+                    <loc>${siteUrl}/fotolocaties/categorie/${value}</loc>
                     <lastmod>${new Date().toISOString()}</lastmod>
                     <changefreq>monthly</changefreq>
                     <priority>1.0</priority>
@@ -78,7 +79,7 @@ export const getServerSideProps = async ({
         ${province
             .map((prov) => {
             return `<url>
-                    <loc>${baseUrl}/fotolocaties/${prov}</loc>
+                    <loc>${siteUrl}/fotolocaties/${prov}</loc>
                     <lastmod>${new Date().toISOString()}</lastmod>
                     <changefreq>monthly</changefreq>
                     <priority>1.0</priority>
