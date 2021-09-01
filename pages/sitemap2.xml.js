@@ -1,14 +1,15 @@
-import React from "react";
-import fs from "fs";
 import graphQLFetch from "../graphQLFetch";
 
-const Sitemap = () => {};
+const Sitemap2 = () => {};
 
 export const getServerSideProps = async ({
     res
 }) => {
 
-    const baseUrl = "https://app.spotshare.nl";
+    const baseUrl = {
+        development: 'pages',
+        production: './',
+      }[process.env.NODE_ENV];
 
       const locationBySlugQuery = `
             query locationBySlug {
@@ -96,4 +97,4 @@ export const getServerSideProps = async ({
     };
 };
 
-export default Sitemap;
+export default Sitemap2;

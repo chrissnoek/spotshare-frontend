@@ -8,16 +8,20 @@ export const getServerSideProps = async ({
     res
 }) => {
 
-    const baseUrl = "https://app.spotshare.nl";
+    const baseUrl = {
+        development: 'pages',
+        production: './',
+      }[process.env.NODE_ENV];
 
     const staticPages = fs
-        .readdirSync("./")
+        .readdirSync(baseUrl)
         .filter((staticPage) => {
             return ![
                 "_app.js",
                 "_document.js",
                 "_error.js",
                 "sitemap.xml.js",
+                "sitemap2.xml.js",
                 "connect",
                 "foto",
                 "fotograaf",
