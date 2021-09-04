@@ -339,7 +339,7 @@ const RegisterForm = (props) => {
               <span className="text-black mr-2 text-xs">
                 <span className="text-xl">📸</span>{" "}
                 <span className="text-italic">{featuredPhoto.title}</span>
-                door{" "}
+                {" "}door{" "}
                 <span className="text-italic">
                   {featuredPhoto.user.firstname} {featuredPhoto.user.lastname}
                 </span>
