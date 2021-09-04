@@ -9,37 +9,39 @@ export const getServerSideProps = async ({
 }) => {
 
     const siteUrl = 'https://app.spotshare.nl';
-    const baseUrl = {
-        development: 'pages',
-        production: './',
-      }[process.env.NODE_ENV];
+    // const baseUrl = {
+    //     development: 'pages',
+    //     production: './',
+    //   }[process.env.NODE_ENV];
 
-      console.log(baseUrl);
+    //   console.log(baseUrl);
 
-    const staticPages = fs
-        .readdirSync('./')
-        .filter((staticPage) => {
-            return ![
-                "_app.js",
-                "_document.js",
-                "_error.js",
-                "sitemap.xml.js",
-                "sitemap2.xml.js",
-                "sitemap3.xml.js",
-                "connect",
-                "foto",
-                "fotograaf",
-                "fotolocaties",
-                "fotolocatie",
-                "profiel",
-                "uitloggen.jsx",
-                "wachtwoord-resetten.jsx",
-                "index.js",
-            ].includes(staticPage);
-        })
-        .map((staticPagePath) => {
-            return `${siteUrl}/${staticPagePath.replace('.jsx', '')}`;
-        });
+    // const staticPages = fs
+    //     .readdirSync('./')
+    //     .filter((staticPage) => {
+    //         return ![
+    //             "_app.js",
+    //             "_document.js",
+    //             "_error.js",
+    //             "sitemap.xml.js",
+    //             "sitemap2.xml.js",
+    //             "sitemap3.xml.js",
+    //             "connect",
+    //             "foto",
+    //             "fotograaf",
+    //             "fotolocaties",
+    //             "fotolocatie",
+    //             "profiel",
+    //             "uitloggen.jsx",
+    //             "wachtwoord-resetten.jsx",
+    //             "index.js",
+    //         ].includes(staticPage);
+    //     })
+    //     .map((staticPagePath) => {
+    //         return `${siteUrl}/${staticPagePath.replace('.jsx', '')}`;
+    //     });
+
+        const staticPages = ['aanmelden','all-fotolocaties','gebruikersvoorwaarden','inloggen','wachtwoord-vergeten'];
 
 
         const photographerBySlugQuery = `
@@ -60,7 +62,7 @@ export const getServerSideProps = async ({
         .map((url) => {
             return `
             <url>
-                <loc>${url}</loc>
+                <loc>https://app.spotshare.nl/${url}</loc>
                 <lastmod>${new Date().toISOString()}</lastmod>
                 <changefreq>monthly</changefreq>
                 <priority>1.0</priority>
