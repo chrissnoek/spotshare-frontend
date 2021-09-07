@@ -186,8 +186,8 @@ const UserProfile = ({ profile: _profile }) => {
 // revalidation is enabled and a new request comes in
 export async function getServerSideProps({ params }) {
   // console.log(params);
-  const query = `query profile($username: String!) {
-    users( where: { username: $username } ) {
+  const query = `query profile($slug: String!) {
+    users( where: { slug: $slug } ) {
       username
       profilePicture {
         url
@@ -255,9 +255,9 @@ export async function getServerSideProps({ params }) {
     }
   }`;
 
-  const { username } = params;
+  const { slug } = params;
 
-  const result = await graphQLFetch(query, { username }, true);
+  const result = await graphQLFetch(query, { slug }, true);
 
   return {
     props: {

@@ -140,6 +140,22 @@ const Dashboard = ({ categories: _categories }) => {
                 ) : (
                   <>
                     <Heading redirect={redirect} />
+                    <Link href={`/foto/toevoegen`}>
+                      <div className="flex items-center bg-white shadow px-3 py-2 rounded-lg cursor-pointer mb-6">
+
+                        <div className="mr-4">
+                          <UserProfilePicture profile={value.user} size={10} />
+                        </div>
+                        <div className="flex w-full">
+                          <p className="font-bold text-gray-600 text-lg text-left">
+                            Nog mooie locaties bezocht, {value.user.firstname
+                              ? value.user.firstname
+                              : value.user.username}?
+                          </p>
+                          <Link href={`/foto/toevoegen`}><a className="block text-white font-semibold rounded bg-green-500 hover:bg-green-600 px-2 py-1  ml-auto">Voeg nu toe!</a></Link>
+                        </div>
+                      </div>
+                    </Link>
                     <MostRecent />
                   </>
                 )}

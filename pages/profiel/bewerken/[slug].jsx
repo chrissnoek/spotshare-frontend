@@ -44,14 +44,15 @@ export default MyClassWithRouter;
 
 class DataEdit extends Form {
   async fetchData(match, search, showError) {
-    const query = `query data($username: String!) {
-            users( where: { username: $username } ) {
+    const query = `query data($slug: String!) {
+            users( where: { slug: $slug } ) {
               username
 			        email
               id
               firstname
               lastname
               location
+              slug
               website
               fb_page
               insta_page
@@ -61,8 +62,8 @@ class DataEdit extends Form {
             }
           }`;
 
-    const { data: username } = this.props;
-    const result = await graphQLFetch(query, { username }, true);
+    const { data: slug } = this.props;
+    const result = await graphQLFetch(query, { slug }, true);
     // console.log(result);
     return result;
   }
@@ -370,8 +371,8 @@ class DataEdit extends Form {
 
 export async function getServerSideProps({ params }) {
   // build the graphql query
-  const query = `query data($username: String!) {
-    users( where: { username: $username } ) {
+  const query = `query data($slug: String!) {
+    users( where: { slug: $slug } ) {
       username
       email
       id
@@ -387,14 +388,14 @@ export async function getServerSideProps({ params }) {
     }
   }`;
 
-  const { username } = params;
+  const { slug } = params;
 
-  const result = await graphQLFetch(query, { username }, true);
+  const result = await graphQLFetch(query, { slug }, true);
   // console.log("result", result);
 
   return {
     props: {
-      data: username,
+      data: slug,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in

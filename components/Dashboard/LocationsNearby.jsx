@@ -46,7 +46,7 @@ const LocationsNearby = () => {
     const success = async (pos) => {
       console.log("succes");
       var crd = pos.coords;
-      const _locations = await findNearbyLocations(crd.latitude, crd.longitude);
+      const _locations = await findNearbyLocations(crd.latitude, crd.longitude, "", 3);
       console.log(_locations);
       setLocations(_locations);
     };

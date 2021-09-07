@@ -421,7 +421,7 @@ class PhotoDetail extends React.Component {
 
               <div className="w-full">
                 <div className="relative block sm:flex sm:items-center sm:w-full">
-                  <Link href={`/fotograaf/${photoBySlug.user.username}`}>
+                  <Link href={`/fotograaf/${photoBySlug.user.slug}`}>
                     <a className="top-0 left-0 h-full w-full absolute"></a>
                   </Link>
                   <div className="mx-auto sm:mx-0 mb-2 sm:mr-4">

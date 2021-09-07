@@ -108,7 +108,7 @@ const NavBar = () => {
                   show={openNotifications}
                 />
               </div>
-              <Link href={`/fotograaf/${user.username}`}>
+              <Link href={`/fotograaf/${user.slug}`}>
                 <a
                   onClick={closeMenu}
                   className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
