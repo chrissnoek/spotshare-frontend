@@ -605,9 +605,10 @@ const UserProfileComponent = (props) => {
           <Link href={{ pathname: `/fotograaf/${profile.slug}`, query: { tab: "favoriete-locaties" } }}>
             <a className={`inline-block py-2 px-3 mr-3 rounded hover:bg-gray-100 text-gray-500 ${isTabTwo ? 'bg-green-200 hover:bg-green-200 text-green-600 font-bold' : ''}`}>Favoriete locaties</a>
           </Link>
+          {profile.photos.length > 0 && 
           <Link href={{ pathname: `/fotograaf/${profile.slug}`, query: { tab: "bezochte-locaties" } }}>
             <a className={`inline-block py-2 px-3 rounded hover:bg-gray-100 text-gray-500 ${isTabThree ? 'bg-green-200 hover:bg-green-200 text-green-600 font-bold' : ''}`}>Bezochte locaties</a>
-          </Link>
+          </Link>}
         </div>
         <hr className="my-3" />
         {isTabOne && <><h2 className="my-3">Foto's</h2>
