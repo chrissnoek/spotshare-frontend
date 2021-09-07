@@ -22,7 +22,7 @@ const SocialCard = ({ photo }) => {
   return (
     <div className="relative mb-8">
       <div className="flex items-center my-4 relative">
-        <Link href={`/fotograaf/${photo.user.username}`}>
+        <Link href={`/fotograaf/${photo.user.slug}`}>
           <a className="top-0 left-0 h-full w-full absolute z-10"></a>
         </Link>
         <div className="mr-2">
