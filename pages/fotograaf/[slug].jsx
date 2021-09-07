@@ -599,13 +599,13 @@ const UserProfileComponent = (props) => {
         </div>
         <hr className="my-3" />
         <div className="flex">
-          <Link href={{ pathname: `/fotograaf/${profile.username}`, query: { tab: "fotos" } }}>
+          <Link href={{ pathname: `/fotograaf/${profile.slug}`, query: { tab: "fotos" } }}>
             <a className={`inline-block py-2 px-3 mr-3 rounded hover:bg-gray-100 text-gray-500 ${isTabOne ? 'bg-green-200 hover:bg-green-200 text-green-600 font-bold' : ''}`}>Foto's</a>
           </Link>
-          <Link href={{ pathname: `/fotograaf/${profile.username}`, query: { tab: "favoriete-locaties" } }}>
+          <Link href={{ pathname: `/fotograaf/${profile.slug}`, query: { tab: "favoriete-locaties" } }}>
             <a className={`inline-block py-2 px-3 mr-3 rounded hover:bg-gray-100 text-gray-500 ${isTabTwo ? 'bg-green-200 hover:bg-green-200 text-green-600 font-bold' : ''}`}>Favoriete locaties</a>
           </Link>
-          <Link href={{ pathname: `/fotograaf/${profile.username}`, query: { tab: "bezochte-locaties" } }}>
+          <Link href={{ pathname: `/fotograaf/${profile.slug}`, query: { tab: "bezochte-locaties" } }}>
             <a className={`inline-block py-2 px-3 rounded hover:bg-gray-100 text-gray-500 ${isTabThree ? 'bg-green-200 hover:bg-green-200 text-green-600 font-bold' : ''}`}>Bezochte locaties</a>
           </Link>
         </div>
