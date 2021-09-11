@@ -224,7 +224,7 @@ export async function getServerSideProps({ params }) {
           }
         }
       }
-      photos {
+      photos(sort:"createdAt:desc") {
         likes
         id
         title
@@ -613,7 +613,7 @@ const UserProfileComponent = (props) => {
         <hr className="my-3" />
         {isTabOne && <><h2 className="my-3">Foto's</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {profile.photos.reverse().map((photo, index) => (
+            {profile.photos.map((photo, index) => (
               <PhotoView
                 key={photo.id}
                 index={index}
