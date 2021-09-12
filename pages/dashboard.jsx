@@ -141,7 +141,7 @@ const Dashboard = ({ categories: _categories }) => {
                   <>
                     <Heading redirect={redirect} />
                     <Link href={`/foto/toevoegen`}>
-                      <div className="flex items-center bg-white shadow px-3 py-2 rounded-lg cursor-pointer mb-6">
+                      <div className="flex items-center bg-white  shadow-lg border border-gray-200 px-4 py-3 rounded-lg cursor-pointer mb-6">
 
                         <div className="mr-4">
                           <UserProfilePicture profile={value.user} size={10} />
