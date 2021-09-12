@@ -29,7 +29,7 @@ const UserProfilePicture = ({ profile, size = 16, classNames }) => {
         } overflow-hidden rounded-full`}
     >
       <div
-        className={`fill-current h-${size} w-${size} sm:h-${size + 4} sm:w-${size + 4
+        className={classNames + `fill-current h-${size} w-${size} sm:h-${size + 4} sm:w-${size + 4
           } mr-4 mb-auto text-white bg-gray-500  rounded-full flex items-center justify-center p-2`}
       >
         <FaUserSecret className="text-2xl" />

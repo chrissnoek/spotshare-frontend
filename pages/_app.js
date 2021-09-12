@@ -115,7 +115,7 @@ function MyApp({ Component, pageProps }) {
           <meta property="twitter:image" 
             key="twitter_img" content="/images/ogimage.jpg" />
         </Head>
-        {router.pathname !== '/' && router.pathname !== '/fotolocatie/[slug]' && router.pathname !== '/foto/[slug]' ? <div className="container">
+        {router.pathname !== '/'  && router.pathname !== '/foto/[slug]' ? <div className="container">
           <Component {...pageProps} />
            </div> :
            <Component {...pageProps} />

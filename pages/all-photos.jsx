@@ -2,6 +2,21 @@ import graphQLFetch from "../graphQLFetch";
 
 const allPhotos = ({photos}) => {
 
+    function selectText(containerid) {
+        if (process.browser) {
+            if (document.selection) { // IE
+                var range = document.body.createTextRange();
+                range.moveToElementText(document.getElementById(containerid));
+                range.select();
+            } else if (window.getSelection) {
+                var range = document.createRange();
+                range.selectNode(document.getElementById(containerid));
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+            }
+        }
+    }
+
     const getUrl = (photo) => {
         let imageUrl = '';
         console.log(photo);
@@ -21,7 +36,8 @@ const allPhotos = ({photos}) => {
             {photos.reverse().map((photo) => {
                 return (<div className="mb-4">
                     <img className="mb-2" src={getUrl(photo)} />
-                    <p>{photo.location.title} prachtig vastgelegd door {photo.user.insta_page ? '@'+photo.user.insta_page : photo.user.firstname + ' ' + photo.user.lastname} 😍👌🏻📸 Ook een feature op SpotShare? Voeg jouw fotolocatie toe op onze website! #spotsharenl<br/>
+
+                    <p id="selectable" onClick={selectText('selectable')}>{photo.location.title} prachtig vastgelegd door {photo.user.insta_page ? '@'+photo.user.insta_page : photo.user.firstname + ' ' + photo.user.lastname} 😍👌🏻📸 Ook een feature op SpotShare? Voeg jouw fotolocatie toe op onze website! #spotsharenl<br/>
                     •<br/>
                     •<br/>
                     •<br/>

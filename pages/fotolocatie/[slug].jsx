@@ -12,6 +12,7 @@ import { userContext } from "../../services/userContext.js";
 import PhotoView from "../../components/shared/PhotoView.jsx";
 import { useRouter } from "next/router";
 import Head from "next/head"
+import UserProfilePicture from "../../components/shared/UserProfilePicture";
 
 const LocationDetailStrapi = (props) => {
   // console.log(props);
@@ -48,8 +49,6 @@ class LocationDetailComponent extends React.Component {
 
     const locationBySlug = props.locationBySlug;
 
-    console.log({ locationBySlug });
-
     this.state = {
       isServer: true,
       userLikedLocation: false,
@@ -75,10 +74,6 @@ class LocationDetailComponent extends React.Component {
     const { locationBySlug, isServer } = this.state;
 
     if (!isServer && curUser != null && prevCurUser !== curUser) {
-      // there is a logged in user
-      // console.log(curUser);
-      // console.log(this.state);
-      // console.log(locationBySlug);
 
       if (
         locationBySlug.usersFavourites.filter(
@@ -127,11 +122,6 @@ class LocationDetailComponent extends React.Component {
 
     const success = (pos) => {
       var crd = pos.coords;
-
-      // console.log("Your current position is:");
-      // console.log(`Latitude : ${crd.latitude}`);
-      // console.log(`Longitude: ${crd.longitude}`);
-      // console.log(`More or less ${crd.accuracy} meters.`);
 
       this.setState((prevState) => ({
         ...prevState,
@@ -247,22 +237,55 @@ class LocationDetailComponent extends React.Component {
 
     let featuredPhoto = photos
       .sort((a, b) => b.likes - a.likes)[0];
-    let imageUrl = '';
+    let featuredPhotoOne = photos
+      .sort((a, b) => b.likes - a.likes)[1];
+    let featuredPhotoTwo = photos
+      .sort((a, b) => b.likes - a.likes)[2];
+    let featuredPhotoThree = photos
+      .sort((a, b) => b.likes - a.likes)[3];
 
-    if (featuredPhoto.photo[0].formats) {
-      if (featuredPhoto.photo[0].formats.large) {
-        imageUrl = featuredPhoto.photo[0].formats.large.url;
-      } else {
-        imageUrl = featuredPhoto.photo[0].url;
-      }
-    } else {
-      imageUrl = featuredPhoto.photo[0].url;
-    }
+	  const featuredPhotos = [];
+	  if(featuredPhoto) featuredPhotos.push(featuredPhoto);
+	  if(featuredPhotoOne) featuredPhotos.push(featuredPhotoOne);
+	  if(featuredPhotoTwo) featuredPhotos.push(featuredPhotoTwo);
+	  if(featuredPhotoThree) featuredPhotos.push(featuredPhotoThree);
+
+	  const imageUrl = (photo) => {
+		let url = '';
+
+		if (photo.photo[0].formats) {
+		  if (photo.photo[0].formats.large) {
+			url = photo.photo[0].formats.large.url;
+		  } else {
+			url = photo.photo[0].url;
+		  }
+		} else {
+		  url = photo.photo[0].url;
+		}
+		return url;
+	  }
+
+	  let photographers = locationBySlug.photos.map((photo) => photo.user);
+	  photographers = photographers.filter((thing, index, self) =>
+		index === self.findIndex((t) => (
+			t.id === thing.id
+		))
+	)
+
+	let rowHeight = '';
+	if(featuredPhotos.length === 2) {
+		rowHeight = 'h-full'
+	} else if(featuredPhotos.length === 3) {
+		rowHeight = 'h-1/2'
+	} else if(featuredPhotos.length === 4) {
+		rowHeight = 'h-1/3'
+	}
+    
 
     if (photos.length > 0) {
 
       return (
-        <div id="page">
+        <div id="page" className="p-6">
           <Head>
 
             {/* <!-- Primary Meta Tags --> */}
@@ -320,79 +343,106 @@ class LocationDetailComponent extends React.Component {
             </a>
           </Link>
 
-          <div id="photoInfo">
-            <div
-              className="w-full flex flex-col justify-center items-center relative"
-              style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${imageUrl})`,
-                backgroundSize: `cover`,
-                backgroundPosition: `center center`,
-                height: "80vh",
-              }}
-            >
-              <h1 className="text-3xl font-bold mb-1 text-white block">
-                {locationBySlug.title}
-              </h1>
-              <span className="flex items-center">
-                {locationBySlug.location_categories.length > 0 && <span className="text-white mr-2 text-sm">Categorieen:</span>}
-                {locationBySlug.location_categories.map((location) => (
-                  <Link href={`/fotolocaties/categorie/${location.value}`}>
-                    <a className="bg-green-500 py-1 px-3 text-sm rounded-full mr-2 text-white hover:bg-green-600">
-                      {location.label}
-                    </a>
-                  </Link>
-                ))}
-              </span>
+          <div className="md:flex md:items-center mb-6 md:mb-0">
+            <div className="mb-8 mt-16">
+				<h1 className=" text-5xl font-bold text-gray-900 block">
+					{locationBySlug.title}
+				</h1>
 
-              <div className="absolute right-0 bottom-0 m-10">
-                <userContext.Consumer>
-                  {(value) => {
-                    // console.log(value);
-                    if (value.user) {
-                      let favourite;
-                      if (
-                        value.user &&
-                        locationBySlug.usersFavourites.filter(
-                          (favourites) => favourites.id === value.user.id
-                        ).length > 0
-                      ) {
-                        favourite = true;
-                      } else {
-                        favourite = false;
-                      }
-                      return (
-                        <FavButton
-                          favourite={favourite}
-                          updateFav={this.updateFav}
-                          user={value.user}
-                          likedId={locationBySlug.id}
-                          addTitle="Deze locatie opslaan"
-                          removeTitle="Verwijderen uit opgeslagen locaties"
-                        />
-                      );
-                    }
-                  }}
-                </userContext.Consumer>
+				{locationBySlug.location_categories.length > 0 &&
+					<span className="flex items-center">
+						{locationBySlug.location_categories.map((location) => (
+							<Link href={`/fotolocaties/categorie/${location.value}`}>
+								<a className="text-green-500  mr-2  hover:bg-text-600 cursor-pointer">
+								#{location.label}
+								</a>
+							</Link>
+						))}
+					</span>
+			  	}
 
-                <Link href={`/foto/toevoegen/${locationBySlug.id}`}>
-                  <a className="revealTooltip flex pointer justify-end items-center">
-                    <div className="hidden  bg-white rounded py-1 px-3 h-8">
-                      Foto aan deze locatie toevoegen
-                    </div>
-                    <div className="inline-block bg-white rounded py-2 px-3 h-8">
-                      <FaPlus />
-                    </div>
-                  </a>
-                </Link>
+				  <div className="flex items-center mt-3">
+					  <div className="mr-3">
+					  Bezoekers:
+					  </div>
+					  <div className="flex items-center">
+					  	{photographers.map((visitor) => {
+							  return (
+							  <div className="-ml-2">
+								  <UserProfilePicture size={6} profile={visitor} classNames={'mx-auto border-2 border-white'} />
+								</div>
+							  )}
+						  )}
+					  </div>
+				  </div>
+            </div>
+            <div className="ml-auto flex items-center">
+				<div className="mr-2">
+					<userContext.Consumer>
+						{(value) => {
+							// console.log(value);
+							if (value.user) {
+							let favourite;
+							if (
+								value.user &&
+								locationBySlug.usersFavourites.filter(
+								(favourites) => favourites.id === value.user.id
+								).length > 0
+							) {
+								favourite = true;
+							} else {
+								favourite = false;
+							}
+							return (
+								<FavButton
+								favourite={favourite}
+								updateFav={this.updateFav}
+								user={value.user}
+								likedId={locationBySlug.id}
+								addTitle="Deze locatie opslaan"
+								removeTitle="Verwijderen uit opgeslagen locaties"
+								/>
+							);
+							}
+						}}
+						</userContext.Consumer>
+					</div>
+					<div>
+						<Link href={`/foto/toevoegen/${locationBySlug.id}`}>
+							<a className="py-2 px-3 rounded-full flex pointer bg-green-500 hover:bg-green-600 text-white justify-end items-center relative">
+								<div className="mr-2">
+									<FaPlus />
+								</div>
+								<span>Foto toevoegen</span>
+							</a>
+						</Link>
+					</div>
               </div>
-              {/* 
-            <p className="">Bezoekers:</p>
-            {locationBySlug.photos.map((photo) => {
-              return <img src={photo.user.picture} />;
-            })} */}
+          </div>
+
+          <div id="photoInfo">
+
+			  <div className="flex max-h-screen-80vh ">
+					<div className={` mr-4  ${featuredPhotos.length === 1 ? 'w-full' : 'w-2/3'}`}>
+						<img className={`rounded object-cover  w-full h-full ` } src={imageUrl(featuredPhoto)} />
+					</div>
+					{featuredPhotos.length > 1 &&
+					<div className="flex flex-col w-1/3 max-h-screen">
+						{featuredPhotoOne && <div className={`${rowHeight} ${featuredPhotos.length >= 3 &&  'pb-4'}`}>
+							<img className="rounded object-cover  w-full h-full" src={imageUrl(featuredPhotoOne)} />
+						</div>}
+						{featuredPhotoTwo && 
+						<div className={`${rowHeight} ${featuredPhotos.length === 4 &&  'pb-4'}`}>
+							<img className="rounded object-cover  w-full h-full" src={imageUrl(featuredPhotoTwo)} />
+						</div>}
+						{featuredPhotoThree && 
+						<div className={rowHeight}>
+							<img className="rounded object-cover w-full h-full " src={imageUrl(featuredPhotoThree)} />
+						</div>}
+					</div>}
             </div>
 
-            <div className="p-6 ">
+            <div className="  py-6 ">
               <section className="container">
                 <div className="sm:py-10">
                   <div className="block sm:flex">
@@ -588,6 +638,11 @@ export async function getServerSideProps({ params }) {
               id
               firstname
               lastname
+			  profilePicture {
+				url
+				formats
+			  }
+
             }
             photo {
                 id
