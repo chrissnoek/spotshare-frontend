@@ -376,6 +376,7 @@ class PhotoDetail extends React.Component {
                         addTitle="Toevoegen aan favorieten"
                         removeTitle="Verwijderen uit favorieten"
                         receiver={photoBySlug.user.id}
+                        type="photo"
                       />
                     );
                   }
