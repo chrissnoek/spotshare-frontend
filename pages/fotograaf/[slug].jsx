@@ -225,6 +225,9 @@ export async function getServerSideProps({ params }) {
         }
       }
       photos(sort:"createdAt:desc") {
+        usersLike {
+          id
+        }
         likes
         id
         title
@@ -312,10 +315,9 @@ const UserProfileComponent = (props) => {
   let numberOfLikes = 0;
   if (profile.photos.length > 0) {
     for (let i = 0; i < profile.photos.length; i++) {
-      numberOfLikes = numberOfLikes + profile.photos[i].likes;
+      numberOfLikes = numberOfLikes + profile.photos[i].usersLike.length;
     }
   }
-  console.log(profile);
 
   const {
     query: { tab }
@@ -327,10 +329,8 @@ const UserProfileComponent = (props) => {
 
   useEffect(() => {
     if (tab === "bezochte-locaties") {
-      console.log({ profile });
       let _allLocations = profile.photos.map((photo) => photo.location);
 
-      console.log({ _allLocations });
 
       _allLocations = _allLocations.filter((location, index, self) =>
         index === self.findIndex((l) => (
@@ -338,7 +338,6 @@ const UserProfileComponent = (props) => {
         ))
       );
 
-      console.log({ _allLocations });
 
       setAllLocations(_allLocations);
       loadMap(_allLocations);
@@ -349,7 +348,6 @@ const UserProfileComponent = (props) => {
   const loadMap = (_allLocations) => {
     // loading leaflet in componentDidMount because it doenst support SSR
     const L = require("leaflet");
-    console.log({ _allLocations });
 
     delete L.Icon.Default.prototype._getIconUrl;
 
@@ -403,7 +401,6 @@ const UserProfileComponent = (props) => {
         return [location.latitude, location.longitude];
       })
     );
-    console.log(_bounds);
     setBounds(_bounds);
 
     if (sessionStorage.getItem("visitedLocations")) {
@@ -429,7 +426,6 @@ const UserProfileComponent = (props) => {
   };
 
   const getPopupImage = (location) => {
-    console.log(location);
     const featuredPhoto = location.photos
       .sort((a, b) => b.likes - a.likes)[0];
     let popupImage = '';
@@ -654,7 +650,6 @@ const UserProfileComponent = (props) => {
                   position={[location.latitude, location.longitude]}
                   key={location.id}
                   onMouseOver={() => {
-                    console.log("check", active, location.id);
                     selectActive(location.id);
                   }}
                   onMouseOut={() => {
@@ -702,7 +697,6 @@ export default UserProfile;
 
 const LocationView = ({ location }) => {
 
-  console.log(location);
 
   const featuredPhoto = location.photos
     .sort((a, b) => b.likes - a.likes)[0]
