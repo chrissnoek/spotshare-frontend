@@ -38,8 +38,9 @@ MostRecent.fetchData = async (match, search, showError) => {
   // build the graphql query
   const query = `query recentPhotos{
     photos(limit: 6, sort:"createdAt:desc", where: {user_null:false}) {
-createdAt
+      createdAt
       title
+      id
       desc
       photo {
           url
