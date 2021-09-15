@@ -23,7 +23,7 @@ const FavButton = ({
   };
 
   let icon = <FaBookmark/>;
-  let className = `text-sm text-white py-2 px-3 rounded-full flex items-center pointer cursor-pointer ${liked ? 'bg-gray-500 hover:bg-gray-600' : 'bg-yellow-500 hover:bg-yellow-600'}`;
+  let className = `text-sm text-center text-white py-2 px-3 rounded-full flex items-center pointer cursor-pointer ${liked ? 'bg-gray-500 hover:bg-gray-600' : 'bg-yellow-500 hover:bg-yellow-600'}`;
 
 
   if(type === 'photo') {

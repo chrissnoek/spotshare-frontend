@@ -379,8 +379,8 @@ class LocationDetailComponent extends React.Component {
 					</div>
 				</div>
 			</div>
-			<div className="ml-auto flex items-center">
-				<div className="mr-2">
+			<div className="ml-auto lg:flex items-center">
+				<div className="mr-2 mb-2">
 					<userContext.Consumer>
 						{(value) => {
 							// console.log(value);
@@ -412,7 +412,7 @@ class LocationDetailComponent extends React.Component {
 					</div>
 					<div>
 						<Link href={`/foto/toevoegen/${locationBySlug.id}`}>
-							<a className="text-sm py-2 px-3 mr-2 rounded-full flex pointer bg-green-500 hover:bg-green-600 text-white justify-end items-center relative">
+							<a className="text-sm mb-2 text-center py-2 px-3 mr-2 rounded-full flex pointer  bg-green-500 hover:bg-green-600 text-white justify-end items-center relative">
 								<div className="mr-2">
 									<FaPlus />
 								</div>
@@ -420,7 +420,7 @@ class LocationDetailComponent extends React.Component {
 							</a>
 						</Link>
 					</div>
-					<a className="text-sm py-2 px-3 rounded-full flex pointer bg-blue-500 hover:bg-blue-600 text-white justify-end items-center relative" href={`https://www.google.com/maps/search/?api=1&query=${locationBySlug.latitude},${locationBySlug.longitude}`} target="_blank">Openen in Google Maps</a>
+					<a className="text-sm py-2 px-3 rounded-full text-center flex pointer bg-blue-500 hover:bg-blue-600 text-white justify-end items-center relative" href={`https://www.google.com/maps/search/?api=1&query=${locationBySlug.latitude},${locationBySlug.longitude}`} target="_blank">Open in Google Maps</a>
 				</div>
 			</div>
 
