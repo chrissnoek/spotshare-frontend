@@ -129,10 +129,10 @@ class DataEdit extends Form {
       "any.required": `Vul je je gebruikersnaam nog even in? 😉`,
       "string.pattern.base": "Gebruikersnaam kan geen spaties bevatten",
     }),
-    location: Joi.string(),
-    website: Joi.string(),
-    fb_page : Joi.string(),
-    insta_page : Joi.string(),
+    location: Joi.string().allow(null, ""),
+    website: Joi.string().allow(null, ""),
+    fb_page : Joi.string().allow(null, ""),
+    insta_page : Joi.string().allow(null, ""),
   };
 
   uploadFile = (file, redirect, newSlug) => {
