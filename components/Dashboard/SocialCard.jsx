@@ -177,7 +177,7 @@ const SocialCard = ({ photo, me }) => {
 		<div className="flex mt-2">
 			<div>
 				<div className="font-bold mb-2 text-xl">{photo.title}</div>
-				<div>{photo.desc}</div>
+				<div>{photo?.desc?.replace(/(<([^>]+)>)/gi, "")}</div>
 			</div>
 			<div className="ml-auto">
 				<userContext.Consumer>

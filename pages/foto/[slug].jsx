@@ -395,7 +395,7 @@ class PhotoDetail extends React.Component {
                 </h1>
                 <p className="text-gray-600 mb-6">
                   {photoBySlug.desc ?
-                    <div>{photoBySlug.desc} {ownPhoto && <Link href={`/foto/bewerken/${photoBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link>}</div>
+                    <div>{photoBySlug.desc.replace(/(<([^>]+)>)/gi, "")} {ownPhoto && <Link href={`/foto/bewerken/${photoBySlug.slug}`}><a className="inline-block"><BsPencil /></a></Link>}</div>
                     : (ownPhoto && <Link href={`/foto/bewerken/${photoBySlug.slug}`}>
                       <a className=" flex  items-center">
                         <div className=" mr-2">
