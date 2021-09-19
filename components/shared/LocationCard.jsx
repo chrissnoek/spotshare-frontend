@@ -55,7 +55,7 @@ class LocationCard extends Component {
     return (
       <React.Fragment>
         <div
-          className="w-full mb-2 relative shadow hover:shadow-lg transition ease-in-out rounded"
+          className="w-full mb-2 relative shadow hover:shadow-lg transition ease-in-out rounded cursor-pointer"
           onClick={this.onClickHandler}
         >
           {active && (

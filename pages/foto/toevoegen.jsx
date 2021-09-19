@@ -53,8 +53,9 @@ class PhotoAddStrapi extends React.Component {
   render() {
     return (
       <userContext.Consumer>
-        {(value) =>
-          value.user ? (
+        {(value) => {
+          console.log(value.user);
+          return value.user && value.user.id ? (
             <AddPhotoForm
               value={value}
               redirect={this.redirect}
@@ -67,7 +68,7 @@ class PhotoAddStrapi extends React.Component {
               </Head>
               <p>Niet ingelogd</p>
             </div>
-          )
+          )}
         }
       </userContext.Consumer>
     );
@@ -116,7 +117,7 @@ class AddPhotoForm extends React.Component {
     const {
       value: { user },
     } = this.props;
-    if (prevUser !== user) {
+    if (prevUser !== user && user.id) {
       this.updateContext();
     }
   }
@@ -731,6 +732,7 @@ class AddPhotoForm extends React.Component {
         ...prevState,
         photo: {
           ...prevState.photo,
+          user: this.props.value.user.id,
           slug: createdSlug,
           location:
             createdLocation !== null
