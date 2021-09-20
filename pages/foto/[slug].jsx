@@ -353,9 +353,6 @@ class PhotoDetail extends React.Component {
               <userContext.Consumer>
                 {(value) => {
                   if (value.user) {
-                    if (value.user.id === photoBySlug.user.id) {
-                      return;
-                    }
                     let favourite;
                     if (
                       value.user &&
@@ -377,6 +374,7 @@ class PhotoDetail extends React.Component {
                         removeTitle="Verwijderen uit favorieten"
                         receiver={photoBySlug.user.id}
                         type="photo"
+                        count={photoBySlug.usersLike.map((fav) => fav.id).length}
                       />
                     );
                   }

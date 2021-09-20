@@ -184,10 +184,6 @@ const SocialCard = ({ photo, me }) => {
 					{(value) => {
 						if (value.user) {
 
-							if (value.user.id === photo.user.id) {
-								return false;
-							}
-
 							let favourite;
 
 							if (
