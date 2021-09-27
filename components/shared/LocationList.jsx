@@ -67,8 +67,8 @@ const LocationList = ({ location, active, selectLocation }) => {
             }}
           >
             <Image
-              className={`rounded block max-w-none w-20 h-16 object-cover`}
-              width={76}
+              className={`flex-initial rounded block max-w-none w-20 h-16 object-cover`}
+              width={100}
               height={76}
               style={{
                 backgroundColor: "grey",
@@ -77,7 +77,7 @@ const LocationList = ({ location, active, selectLocation }) => {
               alt={`Bekijk locatie ${location.title}`}
             />
 
-            <div className="px-5 py-2">
+            <div className="flex-1 px-5 py-2">
               <h3 className="text-black text-lg">{location.title}</h3>
               {[location.location_categories[0], location.location_categories[1], location.location_categories[2]].map((category) => (typeof category != "undefined" &&
                 <LocationHashtag key={category.id} category={category} />
