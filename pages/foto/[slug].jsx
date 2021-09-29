@@ -416,12 +416,13 @@ class PhotoDetail extends React.Component {
                 />
               </div>
 
+              <hr className="md:hidden py-2" />
               <div className="w-full">
-                <div className="relative block sm:flex sm:items-center sm:w-full">
+                <div className="relative flex items-center w-full">
                   <Link href={`/fotograaf/${photoBySlug.user.slug}`}>
                     <a className="top-0 left-0 h-full w-full absolute"></a>
                   </Link>
-                  <div className="mx-auto sm:mx-0 mb-2 sm:mr-4">
+                  <div className="mb-2 mr-4">
                     <UserProfilePicture profile={photoBySlug.user} />
                   </div>
                   <h1 className="font-bold text-xl leading-tight">
