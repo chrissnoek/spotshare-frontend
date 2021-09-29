@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { userContext } from "../../services/userContext.js";
 import Link from "next/link";
+import UserProfilePicture from "../shared/UserProfilePicture.jsx";
 
 const ReplyBox = ({
   replyTo = null,
@@ -35,25 +36,23 @@ const ReplyBox = ({
             return (
               <div className="flex mb-6">
                 <div className="w-full">
-                  <div className="flex flex-wrap -mx-3">
-                    <h2 className="px-4 pt-3 pb-2 text-gray-800 text-lg">
-                      Reactie plaatsen
-                    </h2>
-                    <div className="w-full md:w-full px-3 mb-2 mt-2">
+                  <div className="flex items-center  pt-4">
+                    <div className="flex-1">
+                      <UserProfilePicture profile={value.user} size={8} />
+                    </div>
                       <textarea
-                        className="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
+                        className="w-full flex-auto mx-3 bg-gray-100 rounded-lg border border-gray-100 leading-normal h-12 resize-none w-full py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white"
                         name="body"
-                        placeholder="Je bericht"
+                        placeholder="Plaats een reactie"
                         required
                         value={commentValue}
                         onChange={onChange}
                       ></textarea>
-                    </div>
-                    <div className="w-full md:w-full flex items-start md:w-full px-3">
-                      <div className="-mr-1">
+                    <div className="w-full  flex-1 items-start pl-3">
+                      <div className="">
                         <input
                           type="submit"
-                          className="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100"
+                          className="text-white bg-blue-500 font-medium h-12 cursor-pointer py-1 px-4 border-none rounded-lg tracking-wide hover:bg-blue-600 hover:text-white"
                           value="Plaatsen"
                           onClick={() => {
                             post(value.user.id);

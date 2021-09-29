@@ -8,6 +8,7 @@ import 'moment/locale/nl';
 import FavButton from "../shared/favButton.jsx";
 import graphQLFetch from "../../graphQLFetch.js";
 import { useRouter } from "next/router";
+import PhotoComment from "../Comments/Comments.jsx";
 
 const MyClassWithRouter = (props) => {
   const [isServer, setIsServer] = useState(true);
@@ -35,13 +36,13 @@ const MyClassWithRouter = (props) => {
 export default MyClassWithRouter;
 
 const SocialCard = ({ photo, me }) => {
-	console.log(photo);
   const [isServer, setIsServer] = useState(true);
   const [myFaves, setMyFaves] = useState(me?.likedPhotos?.map((fav) => fav.id));
   const [photoFaves, setPhotoFaves] = useState(photo.usersLike.map((fav) => fav.id));
+  const [comments, setComments] = useState([...photo.comments]);
+  const [loadingComment, setLoadingComment] = useState(false);
 
   useEffect(() => {
-	  console.log(me);
     setIsServer(false);
   }, []);
 
@@ -51,7 +52,64 @@ const SocialCard = ({ photo, me }) => {
 		_photoFaves = photo.usersLike.map((fav) => fav.id);
 	}
 	setPhotoFaves(_photoFaves);
-  }, [photo])
+  }, [photo]);
+
+  const addComment = async (data, receiver) => {
+	setLoadingComment(true);
+    // console.log(data, receiver);
+
+    const query = `mutation createPhotoComment($input: createPhotoCommentInput){
+      createPhotoComment(
+        input: $input
+      ) {
+        photoComment {
+          body
+          id
+          parent {
+            id
+          }
+          user {
+            id
+            firstname
+            lastname
+            profilePicture {
+              url
+            }
+            slug
+            username
+          }
+        }
+      }
+    }`;
+
+    let input = { input: data };
+    // console.log(input);
+
+    const response = await graphQLFetch(query, input, true, true);
+    console.log(response);
+
+    if (response) {
+      if (!response.errors) {
+        await CreateNotification(
+          data.data.user,
+          receiver,
+          "comment",
+          data.data.photo
+        );
+
+        let _comments = [...comments];
+
+        _comments.push(response.createPhotoComment.photoComment);
+
+		setComments(_comments);
+
+		setLoadingComment(false);
+      } else {
+        // console.log("an error happened");
+		setLoadingComment(false);
+      }
+    }
+  };
 
   const updateFav = async (user, likedId, action, receiver) => {
     // TODO: store user.likedPhotos in state, and map favArray from state instead of user object
@@ -216,6 +274,14 @@ const SocialCard = ({ photo, me }) => {
 				</userContext.Consumer>
 			</div>
 		</div>
+
+		<PhotoComment
+			comments={comments}
+			photoId={photo.id}
+			addComment={addComment}
+			receiver={photo.user.id}
+			loadingComment={loadingComment}
+		/>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { FaUserSecret } from "react-icons/fa";
+import UserProfilePicture from "../shared/UserProfilePicture.jsx";
 import ReplyBox from "./ReplyBox.jsx";
 
 export const Comment = ({ item, photoId, addComment, receiver }) => {
@@ -19,21 +20,9 @@ export const Comment = ({ item, photoId, addComment, receiver }) => {
       <div className="comment mb-2">
         <div>
           <div className="flex">
-            {item.user.profilePicture !== null ? (
-              <img
-                src={item.user.profilePicture.url}
-                className="rounded-full w-12 h-12 mr-4"
-              />
-            ) : (
-              <div
-                id="imagePreview"
-                className="relative h-12 w-12 overflow-hidden rounded-full mr-4"
-              >
-                <div className="fill-current h-12 w-12  mb-auto text-white bg-gray-500  rounded-full flex items-center justify-center">
-                  <FaUserSecret className="text-2xl" />
-                </div>
-              </div>
-            )}
+            <div className="mr-2">
+              <UserProfilePicture profile={item.user} size={8} />
+            </div>
             <div className="rounded px-3 py-2 bg-gray-100">
               <p>{item.body}</p>
               <span

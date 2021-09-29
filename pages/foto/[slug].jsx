@@ -70,8 +70,6 @@ class PhotoDetail extends React.Component {
     };
   }
 
-
-
   componentDidUpdate() {
     if (this.state.photoBySlug.id !== this.props.photoBySlug.id) {
       this.setState({ photoBySlug: this.props.photoBySlug });
