@@ -33,16 +33,16 @@ const MyClassWithRouter = (props) => {
           if (value.user) {
             if (value.user.id === props.photoBySlug.user.id) {
               console.log(value.user.id, props.photoBySlug.user.id);
-              return <PhotoDetail {...props} router={router} ownPhoto={true} />;
+              return <PhotoDetail {...props} router={router} ownPhoto={true} me={value.user} />;
             } else {
-              return <PhotoDetail {...props} router={router} ownPhoto={false} />;
+              return <PhotoDetail {...props} router={router} ownPhoto={false} me={value.user} />;
             }
           } else {
-            return <PhotoDetail {...props} router={router} ownPhoto={false} />;
+            return <PhotoDetail {...props} router={router} ownPhoto={false} me={false} />;
           }
         }}
       </userContext.Consumer>
-      : <PhotoDetail {...props} router={router} ownPhoto={false} />
+      : <PhotoDetail {...props} router={router} ownPhoto={false} me={false} />
   }
 
 };
@@ -52,9 +52,11 @@ class PhotoDetail extends React.Component {
   constructor(props) {
     super(props);
 
-    const { photoBySlug, ownPhoto } = props;
+    const { photoBySlug, ownPhoto, me } = props;
     console.log(photoBySlug);
     this.state = {
+      photoFaves: photoBySlug.usersLike.map((fav) => fav.id),
+      myFaves: me ? me.likedPhotos.map((fav) => fav.id) : [],
       isServer: true,
       photoBySlug,
       ownPhoto,
@@ -171,22 +173,52 @@ class PhotoDetail extends React.Component {
         }
       }`;
 
+      const me = this.props.me;
+      let _myFaves = [...this.state.myFaves];
+      let _photoFaves = [...this.state.photoFaves];
+
     let favArray = user.likedPhotos.map((fav) => fav.id);
 
     if (action === "add") {
-      if (!favArray.includes(likedId)) {
-        favArray.push(likedId);
+      // add user id to photoLikes
+      if (!_photoFaves.includes(me.id)) { 
+        _photoFaves.push(me.id);
+
+        this.setState({ photoFaves: _photoFaves });
+      } else {
+        // already in favourites
+        return;
+      }
+
+      if (!_myFaves.includes(likedId)) {
+        _myFaves.push(likedId);
+        this.setState({ myFaves: _myFaves });
         await CreateNotification(user.id, receiver, "like", likedId);
       } else {
         // already in favourites
         return;
       }
     } else if (action === "remove") {
-      if (favArray.includes(likedId)) {
+
+
+      if (_photoFaves.includes(me.id)) {
         // likedId is in array, so remove it from array
-        const index = favArray.indexOf(likedId);
+        const index = _photoFaves.indexOf(me.id);
         if (index > -1) {
-          favArray.splice(index, 1);
+          _photoFaves.splice(index, 1);
+          this.setState({ photoFaves: _photoFaves });
+        }
+		  } else {
+        // not in favourites
+        return;
+		  }
+
+      if (_myFaves.includes(likedId)) {
+        // likedId is in array, so remove it from array
+        const index = _myFaves.indexOf(likedId);
+        if (index > -1) {
+          _myFaves.splice(index, 1);
+          this.setState({ myFaves: _myFaves });
         }
       } else {
         // not in favourites
@@ -372,7 +404,7 @@ class PhotoDetail extends React.Component {
                         removeTitle="Verwijderen uit favorieten"
                         receiver={photoBySlug.user.id}
                         type="photo"
-                        count={photoBySlug.usersLike.map((fav) => fav.id).length}
+                        count={this.state.photoFaves.length}
                       />
                     );
                   }

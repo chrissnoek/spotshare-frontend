@@ -47,11 +47,11 @@ const SocialCard = ({ photo, me }) => {
   }, []);
 
   useEffect(() => {
-	let _photoFaves = [];
-	if(photo.usersLike) {
-		_photoFaves = photo.usersLike.map((fav) => fav.id);
-	}
-	setPhotoFaves(_photoFaves);
+    let _photoFaves = [];
+    if(photo.usersLike) {
+      _photoFaves = photo.usersLike.map((fav) => fav.id);
+    }
+    setPhotoFaves(_photoFaves);
   }, [photo]);
 
   const addComment = async (data, receiver) => {
@@ -129,36 +129,36 @@ const SocialCard = ({ photo, me }) => {
     let _photoFaves = [...photoFaves];
 
     if (action === "add") {
-		// add user id to photoLikes
-		if (!_photoFaves.includes(me.id)) { 
-			_photoFaves.push(me.id);
-			setPhotoFaves(_photoFaves);
-		} else {
-			// already in favourites
-			return;
-		}
+      // add user id to photoLikes
+      if (!_photoFaves.includes(me.id)) { 
+        _photoFaves.push(me.id);
+        setPhotoFaves(_photoFaves);
+      } else {
+        // already in favourites
+        return;
+      }
 
-		if (!_myFaves.includes(likedId)) {
-			_myFaves.push(likedId);
-			setMyFaves(_myFaves);
-			await CreateNotification(user.id, receiver, "like", likedId);
-		} else {
-			// already in favourites
-			return;
-		}
+      if (!_myFaves.includes(likedId)) {
+        _myFaves.push(likedId);
+        setMyFaves(_myFaves);
+        await CreateNotification(user.id, receiver, "like", likedId);
+      } else {
+        // already in favourites
+        return;
+      }
     } else if (action === "remove") {
 
 
-		if (_photoFaves.includes(me.id)) {
-			// likedId is in array, so remove it from array
-			const index = _photoFaves.indexOf(me.id);
-			if (index > -1) {
-			  _photoFaves.splice(index, 1);
-			  setPhotoFaves(_photoFaves);
-			}
+      if (_photoFaves.includes(me.id)) {
+        // likedId is in array, so remove it from array
+        const index = _photoFaves.indexOf(me.id);
+        if (index > -1) {
+          _photoFaves.splice(index, 1);
+          setPhotoFaves(_photoFaves);
+        }
 		  } else {
-			// not in favourites
-			return;
+        // not in favourites
+        return;
 		  }
 
       if (_myFaves.includes(likedId)) {
@@ -166,7 +166,7 @@ const SocialCard = ({ photo, me }) => {
         const index = _myFaves.indexOf(likedId);
         if (index > -1) {
           _myFaves.splice(index, 1);
-		  setMyFaves(_myFaves);
+		      setMyFaves(_myFaves);
         }
       } else {
         // not in favourites
