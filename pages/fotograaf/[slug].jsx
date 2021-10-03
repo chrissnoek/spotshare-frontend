@@ -608,7 +608,32 @@ const UserProfileComponent = (props) => {
         </div>
         <hr className="my-3" />
         {isTabOne && <><h2 className="my-3">Foto's</h2>
+            {profile.photos.length === 0 && 
+              <div className="w-full">
+                <img className="mx-auto max-w-sm" src="/undraw_Camera_re_cnp4.svg" />
+                {curUser && curUser.id === profile.id ? (
+
+                <div className="my-6 text-center">
+                  <h1 className="text-gray-900">Er mist iets..</h1>
+                  <p className="text-gray-900">Je hebt nog geen foto's toegevoegd.</p>
+                  <Link href={`/foto/toevoegen`}>
+                    <a className="font-semibold rounded bg-green-500 text-white hover:bg-green-600 px-2 py-1 inline-block mt-4">
+                      Voeg je eerste foto toe!
+                    </a>
+                  </Link>
+                </div>
+              ) : (
+                <div className="my-6 text-center">
+                  <h1 className="text-gray-900">Er mist iets..</h1>
+                  <p className="text-gray-900">{profile.firstname
+                    ? profile.firstname
+                    : profile.username} heeft nog geen foto's toegevoegd.</p>
+                  </div>
+              )}
+              </div>
+            }
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+
             {profile.photos.map((photo, index) => (
               <PhotoView
                 key={photo.id}
