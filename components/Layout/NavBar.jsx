@@ -5,6 +5,7 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { userContext } from "../../services/userContext.js";
 import Notifications from "../notificationCenter/Notifications.jsx";
 import { IoNotificationsOutline } from "react-icons/io5";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,20 +77,13 @@ const NavBar = () => {
 
           {!user ? (
             <React.Fragment>
-              <Link href="/aanmelden">
-                <a
-                  onClick={closeMenu}
-                  className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
-                >
-                  Aanmelden
-                </a>
-              </Link>
               <Link href="/inloggen">
                 <a
                   onClick={closeMenu}
-                  className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
+                  className="relative block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
                 >
-                  Inloggen
+                  Account
+                  <FaTimesCircle className="fill-current text-red-500 absolute -top-1 -right-1" />
                 </a>
               </Link>
             </React.Fragment>
@@ -111,11 +105,12 @@ const NavBar = () => {
               <Link href={`/fotograaf/${user.slug}`}>
                 <a
                   onClick={closeMenu}
-                  className="block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
+                  className="relative block mt-1 text-white font-semibold rounded hover:bg-gray-800 px-2 py-1 sm:mt-0 sm:ml-2"
                 >
                   {user.firstname
                     ? user.firstname + " " + user.lastname
                     : user.username}
+                    <FaCheckCircle className="fill-current text-green-500 absolute -top-1 -right-1" />
                 </a>
               </Link>
               <Link href="/uitloggen">
