@@ -13,6 +13,7 @@ import { FiLogOut } from "react-icons/fi";
 import NotificationBoard from "../components/Dashboard/NotificationBoard.jsx";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import BlogPosts from "../components/Dashboard/BlogPosts.jsx";
 
 const Dashboard = ({ categories: _categories }) => {
   const [categories, setCategories] = useState(_categories);
@@ -132,6 +133,7 @@ const Dashboard = ({ categories: _categories }) => {
                     </Link>
                   </li>
                 </ul>
+                <BlogPosts></BlogPosts>
               </div>
 
               <div className="w-full px-6 md:px-0 md:w-1/2 order-3 md:order-2">

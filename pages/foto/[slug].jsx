@@ -177,8 +177,6 @@ class PhotoDetail extends React.Component {
       let _myFaves = [...this.state.myFaves];
       let _photoFaves = [...this.state.photoFaves];
 
-    let favArray = user.likedPhotos.map((fav) => fav.id);
-
     if (action === "add") {
       // add user id to photoLikes
       if (!_photoFaves.includes(me.id)) { 
@@ -232,7 +230,7 @@ class PhotoDetail extends React.Component {
           id: user.id,
         },
         data: {
-          likedPhotos: favArray,
+          likedPhotos: _myFaves,
         },
       },
     };

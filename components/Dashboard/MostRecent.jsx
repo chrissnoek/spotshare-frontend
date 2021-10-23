@@ -15,9 +15,6 @@ const MostRecent = () => {
     setRecentPhotos(_recentPhotos);
   };
 
-  //   useConstructor(() => {
-  //     getMostRecent();
-  //   });
 
   return (
     <div className="mb-10">
