@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { findNearbyLocations } from "../../components/shared/FindNearbyLocations.jsx";
 import ResultMap from "../../components/shared/ResultMap.jsx";
 import CategorieFilter from "../../components/shared/CategorieFilter.jsx";
@@ -13,20 +13,18 @@ const Results = ({ locations }) => {
   const [selectedLocation, setSelectedLocation] = useState();
   const [showMap, setShowMap] = useState(false);
   const router = useRouter();
+  const searchResults = useRef(null);
 
   useEffect(() => {
-    console.log(locations);
     if (allLocations !== locations) {
-      console.log('allLocations !== locations');
       setAllLocations(locations);
     }
 
     const _activeFilter = getFilterFromUrl();
-    console.log(_activeFilter);
+
     if (_activeFilter) {
       setActiveFilter(_activeFilter);
     } else {
-      console.log('else');
       setFilteredLocations(locations);
     }
 
@@ -83,6 +81,24 @@ const Results = ({ locations }) => {
     setSelectedLocation(locationId);
   };
 
+  const onScroll = e => {
+    localStorage.setItem(`${router.query.lng}, ${router.query.lat}`, e.target.scrollTop);
+  };
+
+  useEffect(() => {
+    const cat = localStorage.getItem(`${router.query.lng}, ${router.query.lat}`);
+    if(cat) {
+      setTimeout(() => {
+        searchResults.current.scrollTop = cat;
+      },0);
+    }
+    else {
+      setTimeout(() => {
+        searchResults.current.scrollTop = 0;
+      },0);
+    }
+  }, [locations]);
+
   const redirect = (slug) => {
     typeof window !== "undefined" && router.push(slug);
   };
@@ -102,7 +118,7 @@ const Results = ({ locations }) => {
     return (
       <div className="relative h-screen">
         <div className="block lg:flex h-full">
-          <div className="w-full p-4 h-screen overflow-scroll" id="searchResults">
+          <div className="w-full p-4 h-screen overflow-scroll" id="searchResults" ref={searchResults} onScroll={onScroll}>
             <h1>Resultaten</h1>
             <div className="mb-2 flex">
               <span className="mr-2">Filter op categorie:</span>

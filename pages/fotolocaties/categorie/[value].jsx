@@ -11,6 +11,7 @@ const LocationsPerCategorie = ({ locations: _locations, value }) => {
   const [selectedLocation, setSelectedLocation] = useState();
   const [showMap, setShowMap] = useState(false);
   const router = useRouter();
+  const searchResults = useRef(null);
 
 
   useEffect(() => {
@@ -63,6 +64,24 @@ const LocationsPerCategorie = ({ locations: _locations, value }) => {
     setSelectedLocation(locationId);
   };
 
+  const onScroll = e => {
+    localStorage.setItem(value, e.target.scrollTop);
+  };
+
+  useEffect(() => {
+    const cat = localStorage.getItem(value);
+    if(cat) {
+      setTimeout(() => {
+        searchResults.current.scrollTop = cat;
+      },0);
+    }
+    else {
+      setTimeout(() => {
+        searchResults.current.scrollTop = 0;
+      },0);
+    }
+  }, [_locations]);
+
   if (locations.length > 0 || filteredLocations.length > 0) {
     return (
       <div className="relative h-screen">
@@ -109,7 +128,7 @@ const LocationsPerCategorie = ({ locations: _locations, value }) => {
           key="twitter_img" content={locations[0].photos[0].photo[0].url} /> */}
         </Head>
         <div className="block lg:flex h-full">
-          <div className="w-full p-4 h-screen overflow-scroll" id="searchResults">
+          <div className="w-full p-4 h-screen overflow-scroll" id="searchResults" ref={searchResults} onScroll={onScroll}>
             <h1>Resultaten</h1>
             {/* <div className="mb-2 flex">
             <span className="mr-2">Filter op categorie:</span>

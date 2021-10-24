@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { findNearbyLocations } from "../../components/shared/FindNearbyLocations.jsx";
 import ResultMap from "../../components/shared/ResultMap.jsx";
 import CategorieFilter from "../../components/shared/CategorieFilter.jsx";
@@ -13,19 +13,19 @@ const Results = ({ locations, province }) => {
   const [selectedLocation, setSelectedLocation] = useState();
   const [showMap, setShowMap] = useState(false);
   const router = useRouter();
+  const searchResults = useRef(null);
 
-  useEffect(() => { setShowMap(false); console.log(province); setShowMap(true); }, [province]);
+  useEffect(() => { 
+    setShowMap(false);
+    setShowMap(true);
+  }, [province]);
 
   useEffect(() => {
-    console.log(router);
     setShowMap(false);
     if (allLocations !== locations) {
-      console.log('allLocations !== locations');
-      console.log(locations);
       setAllLocations(locations);
     }
 
-    console.log(allLocations);
 
     const _activeFilter = getFilterFromUrl();
     if (_activeFilter) {
@@ -38,7 +38,6 @@ const Results = ({ locations, province }) => {
   }, [router]);
 
   useEffect(() => {
-    // console.log({ activeFilter });
     if (activeFilter === "") {
       setFilteredLocations(allLocations);
     } else {
@@ -47,19 +46,14 @@ const Results = ({ locations, province }) => {
   }, [activeFilter]);
 
   const filterAndSetLocations = () => {
-    // console.log(allLocations);
     const _filteredLocations = allLocations.filter((location) => {
       let includeInFilter = false;
       for (let i = 0; i < location.location_categories.length; i++) {
-        // console.log(location.location_categories[i].value, activeFilter);
         if (location.location_categories[i].value === activeFilter)
           includeInFilter = true;
       }
-      // console.log(includeInFilter);
       return includeInFilter;
     });
-
-    // console.log(_filteredLocations);
 
     setFilteredLocations(_filteredLocations);
   };
@@ -73,14 +67,6 @@ const Results = ({ locations, province }) => {
   };
 
   const onFilterChange = (e, reset) => {
-    // let url = "";
-    // if (reset) {
-    //   url = `/fotolocaties/resultaten?lng=${router.query.lng}&lat=${router.query.lat}`;
-    // } else {
-    //   url = `/fotolocaties/resultaten?lng=${router.query.lng}&lat=${router.query.lat}&categorie=${e.target.value}`;
-    // }
-
-    // router.replace(url, url, { scroll: false });
     if (e.target.value === "alle") {
       setActiveFilter("");
     } else {
@@ -95,6 +81,24 @@ const Results = ({ locations, province }) => {
   const ucProvince = () => {
     return province.charAt(0).toUpperCase() + province.substring(1);
   }
+
+  const onScroll = e => {
+    localStorage.setItem(province, e.target.scrollTop);
+  };
+
+  useEffect(() => {
+    const cat = localStorage.getItem(province);
+    if(cat) {
+      setTimeout(() => {
+        searchResults.current.scrollTop = cat;
+      },0);
+    }
+    else {
+      setTimeout(() => {
+        searchResults.current.scrollTop = 0;
+      },0);
+    }
+  }, [province]);
 
   return (
     <div className="relative h-screen">
@@ -142,7 +146,7 @@ const Results = ({ locations, province }) => {
       </Head>
       <div className="relative h-screen">
         <div className="block lg:flex h-full">
-          <div className="w-full p-4 h-screen overflow-scroll" id="searchResults">
+          <div className="w-full p-4 h-screen overflow-scroll" id="searchResults" ref={searchResults} onScroll={onScroll}>
           <h1>Resultaten</h1>
           <div className="mb-2 flex">
             <span className="mr-2">Filter op categorie:</span>
@@ -156,18 +160,20 @@ const Results = ({ locations, province }) => {
               />
             )}
           </div>
-          {filteredLocations.length > 0 &&
-            filteredLocations.map((location) => (
-              <div key={location.id} className="w-full">
-                <LocationList
-                  size="large"
-                  location={location}
-                  key={location.id}
-                  active={selectedLocation === location.id ? true : false}
-                  selectLocation={selectLocation}
-                />
-              </div>
-            ))}
+          <div>
+            {filteredLocations.length > 0 &&
+              filteredLocations.map((location) => (
+                <div key={location.id} className="w-full">
+                  <LocationList
+                    size="large"
+                    location={location}
+                    key={location.id}
+                    active={selectedLocation === location.id ? true : false}
+                    selectLocation={selectLocation}
+                  />
+                </div>
+              ))}
+            </div>
         </div>
 
         <div className="mb-10 w-full h-full">
