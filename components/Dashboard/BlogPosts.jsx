@@ -16,7 +16,7 @@ const BlogPosts = () => {
     }, []);
 
     return (
-        <div>
+        <div className="hidden md:block ">
         <h2 className="my-3">Laatste blogs</h2>
         {posts.map((post) => {
             return (
