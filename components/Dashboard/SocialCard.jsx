@@ -127,12 +127,12 @@ const SocialCard = ({ photo, me }) => {
 
     let _myFaves = [...myFaves];
     let _photoFaves = [...photoFaves];
+    let createNotification = false;
 
     if (action === "add") {
       // add user id to photoLikes
       if (!_photoFaves.includes(me.id)) { 
         _photoFaves.push(me.id);
-        setPhotoFaves(_photoFaves);
       } else {
         // already in favourites
         return;
@@ -140,8 +140,8 @@ const SocialCard = ({ photo, me }) => {
 
       if (!_myFaves.includes(likedId)) {
         _myFaves.push(likedId);
-        setMyFaves(_myFaves);
-        await CreateNotification(user.id, receiver, "like", likedId);
+        
+        createNotification = true;
       } else {
         // already in favourites
         return;
@@ -154,7 +154,6 @@ const SocialCard = ({ photo, me }) => {
         const index = _photoFaves.indexOf(me.id);
         if (index > -1) {
           _photoFaves.splice(index, 1);
-          setPhotoFaves(_photoFaves);
         }
 		  } else {
         // not in favourites
@@ -166,7 +165,7 @@ const SocialCard = ({ photo, me }) => {
         const index = _myFaves.indexOf(likedId);
         if (index > -1) {
           _myFaves.splice(index, 1);
-		      setMyFaves(_myFaves);
+		      
         }
       } else {
         // not in favourites
@@ -186,6 +185,15 @@ const SocialCard = ({ photo, me }) => {
     };
 
     const data = await graphQLFetch(query, variables, true);
+
+    if(data.updateUser) {
+      if(createNotification) {
+        await CreateNotification(user.id, receiver, "like", likedId);
+        setPhotoFaves(_photoFaves);
+        setMyFaves(_myFaves);
+      }
+    }
+
   };
 
 
@@ -246,8 +254,8 @@ const SocialCard = ({ photo, me }) => {
 
 							if (
 								value.user &&
-								photo.usersLike.filter(
-								(favourites) => favourites.id === value.user.id
+								photoFaves.filter(
+								(favourites) => favourites === value.user.id
 								).length > 0
 							) {
 								favourite = true;

@@ -176,13 +176,13 @@ class PhotoDetail extends React.Component {
       const me = this.props.me;
       let _myFaves = [...this.state.myFaves];
       let _photoFaves = [...this.state.photoFaves];
+      let createNotification = false;
 
     if (action === "add") {
       // add user id to photoLikes
       if (!_photoFaves.includes(me.id)) { 
         _photoFaves.push(me.id);
 
-        this.setState({ photoFaves: _photoFaves });
       } else {
         // already in favourites
         return;
@@ -190,8 +190,7 @@ class PhotoDetail extends React.Component {
 
       if (!_myFaves.includes(likedId)) {
         _myFaves.push(likedId);
-        this.setState({ myFaves: _myFaves });
-        await CreateNotification(user.id, receiver, "like", likedId);
+        createNotification = true;
       } else {
         // already in favourites
         return;
@@ -204,7 +203,6 @@ class PhotoDetail extends React.Component {
         const index = _photoFaves.indexOf(me.id);
         if (index > -1) {
           _photoFaves.splice(index, 1);
-          this.setState({ photoFaves: _photoFaves });
         }
 		  } else {
         // not in favourites
@@ -216,7 +214,6 @@ class PhotoDetail extends React.Component {
         const index = _myFaves.indexOf(likedId);
         if (index > -1) {
           _myFaves.splice(index, 1);
-          this.setState({ myFaves: _myFaves });
         }
       } else {
         // not in favourites
@@ -236,6 +233,16 @@ class PhotoDetail extends React.Component {
     };
 
     const data = await graphQLFetch(query, variables, true);
+
+
+    if(data.updateUser) {
+      if(createNotification) {
+        await CreateNotification(user.id, receiver, "like", likedId);
+        this.setState({ photoFaves: _photoFaves });
+        this.setState({ myFaves: _myFaves });
+      }
+    }
+    
   };
 
   addComment = async (data, receiver) => {
@@ -384,8 +391,8 @@ class PhotoDetail extends React.Component {
                     let favourite;
                     if (
                       value.user &&
-                      photoBySlug.usersLike.filter(
-                        (favourites) => favourites.id === value.user.id
+                      this.state.photoFaves.filter(
+                        (favourites) => favourites === value.user.id
                       ).length > 0
                     ) {
                       favourite = true;

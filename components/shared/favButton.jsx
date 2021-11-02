@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaBookmark, FaHeart, FaSpinner } from "react-icons/fa";
 
 const FavButton = ({
@@ -15,13 +15,19 @@ const FavButton = ({
   const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(favourite);
 
+  useEffect(() => {
+    setLiked(favourite);
+    setLoading(false);
+  },[favourite]);
+
   const ownPhoto = user.id === receiver;
 
   const onBtnClick = () => {
+    setLoading(true);
     liked
       ? updateFav(user, likedId, "remove", receiver)
       : updateFav(user, likedId, "add", receiver);
-    setLiked(!liked);
+    // setLiked(!liked);
   };
 
   let icon = <FaBookmark/>;
@@ -43,7 +49,7 @@ const FavButton = ({
       className={`group ${className}`}
       onClick={loading || ownPhoto ? () => {} : onBtnClick}
     >
-      <div className={`${type === "photo" && className} mr-2`}>{loading ? <FaSpinner /> : icon}</div>
+      <div className={`${type === "photo" && className} mr-2`}>{loading ? <FaSpinner className="animate-spin" /> : icon}</div>
       <div>{type !== 'photo' && (liked ? 'Verwijderen' : 'Opslaan')}</div>
       <div>{icon && count}</div>
     </div>
