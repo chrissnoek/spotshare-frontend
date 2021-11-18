@@ -205,10 +205,10 @@ const ForgotPassword = (props) => {
           content="Wachtwoord vergeten? Vraag hier een reset code aan zodat je een nieuw wachtwoord kunt instellen."
         />
       </Head>
-      <div className="block sm:flex h-full">
+      <div className="block sm:flex h-full min-h-screen ">
         <form
           onSubmit={handleSubmit}
-          className="bg-white w-full  px-8 md:px-16 pt-6 md:py-12 flex flex-col bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col border"
+          className="bg-white w-full md:px-16 md:py-12 shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col justify-center items-center border"
         >
           {success && (
             <div className="p-4 rounded border border-green-500 bg-green-200 text-green-500 font-bold my-4">

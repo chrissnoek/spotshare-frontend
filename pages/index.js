@@ -69,6 +69,7 @@ function HomeScreen({ featuredPhoto, randomPhotos, context }) {
                 backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3)), url(${featuredPhotoUrl})`,
                 backgroundSize: `cover`,
                 backgroundPosition: `center center`,
+                height: '600px',
               }}
             ></div>
             <div className="rounded-full shadow-lg px-1 py-1 sm:px-2 sm:py-2  -mt-6 ml-1 sm:ml-2 lg:ml-6 bg-white text-black inline-block justify-center">
